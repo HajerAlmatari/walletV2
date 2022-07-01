@@ -24,4 +24,9 @@ class RemoteService{
    void hell(){
 //dgadfbfgbgf
   }
+
+  void hell1(){
+//dgadfbfgbgf
+  }
+
 }
