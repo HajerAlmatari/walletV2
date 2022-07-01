@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "710787108667",
+    "project_id": "wallteapp",
+    "storage_bucket": "wallteapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710787108667:android:175cf9370e26bfc107f11e",
+        "android_client_info": {
+          "package_name": "com.example.walletapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710787108667-2o0m89i2ssok589f7mkr3cpdmn3ma2bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.walletapp",
+            "certificate_hash": "3ab820bcc871075edcb4f5f843dd8ddf0577bc03"
+          }
+        },
+        {
+          "client_id": "710787108667-0eue8rk2is29peinfrjiq5oolfqmhe31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFbbGQUglCiQM3s7ukD_tbUNM9WoEZrpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710787108667-0eue8rk2is29peinfrjiq5oolfqmhe31.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
