@@ -2,13 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:walletapp/provider/google_sign_in.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:walletapp/services/google_sign_in.dart';
 import 'package:walletapp/screens/api.dart';
 import 'package:walletapp/screens/nav_screen.dart';
-import 'dashboard.dart';
 import 'welcome.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,32 +15,51 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({Key? key}) : super(key: key);
-  // This widget is the root of your application.
-  final navigatorKey = GlobalKey<NavigatorState>();
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-    create: (context)=>GoogleSignInProvider(),
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        Provider<FirebaseAuthMethods>(
+          create: (_) => FirebaseAuthMethods(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<FirebaseAuthMethods>().authState,
+          initialData: null,
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'WalletApp',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const AuthWrapper(),
 
-    child: MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong!'));
-          } else if (snapshot.hasData) {
-            return NavScreen();
-          } else {
-            return WelcomePage();
-          }
-        },
       ),
-    ),
-  );
+    );
+  }
 }
+
+class AuthWrapper extends StatelessWidget{
+  const AuthWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    final firebaseUser = context.watch<User?>();
+
+    if(firebaseUser != null){
+      return const  NavScreen();
+    }
+    return  WelcomePage();
+
+
+  }
+}
+
+
+
+
+
+

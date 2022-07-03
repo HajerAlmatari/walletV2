@@ -1,8 +1,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:walletapp/provider/google_sign_in.dart';
+// import 'package:services/services.dart';
+// import 'package:walletapp/services/google_sign_in.dart';
 //
 //
 // class DashBoard extends StatefulWidget {
@@ -32,8 +32,8 @@
 //         actions: [
 //           TextButton(
 //             onPressed: () {
-//               final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
-//               provider.googleLogOut();
+//               final services = Provider.of<GoogleSignInProvider>(context,listen: false);
+//               services.googleLogOut();
 //               FirebaseAuth.instance.signOut();
 //               // user.delete();
 //               print("logout");

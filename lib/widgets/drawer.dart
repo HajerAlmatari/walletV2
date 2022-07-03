@@ -2,18 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../constants.dart';
-import '../provider/google_sign_in.dart';
+import '../main.dart';
+import '../services/google_sign_in.dart';
 import '../screens/nav_screen.dart';
 import '../screens/setting.dart';
 import '../screens/user_screen.dart';
 
 class DrawerWidget extends StatelessWidget {
-   DrawerWidget({Key? key}) : super(key: key);
+
+
+  DrawerWidget({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    final Currentuser = context.read<FirebaseAuthMethods>().user;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Wallet"),
@@ -28,7 +34,6 @@ class DrawerWidget extends StatelessWidget {
 }
 
 class NavigationDrawer extends StatelessWidget {
-  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -50,9 +55,10 @@ class NavigationDrawer extends StatelessWidget {
       color: Color.fromRGBO(120, 148, 150, 0.8),
       child: InkWell(
         onTap: () {
-          Navigator.pop(context);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const UserPage()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserPage()),
+          );
         },
         child: Container(
             padding: const EdgeInsets.only(
@@ -60,21 +66,23 @@ class NavigationDrawer extends StatelessWidget {
               bottom: 24,
             ),
             child: Column(
-              children: [
+              children: const [
                 CircleAvatar(
                   radius: 52,
-                  // backgroundImage: AssetImage("assets/icons/avatar_1.png"),
-                  backgroundImage: Image.network(user!.photoURL.toString()).image,
+                  backgroundImage: AssetImage("assets/icons/avatar_1.png"),
+                  // backgroundImage: Image.network(user!.photoURL.toString()).image,
                 ),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
-                    user.displayName!.toString(),
+                    // user.displayName!.toString(),
+                  "User Name",
                   style: TextStyle(fontSize: 28, color: Colors.black),
                 ),
                 Text(
-                    user.email!.toString(),
+                    // user.email!.toString(),
+                  "User Email",
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 )
               ],
@@ -147,12 +155,19 @@ class NavigationDrawer extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text("Logout"),
              onTap: (){
+               //
+               // final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
+               // provider.googleLogOut();
+               // FirebaseAuth.instance.signOut();
+               // // user.delete();
 
-               final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
-               provider.googleLogOut();
-               FirebaseAuth.instance.signOut();
-               // user.delete();
+               context.read<FirebaseAuthMethods>().signOut(context);
+
                print("logout");
+               Navigator.pushReplacement(
+                 context,
+                 MaterialPageRoute(builder: (context) => AuthWrapper()),
+               );
              },
             ),
           ],

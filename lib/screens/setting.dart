@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:walletapp/screens/nav_screen.dart';
 
 import '../constants.dart';
 import '../widgets/list_tile.dart';
@@ -24,8 +25,16 @@ class _SettingScreenState extends State<SettingScreen> {
           backgroundColor: CDarkerColor,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: ()=>Navigator.of(context).pop(),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavScreen()),
+              );
+
+            },
+            /*onPressed: ()=>Navigator.of(context).pop(),*/
           )),
+
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(

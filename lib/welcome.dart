@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walletapp/login.dart';
-import 'package:walletapp/provider/google_sign_in.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:walletapp/services/google_sign_in.dart';
 import 'signup.dart';
 import 'package:provider/provider.dart';
 
@@ -133,9 +134,13 @@ class WelcomePageState extends State<WelcomePage> {
         ),
       ),
       onTap: (){
-        final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-        provider.googleLogin();
-        },
+        // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+        // provider.googleLogin();
+
+
+        /////////New Login Option/////////////
+        context.read<FirebaseAuthMethods>().signInWithGoogle(context);
+      },
     );
 
     Widget divider() {

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import 'dashboard.dart';
 
@@ -229,7 +231,9 @@ class SignupPageState extends State<SignupPage> {
 
     final signinbutton = GestureDetector(
       onTap: () async {
-        signUpmethod();
+        context.read<FirebaseAuthMethods>().signUpWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+
+        // signUpmethod();
       //   print("tapped");
       //   if (_formkey.currentState!.validate()) {
       //     print("validated");
@@ -391,6 +395,8 @@ class SignupPageState extends State<SignupPage> {
 
 
 
-
+  void signUpUser() async{
+    FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+  }
 
 }

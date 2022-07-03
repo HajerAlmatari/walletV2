@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../constants.dart';
 import '../widgets/drawer.dart';
@@ -14,6 +16,7 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   @override
   Widget build(BuildContext context) {
+    final user = context.read<FirebaseAuthMethods>().user;
     return DefaultTabController(
       length: 1,
       child: Scaffold(
@@ -22,7 +25,7 @@ class _NavScreenState extends State<NavScreen> {
           actions: [
             IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
           ],
-          title: const Text("Wallet"),
+          title: (!user.isAnonymous && user.phoneNumber==null)?Text(user.email.toString()):const Text("Wallet"),
           centerTitle: true,
           backgroundColor: CDarkerColor,
 

@@ -1,8 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:walletapp/dashboard.dart';
 import 'package:walletapp/screens/nav_screen.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import 'forgetPassword.dart';
 
@@ -81,7 +84,11 @@ class LoginPageState extends State<LoginPage> {
     final signinbutton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          signInfirebase();
+
+          context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+
+
+
 
         }
       },
@@ -228,4 +235,10 @@ class LoginPageState extends State<LoginPage> {
 
 
   }
+
+  //Added Function
+  void loginUser(){
+    FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+  }
+
 }
