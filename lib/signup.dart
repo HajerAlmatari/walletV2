@@ -35,7 +35,7 @@ class SignupPageState extends State<SignupPage> {
     super.initState();
    // postData();
     //testPost();
-    testPost2();
+  //  testPost2();
   }
 
   testPost2() async{
@@ -43,11 +43,11 @@ class SignupPageState extends State<SignupPage> {
     await http.post(
       Uri.parse('http://192.168.30.244:7285/api/Register/new'),
       body: jsonEncode({
-        'firstName': '_firstName.text',
-        'lastName': '_lastName.text',
-        'email': '_email.text',
-        'phoneNumber': '_phoneNumber.text',
-        'password': '_password.text',
+        'firstName': _firstName.text,
+        'lastName': _lastName.text,
+        'email': _email.text,
+        'phoneNumber': _phoneNumber.text,
+        'password': _password.text,
         'socialMediaType': 'normal'
       }),
       headers: {
@@ -68,67 +68,7 @@ class SignupPageState extends State<SignupPage> {
 
 
   }
-  testPost() async {
-    var headers = {
-      'Content-Type': 'application/json',
-      'accept': 'application/json'
-    };
 
-    var response = await http
-        .post(Uri.parse("http://192.168.30.244:7285/api/Register/new"),
-        headers: headers,
-        body: {
-          "firstName": "_firstName.text",
-          "lastName": "_lastName.text",
-          "email": "_email.text",
-          "phoneNumber": "_phoneNumber.text",
-          "password": "_password.text",
-          "socialMediaType": "normal"
-        });
-
-
-    if (response.statusCode == 200) {
-      print("SuccessFully");
-      // status = true;
-      // if(status)
-    } else {
-      print("Not SuccessFully");
-      print(response.body);
-      print(response.statusCode);
-    }
-    print(response.body);
-  }
-    postData() async {
-      var response = await http
-          .post(Uri.parse('http://192.168.30.244:7285/api/Register/new'),
-          headers: {    HttpHeaders.contentTypeHeader: 'application/json'},
-
-
-
-          body: {
-            "firstName": "_firstName.text",
-            "lastName": "_lastName.text",
-            "email": "_email.text",
-            "phoneNumber": "_phoneNumber.text",
-            "password": "_password.text",
-            "socialMediaType": "normal"
-          });
-
-      if (response.statusCode == 200) {
-        print("SuccessFully");
-        // status = true;
-        // if(status)
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen()),
-        );
-      } else {
-        print("Not SuccessFully");
-        print(response.body);
-        print(response.statusCode);
-      }
-      print(response.body);
-    }
 
 
         @override

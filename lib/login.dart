@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +10,10 @@ import 'package:provider/provider.dart';
 import 'package:walletapp/dashboard.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:walletapp/widgets/showSnackBar.dart';
 
 import 'forgetPassword.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   LoginPageState createState() => LoginPageState();
@@ -26,6 +31,45 @@ class LoginPageState extends State<LoginPage> {
     _password.dispose();
 
     super.dispose();
+  }
+
+  loginRequest() async {
+    var response = await http.post(
+      Uri.parse('http://192.168.30.244:7285/api/Login/signin'),
+      body: jsonEncode({
+        'paramter': _email.text,
+        'password': _password.text,
+      }),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print("SuccessFully");
+      showSnackBar(context, "Successfully Logged in");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NavScreen()),
+      );
+      // status = true;
+      // if(status)
+    } /*else if (response.statusCode == 101) {
+      showSnackBar(context, "Connection Error");
+
+      print(response.body);
+      print(response.statusCode);
+    }*/
+    else if (response.statusCode == 404) {
+      showSnackBar(context, "Not found URL");
+
+      print(response.body);
+      print(response.statusCode);
+    }
+    else {
+      showSnackBar(context, "Phone or Password wrong");
+    }
+    print(response.body);
   }
 
   @override
@@ -85,14 +129,12 @@ class LoginPageState extends State<LoginPage> {
     final signinbutton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-
           EasyLoading.show(status: 'Loading ...');
+          loginRequest();
 
-          context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+          // context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
 
           EasyLoading.dismiss();
-
-
         }
       },
       child: Container(
@@ -176,7 +218,6 @@ class LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               signinbutton,
-
             ],
           ),
         ),
@@ -184,20 +225,17 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-
   Future signInfirebase() async {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => Center(
-          child: CircularProgressIndicator(),
-        ));
+              child: CircularProgressIndicator(),
+            ));
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email.text.trim(),
-          password: _password.text.trim());
-
+          email: _email.text.trim(), password: _password.text.trim());
 
       // Navigator.of(context)
       //     .push(MaterialPageRoute(builder: (context) => NavScreen()));
@@ -228,20 +266,17 @@ class LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text.trim(),
         password: _password.text.trim(),
-
-
       );
-
     } on FirebaseAuthException catch (e) {
       print(e);
     }
-
-
   }
 
   //Added Function
-  void loginUser(){
-    FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+  void loginUser() {
+    FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(
+        email: _email.text.trim(),
+        password: _password.text.trim(),
+        context: context);
   }
-
 }
