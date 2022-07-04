@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:http/http.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:walletapp/screens/nav_screen.dart';
@@ -29,35 +33,103 @@ class SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    postData();
+   // postData();
+    //testPost();
+    testPost2();
   }
-  postData() async {
-    var response = await http
-        .post(Uri.parse("https://192.168.30.244:7285/api/Register/new"),
 
+  testPost2() async{
+    var response =
+    await http.post(
+      Uri.parse('http://192.168.30.244:7285/api/Register/new'),
+      body: jsonEncode({
+        'firstName': '_firstName.text',
+        'lastName': '_lastName.text',
+        'email': '_email.text',
+        'phoneNumber': '_phoneNumber.text',
+        'password': '_password.text',
+        'socialMediaType': 'normal'
+      }),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print("SuccessFully");
+      // status = true;
+      // if(status)
+    } else {
+      print("Not SuccessFully");
+      print(response.body);
+      print(response.statusCode);
+    }
+    print(response.body);
+
+
+  }
+  testPost() async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json'
+    };
+
+    var response = await http
+        .post(Uri.parse("http://192.168.30.244:7285/api/Register/new"),
+        headers: headers,
         body: {
-        "firstName": "_firstName.text",
-        "lastName": "_lastName.text",
-        "email": "_email.text",
-        "phoneNumber": "_phoneNumber.text",
-        "password": "_password.text",
-        "socialMediaType": "normal"
+          "firstName": "_firstName.text",
+          "lastName": "_lastName.text",
+          "email": "_email.text",
+          "phoneNumber": "_phoneNumber.text",
+          "password": "_password.text",
+          "socialMediaType": "normal"
         });
 
-        if (response.statusCode == 200) {
+
+    if (response.statusCode == 200) {
+      print("SuccessFully");
+      // status = true;
+      // if(status)
+    } else {
+      print("Not SuccessFully");
+      print(response.body);
+      print(response.statusCode);
+    }
+    print(response.body);
+  }
+    postData() async {
+      var response = await http
+          .post(Uri.parse('http://192.168.30.244:7285/api/Register/new'),
+          headers: {    HttpHeaders.contentTypeHeader: 'application/json'},
+
+
+
+          body: {
+            "firstName": "_firstName.text",
+            "lastName": "_lastName.text",
+            "email": "_email.text",
+            "phoneNumber": "_phoneNumber.text",
+            "password": "_password.text",
+            "socialMediaType": "normal"
+          });
+
+      if (response.statusCode == 200) {
         print("SuccessFully");
         // status = true;
         // if(status)
         Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NavScreen()),
+          context,
+          MaterialPageRoute(builder: (context) => NavScreen()),
         );
-
-        } else {
+      } else {
         print("Not SuccessFully");
-        }
         print(response.body);
-        }
+        print(response.statusCode);
+      }
+      print(response.body);
+    }
+
 
         @override
         Widget build(BuildContext context)
@@ -268,12 +340,13 @@ class SignupPageState extends State<SignupPage> {
 
       final signinbutton = GestureDetector(
         onTap: () async {
+          testPost2();
           context.read<FirebaseAuthMethods>().signUpWithEmail(
               email: _email.text.trim(),
               password: _password.text.trim(),
               context: context);
 
-          postData();
+         // postData();
           // signUpmethod();
           //   print("tapped");
           //   if (_formkey.currentState!.validate()) {
