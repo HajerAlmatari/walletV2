@@ -18,6 +18,7 @@ class WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context);
     final logo = Container(
       child: Image.asset(
         'images/bank_logo.png',
@@ -139,7 +140,7 @@ class WelcomePageState extends State<WelcomePage> {
 
 
         /////////New Login Option/////////////
-        context.read<FirebaseAuthMethods>().signInWithGoogle(context);
+        context.read<FirebaseAuthMethods>().googleLogin();
       },
     );
 

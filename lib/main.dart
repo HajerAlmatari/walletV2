@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'WalletApp',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.grey,
         ),
         home: const AuthWrapper(),
-        // builder: EasyLoading.init(),
+        builder: EasyLoading.init(),
 
       ),
     );
@@ -52,7 +52,7 @@ class AuthWrapper extends StatelessWidget{
   Widget build(BuildContext context){
     final firebaseUser = context.watch<User?>();
 
-    if(firebaseUser != null){
+    if(firebaseUser != null && firebaseUser.emailVerified){
       return const  NavScreen();
     }
     return  WelcomePage();

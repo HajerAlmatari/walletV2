@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/widgets/showOtpDialog.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
@@ -17,37 +20,45 @@ class FirebaseAuthMethods {
     required String password,
     required BuildContext context}) async {
     try {
+      EasyLoading.show();
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      await sendEmailVerification(context);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NavScreen()),
-      );
-    } on FirebaseAuthException catch (e) {
-      // if(e.code == 'week-password'){
-      //   showSnackBar(context, 'Wrong Password');
-      //
-      // }
-      showSnackBar(context, e.message!);
-    }
-  }
 
 
-  Future<void> loginWithEmail(
-      {required String email, required String password, required BuildContext context}) async {
-    try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context)=>Center(child: CircularProgressIndicator(),),
-      );
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      if(!_auth.currentUser!.emailVerified){
+        await sendEmailVerification(context,"Email verification sent");
+        EasyLoading.dismiss();
 
-      if (!_auth.currentUser!.emailVerified) {
-        await sendEmailVerification(context);
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: const Text('Email Verification'),
+                content: const Text('open your mailbox to verify your email'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      _auth.currentUser!.emailVerified?
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => NavScreen()),
+                      )
+                      :
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Verify'),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('cancle'),
+                  ),
+                ],
+              );
+            }
+        );
       }
       else{
         Navigator.pushReplacement(
@@ -56,37 +67,102 @@ class FirebaseAuthMethods {
         );
       }
     } on FirebaseAuthException catch (e) {
+      // if(e.code == 'week-password'){
+      //   showSnackBar(context, 'Wrong Password');
+      //
+      // }
+      EasyLoading.dismiss();
       showSnackBar(context, e.message!);
     }
   }
 
-  Future<void> signInWithGoogle(BuildContext context) async{
-    try{
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-      if(googleAuth?.accessToken != null && googleAuth?.idToken != null){
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
-        UserCredential userCredential = await _auth.signInWithCredential(credential);
+  Future<void> loginWithEmail(
+      {required String email, required String password, required BuildContext context}) async {
+    try {
+      EasyLoading.show();
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-        if(userCredential.user != null){
-          if(userCredential.additionalUserInfo!.isNewUser){
-
-          }
-        }
+      if (!_auth.currentUser!.emailVerified) {
+        EasyLoading.dismiss();
+        await sendEmailVerification(context,'Check your email to verify it');
       }
-
-    }on FirebaseAuthException catch(e){
-        showSnackBar(context, e.message!);
+      else{
+        EasyLoading.dismiss();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavScreen()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      EasyLoading.dismiss();
+      showSnackBar(context, e.message!);
     }
+  }
+
+  // Future<void> signInWithGoogle(BuildContext context) async{
+  //   try{
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+  //
+  //     if(googleAuth?.accessToken != null && googleAuth?.idToken != null){
+  //       final credential = GoogleAuthProvider.credential(
+  //         accessToken: googleAuth?.accessToken,
+  //         idToken: googleAuth?.idToken,
+  //       );
+  //       UserCredential userCredential = await _auth.signInWithCredential(credential);
+  //
+  //       if(userCredential.user != null){
+  //         if(userCredential.additionalUserInfo!.isNewUser){
+  //
+  //         }
+  //       }
+  //     }
+  //
+  //   }on FirebaseAuthException catch(e){
+  //       showSnackBar(context, e.message!);
+  //   }
+  //
+  //
+  // }
+
+  final googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _user;
+
+  GoogleSignInAccount get usr => _user!;
+
+  Future googleLogin() async{
+    try{
+
+      final googleUser = await googleSignIn.signIn();
+
+      if(googleUser == null) return;
+
+      _user = googleUser;
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await _auth.signInWithCredential(credential);
 
 
+
+    }catch(e){
+      print(e.toString());
+    }
+  }
+
+  Future googleLogOut() async{
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
   }
 
   /*
+
   Future<void> PhoneSignIn(BuildContext context, String phone) async {
     TextEditingController codeController = TextEditingController();
     await _auth.verifyPhoneNumber(phoneNumber: phone,
@@ -113,13 +189,12 @@ class FirebaseAuthMethods {
         },
     );
   }
-
 */
 
-  Future<void> sendEmailVerification(BuildContext context) async {
+  Future<void> sendEmailVerification(BuildContext context,String message) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      showSnackBar(context, 'Email verification sent ');
+      showSnackBar(context, message);
 
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
@@ -130,6 +205,7 @@ class FirebaseAuthMethods {
 
     try{
       await _auth.signOut();
+      googleLogOut();
     }on FirebaseAuthException catch(e){
         showSnackBar(context, e.message!);
     }

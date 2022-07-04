@@ -84,15 +84,15 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
   }
 
   Future resetPassword() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context)=>Center(child: CircularProgressIndicator(),),
-    );
+
     try {
+      EasyLoading.show();
+
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _userEmail.text.trim());
+      EasyLoading.showSuccess('Check Your Email to Reset Password',duration: Duration(milliseconds: 2000));
       Navigator.of(context).popUntil((route) => route.isFirst);
+      EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {
       print(e);
     }

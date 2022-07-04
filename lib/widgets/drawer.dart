@@ -161,6 +161,7 @@ class NavigationDrawer extends StatelessWidget {
                // FirebaseAuth.instance.signOut();
                // // user.delete();
 
+
                context.read<FirebaseAuthMethods>().signOut(context);
 
                print("logout");
