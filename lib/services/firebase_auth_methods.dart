@@ -149,8 +149,6 @@ class FirebaseAuthMethods {
 
       await _auth.signInWithCredential(credential);
 
-
-
     }catch(e){
       print(e.toString());
     }
