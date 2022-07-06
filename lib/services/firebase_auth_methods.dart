@@ -133,7 +133,7 @@ class FirebaseAuthMethods {
         //
         () async {
           var response = await http.post(
-            Uri.parse('http://192.168.30.244:7285/api/Register/new'),
+            Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
             body: jsonEncode({
               'firstName': firstName,
               'lastName': lastName,

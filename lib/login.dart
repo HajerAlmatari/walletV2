@@ -34,7 +34,7 @@ class LoginPageState extends State<LoginPage> {
   loginRequest() async {
     print("request");
     var response = await http.post(
-      Uri.parse('http://192.168.30.31:7072/api/Login/signin'),
+      Uri.parse('https://walletv1.azurewebsites.net/api/Login/signin'),
       body: jsonEncode({
         'paramter': _email.text,
         'password': _password.text,
@@ -57,7 +57,14 @@ class LoginPageState extends State<LoginPage> {
       // print(response.body);
       // print(response.statusCode);
 
-    } else {
+    }else if (response.statusCode == 400) {
+      showSnackBar(context, "phone or email is used");
+
+      // print(response.body);
+      // print(response.statusCode);
+
+    }
+    else {
 
       showSnackBar(context, "Phone or Password wrong");
     }
