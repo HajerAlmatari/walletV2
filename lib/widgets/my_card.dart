@@ -52,7 +52,7 @@ get subAccountType =>subAccount?.currencyType.toString();
                       children: [
                         Text(
                           "CARD TYPE",
-                          style: TextStyleLINK
+                          style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         Text(subAccountType
