@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/Models/LoginResponse.dart';
+import 'package:walletapp/Models/SaveAccount.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
@@ -33,42 +35,49 @@ class LoginPageState extends State<LoginPage> {
 
   loginRequest() async {
     print("request");
-    var response = await http.post(
-      Uri.parse('https://walletv1.azurewebsites.net/api/Login/signin'),
-      body: jsonEncode({
-        'paramter': _email.text,
-        'password': _password.text,
-      }),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      print("SuccessFully");
-      showSnackBar(context, "Successfully Logged in");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NavScreen()),
+    try {
+      var response = await http.post(
+        Uri.parse('http://192.168.1.101:7025/api/Login/signin'),
+        body: jsonEncode({
+          'paramter': _email.text,
+          'password': _password.text,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
       );
-    } else if (response.statusCode == 404) {
-      showSnackBar(context, "Not found URL");
 
-      // print(response.body);
-      // print(response.statusCode);
+      if (response.statusCode == 200) {
+        var json = response.body;
+        LoginResponse loginResponse = loginResponseFromJson(json);
 
-    }else if (response.statusCode == 400) {
-      showSnackBar(context, "phone or email is used");
+        SaveAccount obj = new SaveAccount();
+        print(loginResponse.accountId.elementAt(0));
+        int account = loginResponse.accountId.elementAt(0);
+        obj.setId(account);
+        print("Your Id: is: " +obj.getId().toString() );
+        print(loginResponse.message);
 
-      // print(response.body);
-      // print(response.statusCode);
+        print("SuccessFully");
 
+        showSnackBar(context, "Successfully Logged in");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavScreen()),
+        );
+      } else if (response.statusCode == 404) {
+        showSnackBar(context, "Not found URL");
+
+        // print(response.body);
+        // print(response.statusCode);
+
+      }  else {
+        print(response.statusCode);
+        showSnackBar(context, "Phone or Password wrong");
+      }
+    } catch (error) {
+      print(error.toString());
     }
-    else {
-
-      showSnackBar(context, "Phone or Password wrong");
-    }
-
   }
 
   @override

@@ -29,18 +29,10 @@ class _APIScreenState extends State<APIScreen> {
   void initState(){
    //   apicall();
       super.initState();
-      getUser();
 
   }
 
-  getUser() async {
-    print("I'm used");
-    var response = await RemoteService().getUser();
-    print("Hey"+response.toString());
-    name= response.data.firstName;
-    print("Hey"+response.data.email);
 
-  }
 
   @override
   Widget build(BuildContext context) {
