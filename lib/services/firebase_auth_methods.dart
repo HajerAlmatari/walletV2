@@ -29,44 +29,47 @@ class FirebaseAuthMethods {
     required String password,
     required BuildContext context,
     required String phone,
+    required String statusCode
   }) async {
     try {
-      EasyLoading.show();
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+     if(statusCode == '200'){
+       EasyLoading.show();
+       await _auth.createUserWithEmailAndPassword(
+           email: email, password: password);
 
-      EasyLoading.dismiss();
-      EasyLoading.showSuccess("account Have been created");
+       EasyLoading.dismiss();
 
-      await Future.delayed(Duration(milliseconds: 1500));
 
-      showDialog<void>(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Email Verification'),
-              content: const Text('Open your email to verify your account'),
-              actions: [
-                FlatButton(
-                  onPressed: () async {
-                    await sendEmailVerification(
-                        context, "Email verification sent");
+       await Future.delayed(Duration(milliseconds: 1500));
 
-                    // phoneVerification(context, phone);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => LoginPage()),
-                    // );
-                  },
-                  child: Text('Ok'),
-                ),
-              ],
-            );
-          });
+       showDialog<void>(
+           barrierDismissible: false,
+           context: context,
+           builder: (BuildContext context) {
+             return AlertDialog(
+               title: const Text('Email Verification'),
+               content: const Text('Open your email to verify your account'),
+               actions: [
+                 FlatButton(
+                   onPressed: () async {
+                     await sendEmailVerification(
+                         context, "Email verification sent");
+
+                     // phoneVerification(context, phone);
+                     Navigator.pushReplacement(context,
+                         MaterialPageRoute(builder: (context) => LoginPage()));
+                     // Navigator.pushReplacement(
+                     //   context,
+                     //   MaterialPageRoute(
+                     //       builder: (context) => LoginPage()),
+                     // );
+                   },
+                   child: Text('Ok'),
+                 ),
+               ],
+             );
+           });
+     }
     } on FirebaseAuthException catch (e) {
       // if(e.code == 'week-password'){
       //   showSnackBar(context, 'Wrong Password');
@@ -130,7 +133,7 @@ class FirebaseAuthMethods {
 
         // var name = _user!.displayName?.substring(0, _user!.displayName?.indexOf(" "));
         // var lastName = _user!.displayName?.substring(_user!.displayName?.indexOf(" ")! + 1);
-        //
+
         () async {
           var response = await http.post(
             Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
