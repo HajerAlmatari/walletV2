@@ -33,12 +33,9 @@ class SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-   // postData();
-    //testPost();
-  //  testPost2();
   }
 
-  testPost2() async{
+  postData() async{
     var response =
     await http.post(
       Uri.parse('http://192.168.30.244:7285/api/Register/new'),
@@ -228,7 +225,6 @@ class SignupPageState extends State<SignupPage> {
           }
         },
       );
-
       final passwordValidator = FlutterPwValidator(
         controller: _password,
         minLength: 8,
@@ -248,7 +244,6 @@ class SignupPageState extends State<SignupPage> {
           print("NOT MATCHED");
         },
       );
-
       final confirmPasswordField = TextFormField(
         obscureText: true,
         controller: _confirmPssword,
@@ -280,7 +275,7 @@ class SignupPageState extends State<SignupPage> {
 
       final signinbutton = GestureDetector(
         onTap: () async {
-          testPost2();
+          postData();
           context.read<FirebaseAuthMethods>().signUpWithEmail(
               email: _email.text.trim(),
               password: _password.text.trim(),

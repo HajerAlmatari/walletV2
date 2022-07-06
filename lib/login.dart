@@ -83,7 +83,7 @@ class LoginPageState extends State<LoginPage> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: const InputDecoration(
         // filled: true,
-        labelText: 'Email',
+        labelText: 'Email/phone number',
         labelStyle: TextStyle(
           color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class LoginPageState extends State<LoginPage> {
       ),
       validator: (_userEmail) =>
           _userEmail != null && !EmailValidator.validate(_userEmail)
-              ? 'Enter a valid Email'
+              ? 'Enter a valid Email or phone number'
               : null,
     );
     final passwordField = TextFormField(
