@@ -3,19 +3,18 @@ import 'package:walletapp/Models/SubAccount.dart';
 import '../Models/User.dart';
 import 'package:http/http.dart' as http;
 
-class RemoteService{
-
-
+class RemoteService {
   static String BASE_URL = "http://192.168.1.101:7025/api/";
-  int accountId = 100057542;
 
   Future<List<SubAccount>> getAllSubAccount(int accountId) async {
     try {
-      String accountIdS= accountId.toString();
-
+      String accountIdS = accountId.toString();
+      print(accountIdS);
       var client = http.Client();
 
-      var uri = Uri.parse("${BASE_URL}SubAccount/getSubByAccountId/{$accountIdS}");
+      var uri = Uri.parse(
+          "${BASE_URL}SubAccount/getSubByAccountId?accountId=" + accountIdS);
+      print(uri.toString());
       var response = await client.get(uri);
 
       if (response.statusCode == 200) {
@@ -29,5 +28,4 @@ class RemoteService{
       return subAccountFromJson(e.toString());
     }
   }
-
 }
