@@ -5,10 +5,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:http/http.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:walletapp/screens/nav_screen.dart';
+import 'package:walletapp/screens/otp_verfication.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,7 +36,7 @@ class SignupPageState extends State<SignupPage> {
   postData() async{
     var response =
     await http.post(
-      Uri.parse('http://192.168.30.244:7285/api/Register/new'),
+      Uri.parse('http://192.168.30.31:7072/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName.text,
         'lastName': _lastName.text,
@@ -279,10 +277,14 @@ class SignupPageState extends State<SignupPage> {
           context.read<FirebaseAuthMethods>().signUpWithEmail(
               email: _email.text.trim(),
               password: _password.text.trim(),
-              context: context);
+              context: context,
+              phone: _phoneNumber.text.trim()
+          );
 
-         // postData();
-          // signUpmethod();
+
+
+
+
           //   print("tapped");
           //   if (_formkey.currentState!.validate()) {
           //     print("validated");
@@ -440,6 +442,10 @@ class SignupPageState extends State<SignupPage> {
       FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
           email: _email.text.trim(),
           password: _password.text.trim(),
-          context: context);
+          context: context,
+      phone: _phoneNumber.text.trim()
+      );
     }
+
+
   }

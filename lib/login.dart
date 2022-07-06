@@ -5,9 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:walletapp/dashboard.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
@@ -34,8 +32,9 @@ class LoginPageState extends State<LoginPage> {
   }
 
   loginRequest() async {
+    print("request");
     var response = await http.post(
-      Uri.parse('http://192.168.30.244:7285/api/Login/signin'),
+      Uri.parse('http://192.168.30.31:7072/api/Login/signin'),
       body: jsonEncode({
         'paramter': _email.text,
         'password': _password.text,
@@ -52,24 +51,17 @@ class LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => NavScreen()),
       );
-      // status = true;
-      // if(status)
-    } /*else if (response.statusCode == 101) {
-      showSnackBar(context, "Connection Error");
-
-      print(response.body);
-      print(response.statusCode);
-    }*/
-    else if (response.statusCode == 404) {
+    } else if (response.statusCode == 404) {
       showSnackBar(context, "Not found URL");
 
-      print(response.body);
-      print(response.statusCode);
-    }
-    else {
+      // print(response.body);
+      // print(response.statusCode);
+
+    } else {
+
       showSnackBar(context, "Phone or Password wrong");
     }
-    print(response.body);
+
   }
 
   @override
@@ -77,7 +69,6 @@ class LoginPageState extends State<LoginPage> {
     final _formkey = GlobalKey<FormState>();
 
     final emailField = TextFormField(
-      keyboardType: TextInputType.emailAddress,
       controller: _email,
       textInputAction: TextInputAction.done,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -99,6 +90,7 @@ class LoginPageState extends State<LoginPage> {
               ? 'Enter a valid Email or phone number'
               : null,
     );
+
     final passwordField = TextFormField(
       obscureText: true,
       controller: _password,
@@ -131,9 +123,7 @@ class LoginPageState extends State<LoginPage> {
         if (_formkey.currentState!.validate()) {
           EasyLoading.show(status: 'Loading ...');
           loginRequest();
-
           // context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
-
           EasyLoading.dismiss();
         }
       },
