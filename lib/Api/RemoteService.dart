@@ -4,7 +4,7 @@ import '../Models/User.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {
-  static String BASE_URL = "http://192.168.1.101:7025/api/";
+  static String BASE_URL = "https://walletv.azurewebsites.net/api/";
 
   Future<List<SubAccount>> getAllSubAccount(int accountId) async {
     try {
