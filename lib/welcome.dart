@@ -178,40 +178,6 @@ class WelcomePageState extends State<WelcomePage> {
     }
 
 
-    final signWithFacebook = GestureDetector(
-      child: Container(
-        height: 50,
-        width: 260,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(5, 5),
-              blurRadius: 10,
-            )
-          ],
-        ),
-        padding: EdgeInsets.all(5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'images/facebook.png',
-              width: 30,
-              height: 30,
-            ),
-            SizedBox(width: 20,),
-            Text("Sign In With Facebook")
-          ],
-        ),
-      ),
-      onTap: (){
-      },
-    );
-
-
 
   return Scaffold(
     // backgroundColor: Color.fromRGBO(244, 244, 244, 300),
@@ -229,8 +195,6 @@ class WelcomePageState extends State<WelcomePage> {
               divider(),
               const SizedBox(height: 20),
               signWithGoogle,
-              const SizedBox(height: 10,),
-              signWithFacebook,
             ],
           ),
         ),
