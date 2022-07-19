@@ -39,7 +39,6 @@ class FirebaseAuthMethods {
 
        EasyLoading.dismiss();
 
-
        await Future.delayed(Duration(milliseconds: 1500));
 
        showDialog<void>(
@@ -136,7 +135,7 @@ class FirebaseAuthMethods {
 
         () async {
           var response = await http.post(
-            Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
+            Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
             body: jsonEncode({
               'firstName': firstName,
               'lastName': lastName,

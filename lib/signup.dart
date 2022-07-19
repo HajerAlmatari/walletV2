@@ -39,7 +39,7 @@ class SignupPageState extends State<SignupPage> {
 
   postData() async {
     var response = await http.post(
-      Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
+      Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName.text,
         'lastName': _lastName.text,
