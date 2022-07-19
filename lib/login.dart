@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypt/crypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class LoginPageState extends State<LoginPage> {
 
   loginRequest() async {
     print("request");
+    String pass = Crypt.sha256(_password.text).toString();
+    print(pass);
     try {
       var response = await http.post(
         Uri.parse('https://walletv.azurewebsites.net/api/Login/signin'),
@@ -232,12 +235,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Future signInfirebase() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(),
-            ));
+
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

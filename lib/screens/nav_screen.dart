@@ -68,7 +68,7 @@ class _NavScreenState extends State<NavScreen> {
           ),
           elevation: 0,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [CDarkerColor, CLighterColor],
               begin: Alignment.bottomRight,
@@ -77,7 +77,7 @@ class _NavScreenState extends State<NavScreen> {
           ),
         ),
         //drawer: const DrawerWidget(),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             CreditCardScreen(),
             //SavingsScreen(),

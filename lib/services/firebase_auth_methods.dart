@@ -40,8 +40,11 @@ class FirebaseAuthMethods {
        EasyLoading.dismiss();
 
 
-       await Future.delayed(Duration(milliseconds: 1500));
 
+       EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+       //
+       // await Future.delayed(Duration(milliseconds: 1000));
+       //
        showDialog<void>(
            barrierDismissible: false,
            context: context,
@@ -56,8 +59,8 @@ class FirebaseAuthMethods {
                          context, "Email verification sent");
 
                      // phoneVerification(context, phone);
-                     Navigator.pushReplacement(context,
-                         MaterialPageRoute(builder: (context) => LoginPage()));
+                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+
                      // Navigator.pushReplacement(
                      //   context,
                      //   MaterialPageRoute(
@@ -71,10 +74,13 @@ class FirebaseAuthMethods {
            });
      }
     } on FirebaseAuthException catch (e) {
-      // if(e.code == 'week-password'){
-      //   showSnackBar(context, 'Wrong Password');
-      //
-      // }
+      if(e.code == 'week-password'){
+        showSnackBar(context, 'Wrong Password');
+      }
+      else if ( e.code == 'email-already-in-use'){
+        showSnackBar(context, 'Email already used');
+      }
+
       EasyLoading.dismiss();
       showSnackBar(context, e.message!);
     }
@@ -136,7 +142,7 @@ class FirebaseAuthMethods {
 
         () async {
           var response = await http.post(
-            Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
+            Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
             body: jsonEncode({
               'firstName': firstName,
               'lastName': lastName,

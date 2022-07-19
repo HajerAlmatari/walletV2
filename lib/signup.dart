@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:crypt/crypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +38,9 @@ class SignupPageState extends State<SignupPage> {
   }
 
   postData() async {
+    String pass = Crypt.sha256(_password.text).toString();
     var response = await http.post(
-      Uri.parse('https://walletv.azurewebsites.net/api//Register/new'),
+      Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName.text,
         'lastName': _lastName.text,
@@ -64,11 +65,11 @@ class SignupPageState extends State<SignupPage> {
           statusCode:response.statusCode.toString()
       );
 
-      EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
-
-      await Future.delayed(Duration(milliseconds: 1000));
-
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+      // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+      //
+      // await Future.delayed(Duration(milliseconds: 1000));
+      //
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
     } else {
       showSnackBar(context, response.body);
