@@ -3,6 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/login.dart';
+import 'package:walletapp/screens/OTPTest.dart';
+import 'package:walletapp/screens/reset_password.dart';
+import 'package:walletapp/screens/verifyOTPScreen.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/services/google_sign_in.dart';
 import 'package:walletapp/screens/api.dart';
@@ -55,8 +59,8 @@ class AuthWrapper extends StatelessWidget{
     if(firebaseUser != null && firebaseUser.emailVerified){
       return const  NavScreen();
     }
-    return  WelcomePage();
-
+   // return  VerifyOTP();
+return LoginPage();
 
   }
 }

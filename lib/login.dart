@@ -10,8 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:walletapp/Models/LoginResponse.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
 import 'package:walletapp/screens/nav_screen.dart';
+import 'package:walletapp/screens/reset_password.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:walletapp/signup.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
+import 'package:walletapp/Models/SignUpData.dart';
+
 
 import 'forgetPassword.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +26,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
+
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -110,6 +115,37 @@ class LoginPageState extends State<LoginPage> {
               : null,
     );
 
+    final testField =  TextFormField(
+
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black12),
+            borderRadius: BorderRadius.circular(10)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black12),
+            borderRadius: BorderRadius.circular(10)),
+        prefix: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            '(+967)',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        suffixIcon: Icon(
+          Icons.phone,
+          color: Colors.green,
+          size: 32,
+        ),
+      ),
+    );
     final passwordField = TextFormField(
       obscureText: true,
       controller: _password,
@@ -176,11 +212,30 @@ class LoginPageState extends State<LoginPage> {
       alignment: Alignment(1, 0),
       child: InkWell(
         onTap: () {
+          SignUpData obj = new SignUpData();
+          obj.setIsNew(false);
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ForgetPasswordPage()));
+              MaterialPageRoute(builder: (context) => ResetPasswordPage()));
         },
         child: const Text(
           'Forgot Password ?',
+          style: TextStyle(
+            color: Colors.black54,
+            decoration: TextDecoration.underline,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+    final signUp = Container(
+      alignment: Alignment(1, 0),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SignupPage()));
+        },
+        child: const Text(
+          'Sign Up?',
           style: TextStyle(
             color: Colors.black54,
             decoration: TextDecoration.underline,
@@ -218,11 +273,17 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 5,
               ),
+
               passwordField,
               const SizedBox(
                 height: 20,
               ),
               forgetPassword,
+
+              const SizedBox(
+                height: 20,
+              ),
+              signUp,
               const SizedBox(
                 height: 30,
               ),

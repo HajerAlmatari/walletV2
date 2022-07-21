@@ -279,4 +279,6 @@ class FirebaseAuthMethods {
       showSnackBar(context, e.message!);
     }
   }
+
+
 }
