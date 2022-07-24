@@ -3,6 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/screens/electricity.dart';
+import 'package:walletapp/screens/transfer_between_holder_accounts.dart';
+import 'package:walletapp/screens/transfer_to_other_account.dart';
+import 'package:walletapp/screens/yemen_mobile.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/services/google_sign_in.dart';
 import 'package:walletapp/screens/api.dart';
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.grey,
         ),
-        home: const AuthWrapper(),
+        home: TBHA(),
         builder: EasyLoading.init(),
 
       ),
