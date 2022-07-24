@@ -33,9 +33,10 @@ class _NavScreenState extends State<NavScreen> {
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
 
+    if(subAccountsList!= null){
     for(int i= 0; i<subAccountsList!.length; i++){
       print(subAccountsList?.elementAt(i).id);
-    }
+    }}
   }
 
   @override

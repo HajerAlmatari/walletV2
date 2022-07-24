@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:crypt/crypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class SignupPageState extends State<SignupPage> {
   }
 
   postData() async {
+    String pass = Crypt.sha256(_password.text).toString();
     var response = await http.post(
       Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
@@ -162,8 +164,6 @@ class SignupPageState extends State<SignupPage> {
         }
       },
     );
-
-
     final idNumberField = TextFormField(
       keyboardType: TextInputType.number,
       controller: _idNumber,
