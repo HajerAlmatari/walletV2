@@ -3,14 +3,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../widgets/InputField.dart';
 
-class YemenMobile extends StatefulWidget {
-  const YemenMobile({Key? key}) : super(key: key);
+class InternetADSL extends StatefulWidget {
+  const InternetADSL({Key? key}) : super(key: key);
 
   @override
-  _YemenMobileState createState() => _YemenMobileState();
+  _InternetADSLState createState() => _InternetADSLState();
 }
 
-class _YemenMobileState extends State<YemenMobile> {
+class _InternetADSLState extends State<InternetADSL> {
   final amountController = TextEditingController();
   final phoneController = TextEditingController();
 
@@ -25,9 +25,9 @@ class _YemenMobileState extends State<YemenMobile> {
 
     String? selectedValue = subaccounts[0];
 
-    String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[7]\d{7})$)';
+    String PhonePattern = r'(^(((\+|00)967|0)[1-7]\d{6})$)';
     RegExp regExp = RegExp(PhonePattern);
+
 
     final transferButton = GestureDetector(
       onTap: () {
@@ -68,15 +68,11 @@ class _YemenMobileState extends State<YemenMobile> {
 
     final subAccounts = DropdownButtonFormField2(
       decoration: InputDecoration(
-        //Add isDense true and zero Padding.
-        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
         isDense: true,
         contentPadding: EdgeInsets.zero,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        //Add more decoration as you want here
-        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
       hint: Text(
@@ -95,14 +91,14 @@ class _YemenMobileState extends State<YemenMobile> {
       ),
       items: subaccounts
           .map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ))
+        value: item,
+        child: Text(
+          item,
+          style: const TextStyle(
+            fontSize: 14,
+          ),
+        ),
+      ))
           .toList(),
       validator: (value) {
         if (value == null) {
@@ -110,8 +106,7 @@ class _YemenMobileState extends State<YemenMobile> {
         }
       },
       onChanged: (value) {
-        //Do something when changing the item if you want.
-        selectedValue = value as String?;
+        selectedValue = value.toString();
       },
       onSaved: (value) {
         selectedValue = value.toString();
@@ -122,7 +117,7 @@ class _YemenMobileState extends State<YemenMobile> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Yemen Mobile',
+          'Internet ADSL',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -146,8 +141,8 @@ class _YemenMobileState extends State<YemenMobile> {
               ),
               InputField(
                 phoneController,
-                TextInputType.phone,
-                'Mobile Number',
+                TextInputType.number,
+                'Phone Number',
                 true,
                 validator: (value){
                   if (!regExp.hasMatch(value!)) {
@@ -159,14 +154,14 @@ class _YemenMobileState extends State<YemenMobile> {
                     return null;
                   }
                 },
-                suffixIcon: Icon(Icons.perm_contact_calendar_outlined),
+                suffixIcon: Icon(Icons.phone),
               ),
               SizedBox(
                 height: 10,
               ),
               InputField(
                 amountController,
-                TextInputType.number,
+                TextInputType.phone,
                 'Enter the ammount',
                 false,
                 suffixIcon: Icon(Icons.money),

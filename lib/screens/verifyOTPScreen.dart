@@ -157,6 +157,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                     _CodeController4.text +
                                     _CodeController5.text +
                                     _CodeController6.text;
+
                                 print(smsCode);
                                 setState(() {
                                   isLoading = true;
@@ -171,7 +172,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                         Colors.white),
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(120, 148, 150, 0.8)),
+                                        Color.fromRGBO(39, 138, 189, 1)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -253,7 +254,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    width: 2, color: Color.fromRGBO(120, 148, 150, 0.8)),
+                    width: 2, color: Color.fromRGBO(39, 138, 189, 1)),
                 borderRadius: BorderRadius.circular(12)),
           ),
         ),

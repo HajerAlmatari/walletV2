@@ -5,6 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:walletapp/Models/LoginResponse.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
@@ -24,7 +25,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
+  Color primaryColor =   Color.fromRGBO(39, 138, 189, 1);
+
+
 
 
   final _email = TextEditingController();
@@ -40,9 +43,10 @@ class LoginPageState extends State<LoginPage> {
 
   loginRequest() async {
     print("request");
+    EasyLoading.show();
     try {
       var response = await http.post(
-        Uri.parse('https://walletv.azurewebsites.net/api/Login/signin'),
+        Uri.parse('https://walletv1.azurewebsites.net/api/Login/signin'),
         body: jsonEncode({
           'paramter': _email.text,
           'password': _password.text,
@@ -52,7 +56,10 @@ class LoginPageState extends State<LoginPage> {
         },
       );
 
+      print(response.statusCode);
+
       if (response.statusCode == 200) {
+
         var json = response.body;
         LoginResponse loginResponse = loginResponseFromJson(json);
 
@@ -66,17 +73,42 @@ class LoginPageState extends State<LoginPage> {
         print("SuccessFully");
 
         showSnackBar(context, "Successfully Logged in");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen()),
-        );
+
+        //////////////////////////////////////////
+        ///////////////             //////////////
+        ///////////////  check here //////////////
+        ///////////////             //////////////
+        //////////////////////////////////////////
+
+
+        context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+
+
+        EasyLoading.dismiss();
+
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+
       } else if (response.statusCode == 404) {
+               EasyLoading.dismiss();
         showSnackBar(context, "Not found URL");
+
 
         // print(response.body);
         // print(response.statusCode);
 
-      }  else {
+      }
+      else if(response.statusCode == 7){
+
+        EasyLoading.dismiss();
+        showSnackBar(context, "No Internet connection");
+      }
+
+      else {
+        EasyLoading.dismiss();
         print(response.statusCode);
         showSnackBar(context, "Phone or Password wrong");
       }
@@ -97,12 +129,12 @@ class LoginPageState extends State<LoginPage> {
         // filled: true,
         labelText: 'Email/phone number',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -112,37 +144,6 @@ class LoginPageState extends State<LoginPage> {
               : null,
     );
 
-    final testField =  TextFormField(
-
-      keyboardType: TextInputType.number,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black12),
-            borderRadius: BorderRadius.circular(10)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black12),
-            borderRadius: BorderRadius.circular(10)),
-        prefix: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            '(+967)',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        suffixIcon: Icon(
-          Icons.phone,
-          color: Colors.green,
-          size: 32,
-        ),
-      ),
-    );
     final passwordField = TextFormField(
       obscureText: true,
       controller: _password,
@@ -150,12 +151,12 @@ class LoginPageState extends State<LoginPage> {
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -167,12 +168,11 @@ class LoginPageState extends State<LoginPage> {
         }
       },
     );
-    // final rememberForNextLogin = Container();
-    // final fingerprintNextLogin = Container();
 
     final signinbutton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
+
           EasyLoading.show(status: 'Loading ...');
           loginRequest();
           // context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
@@ -180,10 +180,10 @@ class LoginPageState extends State<LoginPage> {
         }
       },
       child: Container(
-        height: 50,
+        height: 60,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -243,17 +243,17 @@ class LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           "Login",
           style: TextStyle(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(120, 148, 150, 0.8), // <-- SEE HERE
+          color: Color.fromRGBO(39, 138, 189, 1),
         ),
       ),
       body: Container(

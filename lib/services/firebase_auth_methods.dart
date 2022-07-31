@@ -15,6 +15,9 @@ import 'package:walletapp/widgets/showSnackBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../Models/LoginResponse.dart';
+import '../Models/SaveAccount.dart';
+
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
 
@@ -94,16 +97,13 @@ class FirebaseAuthMethods {
       EasyLoading.show();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-      if (!_auth.currentUser!.emailVerified) {
-        EasyLoading.dismiss();
-        await sendEmailVerification(context, 'Check your email to verify it');
-      } else {
+
         EasyLoading.dismiss();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => NavScreen()),
         );
-      }
+
     } on FirebaseAuthException catch (e) {
       EasyLoading.dismiss();
       showSnackBar(context, e.message!);
@@ -132,7 +132,7 @@ class FirebaseAuthMethods {
 
       await _auth.signInWithCredential(credential);
 
-      if (_user != null) {
+      if (_user == null) {
         var names = _user!.displayName!.split(' ');
         String firstName = names[0];
         String lastName = names[1];
@@ -140,9 +140,9 @@ class FirebaseAuthMethods {
         // var name = _user!.displayName?.substring(0, _user!.displayName?.indexOf(" "));
         // var lastName = _user!.displayName?.substring(_user!.displayName?.indexOf(" ")! + 1);
 
-        () async {
+
           var response = await http.post(
-            Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
+            Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
             body: jsonEncode({
               'firstName': firstName,
               'lastName': lastName,
@@ -160,13 +160,56 @@ class FirebaseAuthMethods {
             print("SuccessFully");
             // status = true;
             // if(status)
+
           } else {
             print("Not SuccessFully");
             print(response.body);
             print(response.statusCode);
           }
           print(response.body);
-        };
+
+      }
+
+      else{
+
+
+        var response = await http.post(
+          Uri.parse('https://walletv1.azurewebsites.net/api/Login/signin'),
+          body: jsonEncode({
+            'paramter': _user!.email.toString(),
+            'password': '',
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var json = response.body;
+          LoginResponse loginResponse = loginResponseFromJson(json);
+
+          SaveAccount obj = new SaveAccount();
+          print(loginResponse.accountId.elementAt(0));
+          int account = loginResponse.accountId.elementAt(0);
+          obj.setId(account);
+          print("Your Id: is: " +obj.getId().toString() );
+          print(loginResponse.message);
+
+          print("SuccessFully");
+
+
+
+
+        } else if (response.statusCode == 404) {
+
+          print(response.body);
+          print(response.statusCode);
+
+        }  else {
+          print(response.statusCode);
+        }
+
+
       }
     } catch (e) {
       print(e.toString());

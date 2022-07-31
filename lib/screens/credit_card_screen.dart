@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:walletapp/screens/transaction_card.dart';
+import 'package:walletapp/screens/transactions/make_transaction.dart';
+import 'package:walletapp/screens/transactions/my_buttons.dart';
 import 'package:walletapp/screens/transactions_list.dart';
 
 import '../Api/RemoteService.dart';
@@ -37,10 +39,10 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
 
-    for (int i = 0; i < subAccountsList!.length; i++) {
-      print(subAccountsList.elementAt(i));
-      print(subAccountsList?.elementAt(i).id);
-    }
+    // for (int i = 0; i < subAccountsList!.length; i++) {
+    //   print(subAccountsList.elementAt(i));
+    //   print(subAccountsList?.elementAt(i).id);
+    // }
   }
 
   int currentIndex = 0;
@@ -111,18 +113,20 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                Container(
-                  height: 290,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return TransactionCard(
-                            transactionModel: myTransactions[index]);
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 10);
-                      },
-                      itemCount: myTransactions.length),
-                ),
+                // Container(
+                //   height: 290,
+                //   child: ListView.separated(
+                //       itemBuilder: (context, index) {
+                //         return TransactionCard(
+                //             transactionModel: myTransactions[index]);
+                //       },
+                //       separatorBuilder: (context, index) {
+                //         return SizedBox(height: 10);
+                //       },
+                //       itemCount: myTransactions.length),
+                // ),
+                MakeTransactionPage(),
+
                 //SizedBox(height: 2,),
                 // Container(
                 //   height: 50,
@@ -146,6 +150,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
               ])),
         ),
       ),
+
     );
   }
 }

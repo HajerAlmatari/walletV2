@@ -51,7 +51,7 @@ class _TTOAState extends State<TTOA> {
         height: 50,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -114,7 +114,7 @@ class _TTOAState extends State<TTOA> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return selectedValue;
+          value = selectedValue;
         }
       },
       onChanged: (value) {
@@ -135,7 +135,7 @@ class _TTOAState extends State<TTOA> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromRGBO(120, 148, 150, 0.8),
+        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(25, 20, 25, 0),

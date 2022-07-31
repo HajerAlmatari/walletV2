@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
+import 'package:walletapp/screens/transactions/bottom_navigation.dart';
+import 'package:walletapp/screens/transfer_between_holder_accounts.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../Api/RemoteService.dart';
 import '../Models/SubAccount.dart';
+import '../Models/SubAccountNumbers.dart';
 import '../constants.dart';
 import '../widgets/drawer.dart';
 import 'credit_card_screen.dart';
@@ -30,8 +34,12 @@ class _NavScreenState extends State<NavScreen> {
   }
 
   getSubAccounts(int accountId) async {
+
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
+    SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
+    subAccountNumbers.setSubAccountList(subAccountsList!);
+
 
     if(subAccountsList!= null){
     for(int i= 0; i<subAccountsList!.length; i++){
@@ -50,9 +58,7 @@ class _NavScreenState extends State<NavScreen> {
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
           ],
-          title: (!user.isAnonymous && user.phoneNumber == null)
-              ? Text(user.email.toString())
-              : const Text("Wallet"),
+          title:Text("User Name"),
           centerTitle: true,
           backgroundColor: CDarkerColor,
           bottom: const TabBar(

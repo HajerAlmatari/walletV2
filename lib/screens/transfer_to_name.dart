@@ -3,16 +3,27 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../widgets/InputField.dart';
 
-class YemenMobile extends StatefulWidget {
-  const YemenMobile({Key? key}) : super(key: key);
+class TTN extends StatefulWidget {
+  const TTN({Key? key}) : super(key: key);
 
   @override
-  _YemenMobileState createState() => _YemenMobileState();
+  _TTNState createState() => _TTNState();
 }
 
-class _YemenMobileState extends State<YemenMobile> {
+class _TTNState extends State<TTN> {
   final amountController = TextEditingController();
+  final nameController = TextEditingController();
   final phoneController = TextEditingController();
+
+
+
+  // List of items in our dropdown menu
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +37,18 @@ class _YemenMobileState extends State<YemenMobile> {
     String? selectedValue = subaccounts[0];
 
     String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[7]\d{7})$)';
+        r'(^(((\+|00)9677|0?7)[0137]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
+
+
+
 
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
           EasyLoading.show(status: 'Loading ...');
 
-          print(amountController.text);
-          print(phoneController.text);
-          print(selectedValue);
+
           EasyLoading.dismiss();
         }
       },
@@ -79,7 +91,7 @@ class _YemenMobileState extends State<YemenMobile> {
         //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
-      hint: Text(
+      hint:  Text(
         "$selectedValue",
         style: TextStyle(fontSize: 14),
       ),
@@ -94,24 +106,23 @@ class _YemenMobileState extends State<YemenMobile> {
         borderRadius: BorderRadius.circular(15),
       ),
       items: subaccounts
-          .map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ))
+          .map((item) =>
+          DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: const TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ))
           .toList(),
       validator: (value) {
-        if (value == null) {
-          value = selectedValue;
-        }
+        value ??= selectedValue;
       },
       onChanged: (value) {
         //Do something when changing the item if you want.
-        selectedValue = value as String?;
+        selectedValue = value.toString();
       },
       onSaved: (value) {
         selectedValue = value.toString();
@@ -122,7 +133,7 @@ class _YemenMobileState extends State<YemenMobile> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Yemen Mobile',
+          'Transfer to Name',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -137,17 +148,19 @@ class _YemenMobileState extends State<YemenMobile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Please select the account'),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10,),
               subAccounts,
+
+              SizedBox(height: 20,),
+              InputField(nameController,TextInputType.text,'Enter the Name',false,suffixIcon: Icon(Icons.person)),
+
               SizedBox(
                 height: 10,
               ),
               InputField(
                 phoneController,
                 TextInputType.phone,
-                'Mobile Number',
+                'Beneficiary Mobile',
                 true,
                 validator: (value){
                   if (!regExp.hasMatch(value!)) {
@@ -159,26 +172,19 @@ class _YemenMobileState extends State<YemenMobile> {
                     return null;
                   }
                 },
-                suffixIcon: Icon(Icons.perm_contact_calendar_outlined),
+                suffixIcon: null,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              InputField(
-                amountController,
-                TextInputType.number,
-                'Enter the ammount',
-                false,
-                suffixIcon: Icon(Icons.money),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+
+              SizedBox(height: 10,),
+              InputField(amountController,TextInputType.number,'Enter the amount',false,suffixIcon: Icon(Icons.money)),
+              SizedBox(height: 20,),
               transferButton,
             ],
           ),
         ),
       ),
     );
+
   }
+
 }

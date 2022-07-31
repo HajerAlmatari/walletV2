@@ -1,68 +1,83 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'package:services/services.dart';
-// import 'package:walletapp/home.dart';
-// import 'package:walletapp/services/google_sign_in.dart';
-// import 'welcome.dart';
-//
-//
-//
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) => ChangeNotifierProvider(
-//     create: (context)=>GoogleSignInProvider(),
-//
-//     child: MaterialApp(
-//       routes: {
-//         'welcome_screen' : (context)=>WelcomePage()
-//       },
-//
-//       title: 'Flutter Demo',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-// // backgroundColor: Colors.lightBlueAccent
-//       ),
-//       home:  HomePage(),
-//     ),
-//   );
-// }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// final navigatorKey = GlobalKey<NavigatorState>();
-//
-// MaterialApp(
-// theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-// navigatorKey: navigatorKey,
-// debugShowCheckedModeBanner: false,
-// home: StreamBuilder(
-// stream: FirebaseAuth.instance.authStateChanges(),
-// builder: (context, snapshot) {
-// if (snapshot.connectionState == ConnectionState.waiting) {
-// return const Center(child: CircularProgressIndicator());
-// } else if (snapshot.hasError) {
-// return const Center(child: Text('Something went wrong!'));
-// } else if (snapshot.hasData) {
-// return DashBoard();
-// } else {
-// return WelcomePage();
-// }
-// },
-// ),
-// )
-//
+
+
+
+
+
+
+
+
+
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'dart:io';
+
+class PurchasesPayment extends StatefulWidget {
+  const PurchasesPayment({Key? key}) : super(key: key);
+
+  @override
+  _PurchasesPaymentState createState() => _PurchasesPaymentState();
+}
+
+class _PurchasesPaymentState extends State<PurchasesPayment> {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? result;
+  QRViewController? controller;
+
+  @override
+  void reassemble() {
+    super.reassemble();
+
+    if (Platform.isAndroid) {
+      controller!.pauseCamera();
+    } else if (Platform.isIOS) {
+      controller!.resumeCamera();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: (result != null)
+                  ? Text(
+                  "Barcode Type ${describeEnum(result!.format)} Data${result!.code}")
+                  : Text("Scan a Code"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+}
+
+
+
+

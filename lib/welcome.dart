@@ -21,9 +21,9 @@ class WelcomePageState extends State<WelcomePage> {
     FocusScope.of(context);
     final logo = Container(
       child: Image.asset(
-        'images/bank_logo.png',
         width: 200,
         height: 200,
+        'images/bank_logo.png',
       ),
     );
     final signinbutton = GestureDetector(
@@ -35,7 +35,7 @@ class WelcomePageState extends State<WelcomePage> {
         height: 70,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -74,7 +74,7 @@ class WelcomePageState extends State<WelcomePage> {
         height: 70,
         width: 370,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(

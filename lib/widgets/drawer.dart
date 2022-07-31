@@ -19,7 +19,7 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Currentuser = context.read<FirebaseAuthMethods>().user;
+    // final Currentuser = context.read<FirebaseAuthMethods>().user;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Wallet"),

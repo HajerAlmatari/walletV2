@@ -115,7 +115,7 @@ class _OtpState extends State<Otp> {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Color.fromRGBO(120, 148, 150, 0.8)),
+                                Color.fromRGBO(39, 138, 189, 1)),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(

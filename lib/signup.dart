@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:crypt/crypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +11,6 @@ import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:http/http.dart' as http;
 import 'package:walletapp/welcome.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
-
-import 'dashboard.dart';
 
 class SignupPage extends StatefulWidget {
   SignupPageState createState() => SignupPageState();
@@ -38,14 +35,13 @@ class SignupPageState extends State<SignupPage> {
   }
 
   postData() async {
-    String pass = Crypt.sha256(_password.text).toString();
     var response = await http.post(
-      Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
+      Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName.text,
         'lastName': _lastName.text,
         'email': _email.text,
-        'phoneNumber': _phoneNumber.text,
+        'phoneNumber': "+967${_phoneNumber.text.trim()}",
         'password': _password.text,
         'socialMediaType': 'normal'
       }),
@@ -61,7 +57,7 @@ class SignupPageState extends State<SignupPage> {
           email: _email.text.trim(),
           password: _password.text.trim(),
           context: context,
-          phone: _phoneNumber.text.trim(),
+          phone: "+967${_phoneNumber.text.trim()}",
           statusCode:response.statusCode.toString()
       );
 
@@ -82,11 +78,13 @@ class SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
+    Color primaryColor = Color.fromRGBO(39, 138, 189, 1);
 
     String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$)';
+        r'(^((7)[0137]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
+
+    RegExp emailRegExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
     final firstNameField = TextFormField(
       controller: _firstName,
@@ -94,12 +92,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'First Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -118,12 +116,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Last Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -143,12 +141,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Phone Number',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -164,31 +162,7 @@ class SignupPageState extends State<SignupPage> {
         }
       },
     );
-    final idNumberField = TextFormField(
-      keyboardType: TextInputType.number,
-      controller: _idNumber,
-      decoration: const InputDecoration(
-        // filled: true,
-        labelText: 'ID Number',
-        labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
-          fontWeight: FontWeight.bold,
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
-          ),
-        ),
-      ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please Enter User Name';
-        } else {
-          return null;
-        }
-      },
-    );
+
     final emailField = TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: _email,
@@ -196,17 +170,17 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Email',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (_email) => _email != null && !EmailValidator.validate(_email)
+      validator: (value) => _email != null && !emailRegExp.hasMatch(value!)
           ? 'Enter a valid Email'
           : null,
     );
@@ -217,12 +191,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -260,12 +234,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Confirm Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -323,7 +297,7 @@ class SignupPageState extends State<SignupPage> {
         height: 50,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -362,12 +336,12 @@ class SignupPageState extends State<SignupPage> {
         title: Text(
           "Create Account",
           style: TextStyle(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(120, 148, 150, 0.8), // <-- SEE HERE
+          color: Color.fromRGBO(39, 138, 189, 1), // <-- SEE HERE
         ),
       ),
       body: Container(
@@ -388,10 +362,6 @@ class SignupPageState extends State<SignupPage> {
                 height: 5,
               ),
               phoneNumberField,
-              const SizedBox(
-                height: 5,
-              ),
-              idNumberField,
               const SizedBox(
                 height: 5,
               ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crypt/crypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +34,17 @@ class OTPPageState extends State<OTPPage> {
 
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(120, 148, 150, 0.8),
+      backgroundColor: Color.fromRGBO(39, 138, 189, 1),
       appBar: AppBar(
         title: Text(
           "Forget Password",
           style: TextStyle(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(120, 148, 150, 0.8), // <-- SEE HERE
+          color: Color.fromRGBO(39, 138, 189, 1), // <-- SEE HERE
         ),
       ),
       body: Container(
@@ -76,7 +75,7 @@ class OTPPageState extends State<OTPPage> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(50),
-                    primary: Color.fromRGBO(120, 148, 150, 0.8),
+                    primary: Color.fromRGBO(39, 138, 189, 1),
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
@@ -109,7 +108,7 @@ class OTPPageState extends State<OTPPage> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(50),
-                    primary: Color.fromRGBO(120, 148, 150, 0.8),
+                    primary: Color.fromRGBO(39, 138, 189, 1),
                   ),
                   onPressed: () {
                     print("I'm Clicked");

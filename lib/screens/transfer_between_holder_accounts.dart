@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get_storage/get_storage.dart';
+import '../Api/RemoteService.dart';
+import '../Models/SaveAccount.dart';
+import '../Models/SubAccount.dart';
+import '../Models/SubAccountNumbers.dart';
 import '../widgets/InputField.dart';
 
 class TBHA extends StatefulWidget {
@@ -13,23 +17,33 @@ class TBHA extends StatefulWidget {
 class _TBHAState extends State<TBHA> {
   final amountController = TextEditingController();
 
+  List<SubAccount> subAccountsList=[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    final List<String> fromAccount = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
-    final List<String> toAccount = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
-    String? selectedValue = fromAccount[0];
-    String? selectedValue2 = toAccount[1];
+
+
+    SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
+    final  List<SubAccount> subAccountsList= subAccountNumbers.getSubAccountList();
+    final List<String> fromAccount = [];
+    final List<String> toAccount = [];
+    for(var subaccount in subAccountsList){
+      fromAccount.add(subaccount.id.toString()+"-"+subaccount.currencyType);
+      toAccount.add(subaccount.id.toString()+"-"+subaccount.currencyType);
+    }
+    String selectedValue = fromAccount[0];
+    String selectedValue2 = toAccount[1];
 
 
 
@@ -38,16 +52,16 @@ class _TBHAState extends State<TBHA> {
       onTap: () {
         if (_formkey.currentState!.validate()) {
           print(selectedValue);
-          print(selectedValue2);
+          // print(selectedValue2);
 
-          print(amountController.text);
+          // print(amountController.text);
         }
       },
       child: Container(
         height: 50,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -71,8 +85,6 @@ class _TBHAState extends State<TBHA> {
 
     final fromSubAccount = DropdownButtonFormField2(
       decoration: InputDecoration(
-        //Add isDense true and zero Padding.
-        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
         isDense: true,
         contentPadding: EdgeInsets.zero,
         border: OutlineInputBorder(
@@ -117,12 +129,8 @@ class _TBHAState extends State<TBHA> {
         }
       },
       onChanged: (value) {
+        //Do something when changing the item if you want.
         selectedValue = value.toString();
-        // setState((){
-        //   toAccount.remove(value.toString());
-        //
-        //   selectedValue2 = toAccount[0];
-        // });
       },
       onSaved: (value) {
         selectedValue = value.toString();
@@ -185,14 +193,17 @@ class _TBHAState extends State<TBHA> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
         centerTitle: true,
         title: Text(
-          'Electricity',
+          'Transfer between your accounts',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromRGBO(120, 148, 150, 0.8),
+        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
