@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:walletapp/screens/Internet_adsl.dart';
 import 'package:walletapp/screens/purchases_payment.dart';
 import 'package:walletapp/screens/transfer_to_name.dart';
+import 'package:walletapp/screens/transfer_to_other_account.dart';
 import 'package:walletapp/screens/yemen_mobile.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/services/google_sign_in.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const AuthWrapper(),
+        home: const NavScreen(),
         builder: EasyLoading.init(),
 
       ),

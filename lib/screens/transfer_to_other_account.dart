@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../widgets/InputField.dart';
+import '../widgets/showSnackBar.dart';
+import 'package:http/http.dart' as http;
+
 
 class TTOA extends StatefulWidget {
   const TTOA({Key? key}) : super(key: key);
@@ -11,41 +17,68 @@ class TTOA extends StatefulWidget {
 }
 
 class _TTOAState extends State<TTOA> {
+  final List<String> subaccounts = [
+    '1000388061-SR-Curent',
+    '1000388062-USD-Curent',
+    '1000388063-YR-Curent',
+  ];
   final amountController = TextEditingController();
+  String? selectedValue = "";
   final toAccountController = TextEditingController();
-
-
 
   // List of items in our dropdown menu
 
 
+  postData() async {
+    var response = await http.post(
+      Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToAnotherAccount'),
+      body: jsonEncode({
+        "senderSubAccountId" : "1000388061",
+        "receiverSubAccountId" : toAccountController.text,
+        "amonut" : amountController.text,
+      }),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print("SuccessFully");
 
 
 
+      // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+      //
+      // await Future.delayed(Duration(milliseconds: 1000));
+      //
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+    } else {
+      showSnackBar(context, response.body);
+      print("Not SuccessFully");
+      // print(response.body);
+      // print(response.statusCode);
+    }
+    // print(response.body);
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    final List<String> subaccounts = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
-
-    String? selectedValue = subaccounts[0];
-
 
 
 
     final transferButton = GestureDetector(
       onTap: () {
+        EasyLoading.show(status: 'Loading ...');
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show(status: 'Loading ...');
 
 
-          EasyLoading.dismiss();
+          postData();
         }
+        EasyLoading.dismiss();
+
       },
       child: Container(
         height: 50,
@@ -73,6 +106,7 @@ class _TTOAState extends State<TTOA> {
       ),
     );
 
+
     final subAccounts = DropdownButtonFormField2(
       decoration: InputDecoration(
         //Add isDense true and zero Padding.
@@ -86,7 +120,7 @@ class _TTOAState extends State<TTOA> {
         //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
-      hint:  Text(
+      hint: Text(
         "$selectedValue",
         style: TextStyle(fontSize: 14),
       ),
@@ -101,16 +135,15 @@ class _TTOAState extends State<TTOA> {
         borderRadius: BorderRadius.circular(15),
       ),
       items: subaccounts
-          .map((item) =>
-          DropdownMenuItem<String>(
-            value: item,
-            child: Text(
-              item,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ))
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ))
           .toList(),
       validator: (value) {
         if (value == null) {
@@ -144,21 +177,32 @@ class _TTOAState extends State<TTOA> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+            //  EasyLoading.show();
               Text('Please select the account'),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               subAccounts,
-              SizedBox(height: 10,),
-              InputField(amountController,TextInputType.number,'Enter the ammount',false,suffixIcon: Icon(Icons.money)),
-              SizedBox(height: 10,),
-              InputField(toAccountController,TextInputType.number,'To Account',false,suffixIcon: null),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 10,
+              ),
+              InputField(amountController, TextInputType.number,
+                  'Enter the ammount', false,
+                  suffixIcon: Icon(Icons.money)),
+              SizedBox(
+                height: 10,
+              ),
+              InputField(toAccountController, TextInputType.number,
+                  'To Account', false,
+                  suffixIcon: null),
+              SizedBox(
+                height: 20,
+              ),
               transferButton,
             ],
           ),
         ),
       ),
     );
-
   }
-
 }

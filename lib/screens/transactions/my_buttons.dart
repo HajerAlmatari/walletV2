@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:walletapp/screens/transfer_to_other_account.dart';
 
 import 'TestPage.dart';
 
 class MyButton extends StatelessWidget {
   final String iconImagePath;
   final String buttonText;
-  const MyButton({Key? key, required this.iconImagePath, required this.buttonText}) : super(key: key);
+  final VoidCallback onTap;
+  const MyButton({Key? key, required this.iconImagePath, required this.buttonText, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>
-              const TestPage(),
-          )),
+      onTap: onTap,
+
       child: Column(
         children: [
           //icon
@@ -37,7 +36,7 @@ class MyButton extends StatelessWidget {
           ),
           const SizedBox(height: 12,),
           //text
-          Text(buttonText, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey[700]),),
+          Text(buttonText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey[700]), textAlign: TextAlign.center,),
         ],
       ),
     );

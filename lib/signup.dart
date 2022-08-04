@@ -80,8 +80,7 @@ class SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     Color primaryColor = Color.fromRGBO(39, 138, 189, 1);
 
-    String PhonePattern =
-        r'(^((7)[0137]\d{7})$)';
+    String PhonePattern = r'(^((7)[0137]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
 
     RegExp emailRegExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
