@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:walletapp/screens/transfer_to_other_account.dart';
 
 import 'TestPage.dart';
@@ -31,7 +32,7 @@ class MyButton extends StatelessWidget {
                   )]
               ),
               child: Center(
-                child:Image.asset(iconImagePath),
+                child:SvgPicture.asset(iconImagePath,width: 60,),
               )
           ),
           const SizedBox(height: 12,),

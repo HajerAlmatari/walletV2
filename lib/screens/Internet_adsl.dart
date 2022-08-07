@@ -1,7 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:walletapp/Models/SubAccount.dart';
+import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
+import 'package:http/http.dart' as http;
+
 
 class InternetADSL extends StatefulWidget {
   const InternetADSL({Key? key}) : super(key: key);
@@ -13,17 +21,56 @@ class InternetADSL extends StatefulWidget {
 class _InternetADSLState extends State<InternetADSL> {
   final amountController = TextEditingController();
   final phoneController = TextEditingController();
+  List<SubAccount> subAccountsList = [];
+
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    final List<String> subaccounts = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
+    SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
+    final List<SubAccount> subAccountsList =
+    subAccountNumbers.getSubAccountList();
+    final List<String> fromAccount = [];
+    for (var subaccount in subAccountsList) {
+      fromAccount.add(subaccount.id.toString() + "-" + subaccount.currencyType);
+    }
+    String selectedValue = fromAccount[0];
 
-    String? selectedValue = subaccounts[0];
+
+    postData() async {
+      var response = await http.post(
+        Uri.parse(
+            'https://walletv1.azurewebsites.net/api/Payment/payments'),
+        body: jsonEncode({
+          "senderSubAccountId": selectedValue.substring(0, 10),
+          "number": phoneController.text,
+          "amount": amountController.text,
+          "type" : 5,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("SuccessFully");
+
+        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+        //
+        // await Future.delayed(Duration(milliseconds: 1000));
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+      } else {
+        showSnackBar(context, response.body);
+        print("Not SuccessFully");
+        print(response.body);
+        // print(response.statusCode);
+      }
+      // print(response.body);
+    }
+
+
 
     String PhonePattern = r'(^(((\+|00)967|0)[1-7]\d{6})$)';
     RegExp regExp = RegExp(PhonePattern);
@@ -37,6 +84,8 @@ class _InternetADSLState extends State<InternetADSL> {
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);
+
+          postData();
           EasyLoading.dismiss();
         }
       },
@@ -89,7 +138,7 @@ class _InternetADSLState extends State<InternetADSL> {
       dropdownDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
-      items: subaccounts
+      items: fromAccount
           .map((item) => DropdownMenuItem<String>(
         value: item,
         child: Text(

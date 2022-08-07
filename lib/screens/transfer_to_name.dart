@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:walletapp/Models/SubAccount.dart';
+import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
+import 'package:http/http.dart' as http;
 
 class TTN extends StatefulWidget {
   const TTN({Key? key}) : super(key: key);
@@ -14,43 +21,66 @@ class _TTNState extends State<TTN> {
   final amountController = TextEditingController();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
-
-
+  List<SubAccount> subAccountsList = [];
 
   // List of items in our dropdown menu
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    final List<String> subaccounts = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
+    SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
+    final List<SubAccount> subAccountsList =
+        subAccountNumbers.getSubAccountList();
+    final List<String> fromAccount = [];
+    for (var subaccount in subAccountsList) {
+      fromAccount.add(subaccount.id.toString() + "-" + subaccount.currencyType);
+    }
+    String selectedValue = fromAccount[0];
 
-    String? selectedValue = subaccounts[0];
+    postData() async {
+      var response = await http.post(
+        Uri.parse(
+            'https://walletv1.azurewebsites.net/api/BankServices/transferToPerson'),
+        body: jsonEncode({
+          "senderSubAccountId": selectedValue.substring(0, 10),
+          "receiverphoneNumber": phoneController.text,
+          "receiverName" : nameController.text,
+          "amonut": amountController.text,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
 
-    String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[0137]\d{7})$)';
+      if (response.statusCode == 200) {
+        print("SuccessFully");
+
+        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+        //
+        // await Future.delayed(Duration(milliseconds: 1000));
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+      } else {
+        showSnackBar(context, response.body);
+        print("Not SuccessFully");
+        // print(response.body);
+        // print(response.statusCode);
+      }
+      // print(response.body);
+    }
+
+    String PhonePattern = r'(^(((\+|00)9677|0?7)[0137]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
 
-
-
-
     final transferButton = GestureDetector(
-      onTap: () {
-        if (_formkey.currentState!.validate()) {
-          EasyLoading.show(status: 'Loading ...');
+      onTap: () {          EasyLoading.show(status: 'Loading ...');
 
-
-          EasyLoading.dismiss();
+      if (_formkey.currentState!.validate()) {
+          postData();
         }
+      EasyLoading.dismiss();
+
       },
       child: Container(
         height: 50,
@@ -91,7 +121,7 @@ class _TTNState extends State<TTN> {
         //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
-      hint:  Text(
+      hint: Text(
         "$selectedValue",
         style: TextStyle(fontSize: 14),
       ),
@@ -105,17 +135,16 @@ class _TTNState extends State<TTN> {
       dropdownDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
-      items: subaccounts
-          .map((item) =>
-          DropdownMenuItem<String>(
-            value: item,
-            child: Text(
-              item,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ))
+      items: fromAccount
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ))
           .toList(),
       validator: (value) {
         value ??= selectedValue;
@@ -148,12 +177,16 @@ class _TTNState extends State<TTN> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Please select the account'),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               subAccounts,
-
-              SizedBox(height: 20,),
-              InputField(nameController,TextInputType.text,'Enter the Name',false,suffixIcon: Icon(Icons.person)),
-
+              SizedBox(
+                height: 20,
+              ),
+              InputField(
+                  nameController, TextInputType.text, 'Enter the Name', false,
+                  suffixIcon: Icon(Icons.person)),
               SizedBox(
                 height: 10,
               ),
@@ -162,7 +195,7 @@ class _TTNState extends State<TTN> {
                 TextInputType.phone,
                 'Beneficiary Mobile',
                 true,
-                validator: (value){
+                validator: (value) {
                   if (!regExp.hasMatch(value!)) {
                     return 'Please Enter a Valid Phone Number';
                   }
@@ -174,17 +207,20 @@ class _TTNState extends State<TTN> {
                 },
                 suffixIcon: null,
               ),
-
-              SizedBox(height: 10,),
-              InputField(amountController,TextInputType.number,'Enter the amount',false,suffixIcon: Icon(Icons.money)),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 10,
+              ),
+              InputField(amountController, TextInputType.number,
+                  'Enter the amount', false,
+                  suffixIcon: Icon(Icons.money)),
+              SizedBox(
+                height: 20,
+              ),
               transferButton,
             ],
           ),
         ),
       ),
     );
-
   }
-
 }

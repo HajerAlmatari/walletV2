@@ -9,9 +9,14 @@ class MyCard extends StatelessWidget {
 
   const MyCard({Key? key, required this.subAccount}) : super(key: key);
 
+  get subAccountId => subAccount?.id.toString();
 
-get subAccountId =>subAccount?.id.toString();
-get subAccountType =>subAccount?.currencyType.toString();
+  get subAccountType => subAccount?.currencyType.toString();
+
+  get credit => subAccount?.credit;
+
+  get debit => subAccount?.debit;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +40,10 @@ get subAccountType =>subAccount?.currencyType.toString();
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.redAccent, Color.fromRGBO(120, 148, 150, 0.8)],
+                colors: [
+                  Color.fromRGBO(39, 138, 189, 1),
+                  Color.fromRGBO(98, 150, 177, 1),
+                ],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -47,35 +55,43 @@ get subAccountType =>subAccount?.currencyType.toString();
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+
+                    Column(children: [
+                      Text(
+                        "Account Number",
+                        style: TextStyle(
+                            color: Color.fromRGBO(240, 240, 240, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      Text(
+                        subAccountId,
+                        style: TextStyle(
+                            color: Color.fromRGBO(240, 240, 240, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12),
+                      ),
+                    ]),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "CARD TYPE",
+                          "Balance",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              color: Color.fromRGBO(240, 240, 240, 1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
                         ),
-                        Text(subAccountType
-                          ,
+                        Text(
+                          (debit - credit).toString() + " " + subAccountType,
                           style: TextStyle(
+                            color: Color.fromRGBO(240, 240, 240, 1),
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
                         )
                       ],
                     ),
-                    Column(children: [
-                      Text(
-                        "CARD Number",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      Text(
-                       subAccountId,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                    ]),
                     Row(
                       children: [
                         Column(
@@ -84,12 +100,16 @@ get subAccountType =>subAccount?.currencyType.toString();
                             Text(
                               "EXP DATE",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                                  color: Color.fromRGBO(240, 240, 240, 1),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
                             ),
                             Text(
                               "2015",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
+                                  color: Color.fromRGBO(240, 240, 240, 1),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
                             )
                           ],
                         ),

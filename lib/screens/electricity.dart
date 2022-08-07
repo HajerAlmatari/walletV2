@@ -1,6 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:walletapp/Models/SubAccount.dart';
+import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
+import 'package:http/http.dart' as http;
+
 
 class Electricity extends StatefulWidget {
   const Electricity({Key? key}) : super(key: key);
@@ -10,21 +18,60 @@ class Electricity extends StatefulWidget {
 }
 
 class _ElectricityState extends State<Electricity> {
+
   final amountController = TextEditingController();
-  final areaNumberController = TextEditingController();
   final subscriberNumberController = TextEditingController();
+  List<SubAccount> subAccountsList = [];
+
 
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    final List<String> subaccounts = [
-      '1000388061-SR-Curent',
-      '1000388062-USD-Curent',
-      '1000388063-YR-Curent',
-    ];
+    SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
+    final List<SubAccount> subAccountsList =
+    subAccountNumbers.getSubAccountList();
+    final List<String> fromAccount = [];
+    for (var subaccount in subAccountsList) {
+      fromAccount.add(subaccount.id.toString() + "-" + subaccount.currencyType);
+    }
+    String selectedValue = fromAccount[0];
 
-    String? selectedValue = subaccounts[0];
+
+
+    postData() async {
+      var response = await http.post(
+        Uri.parse(
+            'https://walletv1.azurewebsites.net/api/Payment/payments'),
+        body: jsonEncode({
+          "senderSubAccountId": selectedValue.substring(0, 10),
+          "number": subscriberNumberController.text,
+          "amount": amountController.text,
+          "type" : 4,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("SuccessFully");
+
+        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+        //
+        // await Future.delayed(Duration(milliseconds: 1000));
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+      } else {
+        showSnackBar(context, response.body);
+        print("Not SuccessFully");
+        print(response.body);
+        // print(response.statusCode);
+      }
+      // print(response.body);
+    }
+
 
 
 
@@ -32,10 +79,11 @@ class _ElectricityState extends State<Electricity> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          print(selectedValue);
+          print(selectedValue.substring(0, 10));
           print(subscriberNumberController.text);
-          print(areaNumberController.text);
           print(amountController.text);
+
+          postData();
         }
       },
       child: Container(
@@ -91,7 +139,7 @@ class _ElectricityState extends State<Electricity> {
       dropdownDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
-      items: subaccounts
+      items: fromAccount
           .map((item) =>
           DropdownMenuItem<String>(
             value: item,
@@ -140,8 +188,6 @@ class _ElectricityState extends State<Electricity> {
               subAccounts,
               SizedBox(height: 10,),
               InputField(subscriberNumberController,TextInputType.number,'Enter Subscriber Number',false,suffixIcon: null),
-              SizedBox(height: 10,),
-              InputField(areaNumberController,TextInputType.number,'Enter the Area Number',false,suffixIcon: null),
               SizedBox(height: 10,),
               InputField(amountController,TextInputType.number,'Enter the ammount',false,suffixIcon: Icon(Icons.money)),
               SizedBox(height: 20,),

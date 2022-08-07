@@ -25,7 +25,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             // MyButton(iconImagePath: "images/money-transfer .png", buttonText: "YCB Express", destination: TTN(), onTap: (){print('object')},),
             MyButton(
-              iconImagePath: "images/ycbExpress.png",
+              iconImagePath: "images/ycbExpress.svg",
               buttonText: "YCB Express\n",
               onTap: () => showModalBottomSheet(
                 shape: RoundedRectangleBorder(
@@ -41,7 +41,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
             ),
 
             MyButton(
-              iconImagePath: "images/money-bills.png",
+              iconImagePath: "images/money-bills.svg",
               buttonText: "Payment\n",
               onTap: () => showModalBottomSheet(
                 shape: RoundedRectangleBorder(
@@ -57,7 +57,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
             ),
 
             MyButton(
-              iconImagePath: "images/smartphone.png",
+              iconImagePath: "images/cancel.svg",
               buttonText: "Cancel \nRemittance",
               onTap: () {
                 print("object");
@@ -88,9 +88,9 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        listTail(Image.asset("images/money-transfer .png"),"Transfer Between Holder Accounts", TBHA()),
-        listTail(Image.asset("images/transferToOtherAccount.png"),"Transfer To Other Account",TTOA()),
-        listTail(Image.asset("images/transferToName.png"),"Transfer To Name", TTN()),
+        listTail(Image.asset("images/money-transfer .png",width: 50,),"Transfer Between Holder Accounts", TBHA()),
+        listTail(Image.asset("images/transferToOtherAccount.png",width: 50,),"Transfer To Other Account",TTOA()),
+        listTail(Image.asset("images/transferToName.png",width: 50,),"Transfer To Name", TTN()),
       ],
     ),
   );
@@ -105,9 +105,9 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        listTail(Image.asset("images/money-transfer .png"),"Electricity", Electricity()),
-        listTail(Image.asset("images/money-transfer .png"),"Internet ADSL",InternetADSL()),
-        listTail(Image.asset("images/money-transfer .png"),"Yemen Mobile", YemenMobile()),
+        listTail(Image.asset("images/electricity.png",width: 50,),"Electricity", Electricity()),
+        listTail(Image.asset("images/internet.png",width: 50,),"Internet ADSL",InternetADSL()),
+        listTail(Image.asset("images/yemenMobile.png",width: 50,),"Yemen Mobile", YemenMobile()),
       ],
     ),
   );

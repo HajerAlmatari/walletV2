@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:walletapp/Models/SubAccount.dart';
+import 'package:walletapp/Models/SubAccountNumbers.dart';
 import '../widgets/InputField.dart';
 import '../widgets/showSnackBar.dart';
 import 'package:http/http.dart' as http;
@@ -17,55 +19,73 @@ class TTOA extends StatefulWidget {
 }
 
 class _TTOAState extends State<TTOA> {
-  final List<String> subaccounts = [
-    '1000388061-SR-Curent',
-    '1000388062-USD-Curent',
-    '1000388063-YR-Curent',
-  ];
   final amountController = TextEditingController();
-  String? selectedValue = "";
   final toAccountController = TextEditingController();
+  List<SubAccount> subAccountsList=[];
+
 
   // List of items in our dropdown menu
 
 
-  postData() async {
-    var response = await http.post(
-      Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToAnotherAccount'),
-      body: jsonEncode({
-        "senderSubAccountId" : "1000388061",
-        "receiverSubAccountId" : toAccountController.text,
-        "amonut" : amountController.text,
-      }),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      print("SuccessFully");
 
 
 
-      // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
-      //
-      // await Future.delayed(Duration(milliseconds: 1000));
-      //
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
-    } else {
-      showSnackBar(context, response.body);
-      print("Not SuccessFully");
-      // print(response.body);
-      // print(response.statusCode);
-    }
-    // print(response.body);
-  }
+
+
+
+
+
+
 
 
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
+
+
+    SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
+    final  List<SubAccount> subAccountsList= subAccountNumbers.getSubAccountList();
+    final List<String> fromAccount = [];
+    for(var subaccount in subAccountsList){
+      fromAccount.add(subaccount.id.toString()+"-"+subaccount.currencyType);
+    }
+    String selectedValue = fromAccount[0];
+
+
+    postData() async {
+      var response = await http.post(
+        Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToAnotherAccount'),
+        body: jsonEncode({
+          "senderSubAccountId" : selectedValue.substring(0,10),
+          "receiverSubAccountId" : toAccountController.text,
+          "amonut" : amountController.text,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("SuccessFully");
+
+
+
+        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+        //
+        // await Future.delayed(Duration(milliseconds: 1000));
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+      } else {
+        showSnackBar(context, response.body);
+        print("Not SuccessFully");
+        // print(response.body);
+        // print(response.statusCode);
+      }
+      // print(response.body);
+    }
+
 
 
 
@@ -134,7 +154,7 @@ class _TTOAState extends State<TTOA> {
       dropdownDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
-      items: subaccounts
+      items: fromAccount
           .map((item) => DropdownMenuItem<String>(
                 value: item,
                 child: Text(

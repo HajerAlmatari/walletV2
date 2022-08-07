@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get_storage/get_storage.dart';
@@ -6,6 +9,10 @@ import '../Models/SaveAccount.dart';
 import '../Models/SubAccount.dart';
 import '../Models/SubAccountNumbers.dart';
 import '../widgets/InputField.dart';
+import 'package:http/http.dart' as http;
+
+import '../widgets/showSnackBar.dart';
+
 
 class TBHA extends StatefulWidget {
   const TBHA({Key? key}) : super(key: key);
@@ -29,6 +36,8 @@ class _TBHAState extends State<TBHA> {
   }
 
 
+
+
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
@@ -46,15 +55,50 @@ class _TBHAState extends State<TBHA> {
     String selectedValue2 = toAccount[1];
 
 
+    postData() async {
+      var response = await http.post(
+        Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToSameAccount'),
+        body: jsonEncode({
+          "senderSubAccountId" : selectedValue.substring(0,10),
+          "receiverSubAccountId" : selectedValue2.substring(0,10),
+          "amonut" : amountController.text,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("SuccessFully");
+
+
+
+        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
+        //
+        // await Future.delayed(Duration(milliseconds: 1000));
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
+
+      } else {
+        showSnackBar(context, response.body);
+        print("Not SuccessFully");
+        // print(response.body);
+        // print(response.statusCode);
+      }
+      // print(response.body);
+    }
+
+
+
+
 
 
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          print(selectedValue);
-          // print(selectedValue2);
-
-          // print(amountController.text);
+          print(selectedValue.substring(0,10));
+          print(selectedValue2.substring(0,10));
+         postData();
         }
       },
       child: Container(
