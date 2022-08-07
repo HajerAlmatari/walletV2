@@ -104,7 +104,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   height: 30,
                 ),
                 Text(
-                  "Transactions History",
+                  "Transactions",
                   style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,

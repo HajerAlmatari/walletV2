@@ -52,7 +52,7 @@ class NavigationDrawer extends StatelessWidget {
       );
 
   Widget buildHeader(BuildContext context) => Material(
-      color: Color.fromRGBO(120, 148, 150, 0.8),
+      color: Color.fromRGBO(39, 138, 189, 1),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -67,23 +67,23 @@ class NavigationDrawer extends StatelessWidget {
             ),
             child: Column(
               children: const [
-                CircleAvatar(
-                  radius: 52,
-                  backgroundImage: AssetImage("assets/icons/avatar_1.png"),
-                  // backgroundImage: Image.network(user!.photoURL.toString()).image,
-                ),
+                // CircleAvatar(
+                //   radius: 52,
+                //   backgroundImage: AssetImage("assets/icons/avatar_1.png"),
+                //   // backgroundImage: Image.network(user!.photoURL.toString()).image,
+                // ),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
                     // user.displayName!.toString(),
                   "User Name",
-                  style: TextStyle(fontSize: 28, color: Colors.black),
+                  style: TextStyle(fontSize: 28, color: Colors.white70),
                 ),
                 Text(
                     // user.email!.toString(),
                   "User Email",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
                 )
               ],
             )),
@@ -113,34 +113,32 @@ class NavigationDrawer extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const NavScreen()));
               },
             ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text("MESSAGES"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.monetization_on),
-              title: Text("UTILITY BILLS"),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.message),
+            //   title: Text("MESSAGES"),
+            //   onTap: () {},
+            // ),
+            // ListTile(
+            //   leading: Icon(Icons.monetization_on),
+            //   title: Text("UTILITY BILLS"),
+            //   onTap: () {},
+            // ),
             ListTile(
               leading: Icon(Icons.money),
-              title: Text("FUNDS TRANSFER"),
+              title: Text("Account Transaction"),
               onTap: () {},
             ),
-            ListTile(
-              leading: Icon(Icons.house_siding),
-              title: Text("BRANCHES"),
-              onTap: () {},
-            ),
-            const Divider(
-              color: Colors.black26,
-            ),
-            ListTile(
-              leading: Icon(Icons.design_services_rounded),
-              title: Text("SERVICES"),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.house_siding),
+            //   title: Text("BRANCHES"),
+            //   onTap: () {},
+            // ),
+
+            // ListTile(
+            //   leading: Icon(Icons.design_services_rounded),
+            //   title: Text("SERVICES"),
+            //   onTap: () {},
+            // ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text("PROFILE"),
@@ -151,11 +149,15 @@ class NavigationDrawer extends StatelessWidget {
                         builder: (context) => const SettingScreen()));
               },
             ),
+            const Divider(
+              color: Colors.black26,
+            ),
             ListTile(
+
               leading: Icon(Icons.logout),
               title: Text("Logout"),
              onTap: (){
-               //
+
                // final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
                // provider.googleLogOut();
                // FirebaseAuth.instance.signOut();

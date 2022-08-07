@@ -24,7 +24,7 @@ class MyCard extends StatelessWidget {
       height: 170,
       child: Card(
         clipBehavior: Clip.antiAlias,
-        elevation: 5,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
         ),
