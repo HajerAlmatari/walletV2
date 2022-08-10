@@ -44,7 +44,7 @@ class _ElectricityState extends State<Electricity> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, 10),
+          "subAccountId": selectedValue.substring(0, 10).toString(),
           "number": subscriberNumberController.text,
           "amount": amountController.text,
           "type" : 4,

@@ -99,10 +99,8 @@ class FirebaseAuthMethods {
 
 
         EasyLoading.dismiss();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen()),
-        );
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+          NavScreen()), (Route<dynamic> route) => false);
 
     } on FirebaseAuthException catch (e) {
       EasyLoading.dismiss();
@@ -119,7 +117,12 @@ class FirebaseAuthMethods {
     try {
       final googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) return;
+      print("Google Sign In "+googleUser.toString());
+
+      if (googleUser == null) {
+        print("User Is Null");
+        return;
+      }
 
       _user = googleUser;
 
@@ -130,13 +133,19 @@ class FirebaseAuthMethods {
         idToken: googleAuth.idToken,
       );
 
-      await _auth.signInWithCredential(credential);
+      var response = await _auth.signInWithCredential(credential);
 
-      if (_user == null) {
+      print(response);
+      print("User = "+_user.toString());
+
+      if (response != null) {
         var names = _user!.displayName!.split(' ');
         String firstName = names[0];
         String lastName = names[1];
 
+        print(firstName);
+        print(lastName);
+        print(_user!.email.toString());
         // var name = _user!.displayName?.substring(0, _user!.displayName?.indexOf(" "));
         // var lastName = _user!.displayName?.substring(_user!.displayName?.indexOf(" ")! + 1);
 
@@ -158,6 +167,9 @@ class FirebaseAuthMethods {
 
           if (response.statusCode == 200) {
             print("SuccessFully");
+            print(_user!.email.toString()+" SuccessFully 200");
+            print(firstName+" SuccessFully 200");
+            print(lastName+" SuccessFully 200");
             // status = true;
             // if(status)
 

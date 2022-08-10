@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
+import 'package:walletapp/screens/transactions-history.dart';
 import 'package:walletapp/screens/transactions/bottom_navigation.dart';
 import 'package:walletapp/screens/transfer_between_holder_accounts.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
@@ -47,6 +48,32 @@ class _NavScreenState extends State<NavScreen> {
     }}
   }
 
+  int  _selectedIndex = 0;
+  static  TextStyle optionStyle =
+  const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static  final List<Widget> _widgetOptions = <Widget>[
+    TabBarView(
+      children: [
+        CreditCardScreen(),
+        //SavingsScreen(),
+      ],
+    ),
+
+    // Text(
+    //   'Transactions Page',
+    //   style: optionStyle,
+    // ),
+
+    TransactionHistory(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<FirebaseAuthMethods>().user;
@@ -55,39 +82,63 @@ class _NavScreenState extends State<NavScreen> {
       child: Scaffold(
         drawer: NavigationDrawer(),
         appBar: AppBar(
+
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
           ],
           title:Text("User Name"),
           centerTitle: true,
           backgroundColor: CDarkerColor,
-          bottom: const TabBar(
-            indicatorColor: Colors.white,
-            indicatorWeight: 5,
-            tabs: [
-              Tab(
-                text: "Account Activity",
-                icon: Icon(Icons.credit_card),
-              ),
-              //Tab(text: "Saving", icon: Icon(Icons.savings),),
-            ],
-          ),
-          elevation: 0,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [CDarkerColor, CLighterColor],
-              begin: Alignment.bottomRight,
-              end: Alignment.topLeft,
-            )),
-          ),
+          // bottom: const TabBar(
+          //   indicatorColor: Colors.white,
+          //   indicatorWeight: 5,
+          //   tabs: [
+          //     Tab(
+          //       text: "Account Activity",
+          //       icon: Icon(Icons.credit_card),
+          //     ),
+          //     //Tab(text: "Saving", icon: Icon(Icons.savings),),
+          //   ],
+          // ),
+          // elevation: 0,
+          // flexibleSpace: Container(
+          //   decoration: const BoxDecoration(
+          //       gradient: LinearGradient(
+          //     colors: [CDarkerColor, CLighterColor],
+          //     begin: Alignment.bottomRight,
+          //     end: Alignment.topLeft,
+          //   )),
+          // ),
         ),
         //drawer: const DrawerWidget(),
-        body: const TabBarView(
+        body:Container(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        /*
+        const TabBarView(
           children: [
             CreditCardScreen(),
             //SavingsScreen(),
           ],
+        ),
+
+         */
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_online_outlined),
+              label: 'Transactions History',
+            ),
+
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue[800],
+          onTap: _onItemTapped,
         ),
       ),
     );

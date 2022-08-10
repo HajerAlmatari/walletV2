@@ -78,11 +78,13 @@ class LoginPageState extends State<LoginPage> {
         ///////////////             //////////////
         ///////////////  check here //////////////
         ///////////////             //////////////
-        //////////////////////////////////////////
+        ///////////////////////////////////////////
 
 
         context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
 
+        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+        //     NavScreen()), (Route<dynamic> route) => false);
 
         EasyLoading.dismiss();
 
@@ -93,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
         //////////////////////////////////////////
 
       } else if (response.statusCode == 404) {
-               EasyLoading.dismiss();
+               // EasyLoading.dismiss();
         showSnackBar(context, "Not found URL");
 
 
@@ -298,6 +300,9 @@ class LoginPageState extends State<LoginPage> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text.trim(), password: _password.text.trim());
+
+      // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+      //     NavScreen()), (Route<dynamic> route) => false);
 
       // Navigator.of(context)
       //     .push(MaterialPageRoute(builder: (context) => NavScreen()));

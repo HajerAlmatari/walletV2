@@ -54,7 +54,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(0,20,0,20),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Container(
                   height: 250,

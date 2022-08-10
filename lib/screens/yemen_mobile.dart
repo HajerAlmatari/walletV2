@@ -41,10 +41,10 @@ class _YemenMobileState extends State<YemenMobile> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, 10),
+          "subAccountId": selectedValue.substring(0, 10).toString(),
           "number": phoneController.text,
           "amount": amountController.text,
-          "type" : 4,
+          "type" : 6,
         }),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -53,7 +53,6 @@ class _YemenMobileState extends State<YemenMobile> {
 
       if (response.statusCode == 200) {
         print("SuccessFully");
-
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
         //
         // await Future.delayed(Duration(milliseconds: 1000));
@@ -81,7 +80,7 @@ class _YemenMobileState extends State<YemenMobile> {
       onTap: () {
         if (_formkey.currentState!.validate()) {
           EasyLoading.show(status: 'Loading ...');
-
+          postData();
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);

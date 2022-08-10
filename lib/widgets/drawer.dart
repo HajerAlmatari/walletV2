@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/screens/transactions-history.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../constants.dart';
@@ -126,7 +127,9 @@ class NavigationDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.money),
               title: Text("Account Transaction"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>TransactionHistory()));
+              },
             ),
             // ListTile(
             //   leading: Icon(Icons.house_siding),
@@ -157,7 +160,7 @@ class NavigationDrawer extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text("Logout"),
              onTap: (){
-
+               //
                // final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
                // provider.googleLogOut();
                // FirebaseAuth.instance.signOut();

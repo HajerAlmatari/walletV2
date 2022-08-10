@@ -42,7 +42,7 @@ class _InternetADSLState extends State<InternetADSL> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, 10),
+          "subAccountId": selectedValue.substring(0, 10).toString(),
           "number": phoneController.text,
           "amount": amountController.text,
           "type" : 5,
