@@ -28,7 +28,7 @@ class Transactions {
   int type;
   String description;
   int status;
-  int amount;
+  double amount;
   int affectedId;
   int accountId;
   int servicePointId;
@@ -43,7 +43,8 @@ class Transactions {
         affectedId: json["affectedId"],
         accountId: json["accountId"],
         servicePointId: json["servicePointId"],
-      );
+  );
+
 
   Map<String, dynamic> toJson() => {
         "id": id,
