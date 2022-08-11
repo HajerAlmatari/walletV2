@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-List<SubAccount> subAccountFromJson(String str) =>
-    List<SubAccount>.from(json.decode(str).map((x) => SubAccount.fromJson(x)));
+List<SubAccount> subAccountFromJson(String str) => List<SubAccount>.from(json.decode(str).map((x) => SubAccount.fromJson(x)));
 
 String subAccountToJson(List<SubAccount> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

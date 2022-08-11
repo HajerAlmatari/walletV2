@@ -12,7 +12,7 @@ class TransactionHistory extends StatefulWidget{
 
 class _TransactionHistoryState extends State<TransactionHistory>{
 
-  List<Transactions>? transactionsHistoryList;
+  List<Transactions>? transactionsList;
   var isLoaded = false;
 
 
@@ -28,10 +28,9 @@ class _TransactionHistoryState extends State<TransactionHistory>{
   }
 
   getData(int accountId)async{
-    var TransactionHistory = await RemoteService().getTransactionsHistory(accountId);
-    transactionsHistoryList = TransactionHistory;
+    transactionsList = await RemoteService().getTransactions(accountId);
 
-    if(transactionsHistoryList!=null){
+    if(transactionsList != null){
       setState((){
         isLoaded = true;
       });
@@ -46,11 +45,26 @@ class _TransactionHistoryState extends State<TransactionHistory>{
       body: Visibility(
         visible: isLoaded,
         child: ListView.builder(
-          itemCount: transactionsHistoryList?.length,
+          itemCount: transactionsList?.length,
           itemBuilder: (context,index){
 
           return Container(
-            child: Text("Hi"),
+            child: Column(
+              children: <Widget>[
+                Card(
+
+                  margin: EdgeInsets.all(10),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10,20,10,20),
+                    child: Column(
+                      children: <Widget>[
+                        Text(transactionsList![index].description),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },),
         replacement: const Center(

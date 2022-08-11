@@ -29,27 +29,38 @@ class RemoteService {
       return subAccountFromJson(e.toString());
     }
   }
-  Future<List<Transactions>> getTransactionsHistory(int accountId) async {
+
+
+
+  Future<List<Transactions>> getTransactions(int accountId) async {
     try {
       var client = http.Client();
 
       var uri = Uri.parse(
-          "${BASE_URL}/transaction/" + accountId.toString());
-      // print(uri.toString());
+          "${BASE_URL}transaction/" + accountId.toString());
+
+      print(uri.toString());
       var response = await client.get(uri);
+
+      print(response.body);
+      print(response.statusCode);
 
       if (response.statusCode == 200) {
         var json = response.body;
 
-        return transactionsHistoryFromJson(json);
+        return transactionsFromJson(json);
       }
-      print(response.body);
-      print(response.statusCode);
-      return transactionsHistoryFromJson("Error");
+      else
+        {
+          return transactionsFromJson("Error");
+
+        }
+
+
     } catch (e) {
       print(e);
       print("error from transaction history");
-      return transactionsHistoryFromJson(e.toString());
+      return transactionsFromJson(e.toString());
     }
   }
 }
