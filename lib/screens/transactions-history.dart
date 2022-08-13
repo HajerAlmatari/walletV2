@@ -3,35 +3,32 @@ import 'package:walletapp/Api/RemoteService.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
 import 'package:walletapp/Models/transactions.dart';
 
-class TransactionHistory extends StatefulWidget{
-  const TransactionHistory({Key? key}) : super (key: key);
+class TransactionHistory extends StatefulWidget {
+  const TransactionHistory({Key? key}) : super(key: key);
 
   @override
-  _TransactionHistoryState createState()=> _TransactionHistoryState();
+  _TransactionHistoryState createState() => _TransactionHistoryState();
 }
 
-class _TransactionHistoryState extends State<TransactionHistory>{
-
+class _TransactionHistoryState extends State<TransactionHistory> {
   List<Transactions>? transactionsList;
   var isLoaded = false;
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     SaveAccount obj = new SaveAccount();
-    print("I'm in the Second"+ obj.getId().toString());
+    print("I'm in the Second" + obj.getId().toString());
 
     getData(obj.getId());
-
   }
 
-  getData(int accountId)async{
+  getData(int accountId) async {
     transactionsList = await RemoteService().getTransactions(accountId);
 
-    if(transactionsList != null){
-      setState((){
+    if (transactionsList != null) {
+      setState(() {
         isLoaded = true;
       });
     }
@@ -39,39 +36,141 @@ class _TransactionHistoryState extends State<TransactionHistory>{
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-     
       body: Visibility(
         visible: isLoaded,
-        child: ListView.builder(
-          itemCount: transactionsList?.length,
-          itemBuilder: (context,index){
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: transactionsList?.length == 0
+            ? Center(
+                child: Text("you have'nt any trnsaction yet"),
+              )
+            : ListView.builder(
+                itemCount: transactionsList?.length,
+                itemBuilder: (context, index) {
+                  print("Items Count${transactionsList?.length}");
 
-          return Container(
-            child: Column(
-              children: <Widget>[
-                Card(
-
-                  margin: EdgeInsets.all(10),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10,20,10,20),
+                  return Card(
+                    margin: EdgeInsets.all(10),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(transactionsList![index].description),
+                        ListTile(
+                          title: Center(
+                            child: Text(
+                              (transactionsList![index].startdate).toString().substring(0,19),
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          tileColor: Color.fromRGBO(39, 138, 189, 1),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Amount : ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                children: [
+                                  Text(
+                                    (transactionsList![index].amount)
+                                        .toString(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Description : ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Flexible(
+                                child: Text(
+                                  (transactionsList![index].description)
+                                      .toString(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Status : ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Flexible(
+                                child: Text(
+                                  (transactionsList![index].status)==0 ? "Pending" : "Completed" ,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },),
-        replacement: const Center(
-          child: Text("There isn't any transaction yet"),
-        ),
+                  );
+
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                          ),
+                          child: Center(
+                            child: Text(
+                              (transactionsList![index].startdate).toString(),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                          child: Text("Description : " +
+                              transactionsList![index].description),
+                        ),
+
+                        // Padding(
+                        //   padding: EdgeInsets.fromLTRB(10, 20, 0, 20),
+                        //   child: Column(
+                        //     children: <Row>[
+                        //       Row(
+                        //         children: <Widget>[
+                        //           Text("Description : "),
+                        //           Text(transactionsList![index].description),
+                        //         ],
+                        //       ),
+                        //       Row(),
+                        //     ],
+                        //   )
+                        // ),
+                      ],
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }
-
 }

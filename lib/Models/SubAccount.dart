@@ -25,14 +25,15 @@ class SubAccount {
 
   int id;
   String currencyType;
-  int credit;
-  int debit;
+  dynamic credit;
+  dynamic debit;
   int status;
-  dynamic? description;
+  dynamic description;
   DateTime creationDate;
-  dynamic? activationDate;
-  dynamic? lastModifiedDate;
+  dynamic activationDate;
+  dynamic lastModifiedDate;
   int accountId;
+
 
   factory SubAccount.fromJson(Map<String, dynamic> json) => SubAccount(
         id: json["id"],

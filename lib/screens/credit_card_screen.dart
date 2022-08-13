@@ -30,13 +30,15 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
     // TODO: implement initState
     super.initState();
     SaveAccount obj = new SaveAccount();
-    print("I'm in the Second" + obj.getId().toString());
+    print("I'm in the Second      " + obj.getId().toString());
 
     getSubAccounts(obj.getId());
   }
 
   getSubAccounts(int accountId) async {
     var response = await RemoteService().getAllSubAccount(accountId);
+
+    print("Response From Credit Card Screen $response");
     subAccountsList = response;
 
     // for (int i = 0; i < subAccountsList!.length; i++) {

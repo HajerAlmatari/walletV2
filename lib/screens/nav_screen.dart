@@ -29,15 +29,21 @@ class _NavScreenState extends State<NavScreen> {
     // TODO: implement initState
     super.initState();
     SaveAccount obj = new SaveAccount();
-    print("I'm in the Second"+ obj.getId().toString());
+    print("I'm in the Second     "+ obj.getId().toString());
 
     getSubAccounts(obj.getId());
   }
 
   getSubAccounts(int accountId) async {
 
+    print("Account Id From Nav Screen $accountId");
+
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
+
+    print("Response From Nav Screen $response");
+
+
     SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
     subAccountNumbers.setSubAccountList(subAccountsList!);
 
@@ -84,7 +90,7 @@ class _NavScreenState extends State<NavScreen> {
         appBar: AppBar(
 
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
+            IconButton(onPressed: () {}, icon: Icon(Icons.question_mark_rounded))
           ],
           title:Text("User Name"),
           centerTitle: true,

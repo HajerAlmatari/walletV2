@@ -88,8 +88,8 @@ class Transactions {
   int type;
   String description;
   int status;
-  int amount;
   int affectedId;
+  dynamic amount;
   int accountId;
   dynamic servicePointId;
 

@@ -81,3 +81,42 @@ class _PurchasesPaymentState extends State<PurchasesPayment> {
 
 
 
+//
+// return Card(
+// margin: EdgeInsets.all(10),
+// child: Column(
+// children: <Widget>[
+// Container(
+// height: 50,
+// decoration: const BoxDecoration(
+// color: Colors.blue,
+// ),
+// child: Center(
+// child: Text(
+// (transactionsList![index].startdate).toString(),
+// ),
+// ),
+// ),
+// Padding(
+// padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+// child: Text("Description : " +
+// transactionsList![index].description),
+// ),
+
+// Padding(
+//   padding: EdgeInsets.fromLTRB(10, 20, 0, 20),
+//   child: Column(
+//     children: <Row>[
+//       Row(
+//         children: <Widget>[
+//           Text("Description : "),
+//           Text(transactionsList![index].description),
+//         ],
+//       ),
+//       Row(),
+//     ],
+//   )
+// ),
+// ],
+// ),
+// );

@@ -17,6 +17,11 @@ class MyCard extends StatelessWidget {
 
   get debit => subAccount?.debit;
 
+  get lastModifiedDate => subAccount?.lastModifiedDate;
+
+
+  get creationDate => subAccount?.creationDate;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,14 +103,14 @@ class MyCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "EXP DATE",
+                              "Last Modified Date",
                               style: TextStyle(
                                   color: Color.fromRGBO(240, 240, 240, 1),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18),
                             ),
                             Text(
-                              "2015",
+                              lastModifiedDate!=null ? lastModifiedDate.toString().substring(0,10) : creationDate.toString().substring(0,10),
                               style: TextStyle(
                                   color: Color.fromRGBO(240, 240, 240, 1),
                                   fontWeight: FontWeight.bold,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:walletapp/screens/Internet_adsl.dart';
 import 'package:walletapp/screens/electricity.dart';
+import 'package:walletapp/screens/pending_transactions.dart';
 import 'package:walletapp/screens/transactions/my_buttons.dart';
 import 'package:walletapp/screens/transfer_between_holder_accounts.dart';
 import 'package:walletapp/screens/transfer_to_name.dart';
@@ -60,7 +61,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
               iconImagePath: "images/cancel.svg",
               buttonText: "Cancel \nRemittance",
               onTap: () {
-                print("object");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>PendingTransactions()));
               },
             ),
           ]),

@@ -67,18 +67,25 @@ class _TTOAState extends State<TTOA> {
       );
 
       if (response.statusCode == 200) {
+
+        EasyLoading.showSuccess(response.body);
         print("SuccessFully");
+        EasyLoading.dismiss();
 
 
 
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
         //
-        // await Future.delayed(Duration(milliseconds: 1000));
+        await Future.delayed(Duration(milliseconds: 1000));
+
+        Navigator.pop(context);
         //
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
-        showSnackBar(context, response.body);
+        EasyLoading.showError(response.body);
+        EasyLoading.dismiss();
+        // showSnackBar(context, response.body);
         print("Not SuccessFully");
         // print(response.body);
         // print(response.statusCode);
@@ -91,13 +98,12 @@ class _TTOAState extends State<TTOA> {
 
     final transferButton = GestureDetector(
       onTap: () {
-        EasyLoading.show(status: 'Loading ...');
         if (_formkey.currentState!.validate()) {
 
+          EasyLoading.show();
 
           postData();
         }
-        EasyLoading.dismiss();
 
       },
       child: Container(

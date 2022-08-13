@@ -330,7 +330,7 @@ class SignupPageState extends State<SignupPage> {
     //     );
 
     return Scaffold(
-      backgroundColor: primaryColor,
+      // backgroundColor: primaryColor,
       appBar: AppBar(
         title: Text(
           "Create Account",
