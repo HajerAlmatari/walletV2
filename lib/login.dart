@@ -16,7 +16,6 @@ import 'package:walletapp/signup.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
 import 'package:walletapp/Models/SignUpData.dart';
 
-
 import 'forgetPassword.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,10 +24,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  Color primaryColor =   Color.fromRGBO(39, 138, 189, 1);
-
-
-
+  Color primaryColor = Color.fromRGBO(39, 138, 189, 1);
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -59,7 +55,6 @@ class LoginPageState extends State<LoginPage> {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-
         var json = response.body;
         LoginResponse loginResponse = loginResponseFromJson(json);
 
@@ -67,7 +62,7 @@ class LoginPageState extends State<LoginPage> {
         print(loginResponse.accountId.elementAt(0));
         int account = loginResponse.accountId.elementAt(0);
         obj.setId(account);
-        print("Your Id: is: " +obj.getId().toString() );
+        print("Your Id: is: " + obj.getId().toString());
         print(loginResponse.message);
 
         print("SuccessFully");
@@ -80,8 +75,10 @@ class LoginPageState extends State<LoginPage> {
         ///////////////             //////////////
         ///////////////////////////////////////////
 
-
-        context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
+        context.read<FirebaseAuthMethods>().loginWithEmail(
+            email: _email.text.trim(),
+            password: _password.text.trim(),
+            context: context);
 
         // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
         //     NavScreen()), (Route<dynamic> route) => false);
@@ -95,21 +92,16 @@ class LoginPageState extends State<LoginPage> {
         //////////////////////////////////////////
 
       } else if (response.statusCode == 404) {
-               // EasyLoading.dismiss();
+        // EasyLoading.dismiss();
         showSnackBar(context, "Not found URL");
-
 
         // print(response.body);
         // print(response.statusCode);
 
-      }
-      else if(response.statusCode == 7){
-
+      } else if (response.statusCode == 7) {
         EasyLoading.dismiss();
         showSnackBar(context, "No Internet connection");
-      }
-
-      else {
+      } else {
         EasyLoading.dismiss();
         print(response.statusCode);
         showSnackBar(context, "Phone or Password wrong");
@@ -174,7 +166,6 @@ class LoginPageState extends State<LoginPage> {
     final signinbutton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-
           EasyLoading.show(status: 'Loading ...');
           loginRequest();
           // context.read<FirebaseAuthMethods>().loginWithEmail(email: _email.text.trim(), password: _password.text.trim(), context: context);
@@ -230,8 +221,8 @@ class LoginPageState extends State<LoginPage> {
       alignment: Alignment(1, 0),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SignupPage()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => SignupPage()));
         },
         child: const Text(
           'Sign Up?',
@@ -259,35 +250,44 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
       body: Container(
-        height: 350,
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(30)),
-        child: Form(
-          key: _formkey,
-          child: ListView(
-            children: <Widget>[
-              emailField,
-              const SizedBox(
-                height: 5,
-              ),
-
-              passwordField,
-              const SizedBox(
-                height: 20,
-              ),
-              forgetPassword,
-
-              const SizedBox(
-                height: 20,
-              ),
-              signUp,
-              const SizedBox(
-                height: 30,
-              ),
-              signinbutton,
-            ],
+          image: DecorationImage(
+            alignment: Alignment.topCenter,
+            image: AssetImage("images/wallet-backgroud.png"),
+          ),
+          color: Colors.white,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          height: 350,
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+          margin: EdgeInsets.fromLTRB(10, 100, 10, 20),
+          child: Form(
+            key: _formkey,
+            child: ListView(
+              children: <Widget>[
+                emailField,
+                const SizedBox(
+                  height: 5,
+                ),
+                passwordField,
+                const SizedBox(
+                  height: 20,
+                ),
+                forgetPassword,
+                const SizedBox(
+                  height: 20,
+                ),
+                signUp,
+                const SizedBox(
+                  height: 30,
+                ),
+                signinbutton,
+              ],
+            ),
           ),
         ),
       ),
@@ -295,8 +295,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Future signInfirebase() async {
-
-
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text.trim(), password: _password.text.trim());

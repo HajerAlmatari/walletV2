@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
 import 'package:http/http.dart' as http;
@@ -55,6 +56,16 @@ class _InternetADSLState extends State<InternetADSL> {
       if (response.statusCode == 200) {
         print("SuccessFully");
 
+        EasyLoading.showSuccess("Transaction Has Been Completed Successfully",duration: Duration(milliseconds: 1000));
+
+
+        await Future.delayed(Duration(milliseconds: 1000));
+
+        EasyLoading.dismiss();
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            NavScreen()), (Route<dynamic> route) => false);
+
+
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
         //
         // await Future.delayed(Duration(milliseconds: 1000));
@@ -62,7 +73,10 @@ class _InternetADSLState extends State<InternetADSL> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
-        showSnackBar(context, response.body);
+        EasyLoading.showError(response.body);
+        await Future.delayed(Duration(milliseconds: 1000));
+
+        EasyLoading.dismiss();
         print("Not SuccessFully");
         print(response.body);
         // print(response.statusCode);
@@ -79,14 +93,13 @@ class _InternetADSLState extends State<InternetADSL> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show(status: 'Loading ...');
+          EasyLoading.show();
 
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);
 
           postData();
-          EasyLoading.dismiss();
         }
       },
       child: Container(

@@ -91,7 +91,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
       children: <Widget>[
         listTail(Image.asset("images/money-transfer .png",width: 50,),"Transfer Between Holder Accounts", TBHA()),
         listTail(Image.asset("images/transferToOtherAccount.png",width: 50,),"Transfer To Other Account",TTOA()),
-        listTail(Image.asset("images/transferToName.png",width: 50,),"Transfer To Name", TTN()),
+        listTail(Image.asset("images/transferToName.png",width: 50,),"Send Remittance", TTN()),
       ],
     ),
   );

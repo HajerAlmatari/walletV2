@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:walletapp/screens/nav_screen.dart';
 import '../Api/RemoteService.dart';
 import '../Models/SaveAccount.dart';
 import '../Models/SubAccount.dart';
@@ -72,19 +74,29 @@ class _TBHAState extends State<TBHA> {
       if (response.statusCode == 200) {
         print("SuccessFully");
 
+        EasyLoading.showSuccess("Transfer Has Been Completed Successfully",duration: Duration(milliseconds: 1000));
 
 
-        // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
-        //
-        // await Future.delayed(Duration(milliseconds: 1000));
-        //
+        await Future.delayed(Duration(milliseconds: 1000));
+
+        EasyLoading.dismiss();
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            NavScreen()), (Route<dynamic> route) => false);
+
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
-        showSnackBar(context, response.body);
+
+        EasyLoading.showError(response.body);
+        await Future.delayed(Duration(milliseconds: 1000));
+
+        EasyLoading.dismiss();
+
+
         print("Not SuccessFully");
         // print(response.body);
         // print(response.statusCode);
+
       }
       // print(response.body);
     }
@@ -99,6 +111,7 @@ class _TBHAState extends State<TBHA> {
         if (_formkey.currentState!.validate()) {
           print(selectedValue.substring(0,10));
           print(selectedValue2.substring(0,10));
+          EasyLoading.show();
          postData();
         }
       },

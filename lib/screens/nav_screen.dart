@@ -118,7 +118,6 @@ class _NavScreenState extends State<NavScreen> {
         ),
         //drawer: const DrawerWidget(),
         body:Container(
-          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
         /*
