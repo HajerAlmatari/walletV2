@@ -60,7 +60,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.only(top: 110),
+          margin: EdgeInsets.only(top: 60),
           child: SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Padding(
@@ -111,7 +111,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   ),
 
                   SizedBox(
-                    height: 30,
+                    height: 10,
                   ),
                   Text(
                     "Transactions",

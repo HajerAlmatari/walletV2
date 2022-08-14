@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:walletapp/screens/Internet_adsl.dart';
 import 'package:walletapp/screens/purchases_payment.dart';
 import 'package:walletapp/screens/transfer_to_name.dart';
@@ -41,33 +42,27 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const AuthWrapper(),
+        home: ShowCaseWidget(
+          builder: Builder(
+            builder: (context) => AuthWrapper(),
+          ),
+        ),
         builder: EasyLoading.init(),
-
       ),
     );
-
   }
 }
 
-class AuthWrapper extends StatelessWidget{
+class AuthWrapper extends StatelessWidget {
   const AuthWrapper({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final firebaseUser = context.watch<User?>();
 
-    if(firebaseUser != null && firebaseUser.emailVerified){
-      return const  NavScreen();
+    if (firebaseUser != null && firebaseUser.emailVerified) {
+      return const NavScreen();
     }
-    return  WelcomePage();
-
-
+    return WelcomePage();
   }
 }
-
-
-
-
-
-

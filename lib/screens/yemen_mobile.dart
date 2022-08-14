@@ -87,7 +87,7 @@ class _YemenMobileState extends State<YemenMobile> {
 
 
     String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[7]\d{7})$)';
+        r'(^((7)[7]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
 
     final transferButton = GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
 import 'package:walletapp/screens/transactions-history.dart';
 import 'package:walletapp/screens/transactions/bottom_navigation.dart';
@@ -22,6 +23,10 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
+  final _key1 = GlobalKey();
+  final _key2 = GlobalKey();
+  final _key3 = GlobalKey();
+
   List<SubAccount>? subAccountsList;
 
   @override
@@ -29,35 +34,28 @@ class _NavScreenState extends State<NavScreen> {
     // TODO: implement initState
     super.initState();
     SaveAccount obj = new SaveAccount();
-    print("I'm in the Second     "+ obj.getId().toString());
+    print("I'm in the Second" + obj.getId().toString());
 
     getSubAccounts(obj.getId());
   }
 
   getSubAccounts(int accountId) async {
-
-    print("Account Id From Nav Screen $accountId");
-
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
-
-    print("Response From Nav Screen $response");
-
-
-    SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
+    SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
     subAccountNumbers.setSubAccountList(subAccountsList!);
 
-
-    if(subAccountsList!= null){
-    for(int i= 0; i<subAccountsList!.length; i++){
-      print(subAccountsList?.elementAt(i).id);
-    }}
+    if (subAccountsList != null) {
+      for (int i = 0; i < subAccountsList!.length; i++) {
+        print(subAccountsList?.elementAt(i).id);
+      }
+    }
   }
 
-  int  _selectedIndex = 0;
-  static  TextStyle optionStyle =
-  const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static  final List<Widget> _widgetOptions = <Widget>[
+  int _selectedIndex = 0;
+  static TextStyle optionStyle =
+      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static final List<Widget> _widgetOptions = <Widget>[
     TabBarView(
       children: [
         CreditCardScreen(),
@@ -79,20 +77,31 @@ class _NavScreenState extends State<NavScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final user = context.read<FirebaseAuthMethods>().user;
     return DefaultTabController(
       length: 1,
       child: Scaffold(
-        drawer: NavigationDrawer(),
+        drawer: Showcase(child: NavigationDrawer(), key: _key2, description: "Manage Your Account",),
         appBar: AppBar(
-
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.question_mark_rounded))
+            IconButton(onPressed: () {
+              setState((){
+
+                ShowCaseWidget.of(context).startShowCase([_key1,_key2]);
+
+
+                //
+                  // WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  //   ShowCaseWidget.of(context).startShowCase([_key1]);
+                  // });
+
+                // ShowCaseWidget.of(context).startShowCase([_key1]);
+              });
+            }, icon: Icon(Icons.help_outline_sharp,),),
           ],
-          title:Text("User Name"),
+          title: Text("User Name"),
           centerTitle: true,
           backgroundColor: CDarkerColor,
           // bottom: const TabBar(
@@ -117,7 +126,7 @@ class _NavScreenState extends State<NavScreen> {
           // ),
         ),
         //drawer: const DrawerWidget(),
-        body:Container(
+        body: Container(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
         /*
@@ -130,16 +139,23 @@ class _NavScreenState extends State<NavScreen> {
 
          */
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.book_online_outlined),
+              icon: Showcase(
+                overlayPadding: EdgeInsets.all(8),
+                contentPadding: EdgeInsets.all(20),
+                child: Icon(Icons.book_online_outlined),
+                key: _key1,
+                description: "Show all Your Transactions History",
+                showcaseBackgroundColor: CDarkerColor,
+                descTextStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              ),
               label: 'Transactions History',
             ),
-
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.blue[800],

@@ -20,7 +20,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 50),
+      margin: const EdgeInsets.only(top: 30),
       child: Column(
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -65,6 +65,31 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
               },
             ),
           ]),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+
+
+              MyButton(
+                iconImagePath: "images/ycbExpress.svg",
+                buttonText: "YCB Express\n",
+                onTap:(){}
+              ),
+
+              MyButton(
+                iconImagePath: "images/ycbExpress.svg",
+                buttonText: "YCB Express\n",
+                onTap:(){}
+              ),
+
+              MyButton(
+                iconImagePath: "images/ycbExpress.svg",
+                buttonText: "YCB Express\n",
+                onTap:(){}
+              ),
+
+            ]),
+          ),
           // const SizedBox(height: 15),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

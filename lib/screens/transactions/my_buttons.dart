@@ -19,8 +19,8 @@ class MyButton extends StatelessWidget {
         children: [
           //icon
           Container(
-              height: 100,
-              padding: const EdgeInsets.all(20),
+              height: 90,
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),

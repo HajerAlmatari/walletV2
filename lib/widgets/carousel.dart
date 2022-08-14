@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget CarouselWidget (int length, int selected)
 {
   return Container(
-    margin: EdgeInsets.only(top: 50),
+    margin: EdgeInsets.only(top: 25),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(length, (index) {
