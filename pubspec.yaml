@@ -50,6 +50,8 @@ dependencies:
   qr_code_scanner: ^1.0.0
   flutter_svg: ^1.1.2
   showcaseview: ^1.1.8
+  fluttercontactpicker: ^4.7.0
+  local_auth: ^1.1.11
 
 dev_dependencies:
   flutter_test:

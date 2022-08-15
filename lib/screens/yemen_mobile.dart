@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -35,8 +36,6 @@ class _YemenMobileState extends State<YemenMobile> {
     }
     String selectedValue = fromAccount[0];
 
-
-
     postData() async {
       var response = await http.post(
         Uri.parse(
@@ -45,13 +44,12 @@ class _YemenMobileState extends State<YemenMobile> {
           "subAccountId": selectedValue.substring(0, 10).toString(),
           "number": phoneController.text,
           "amount": amountController.text,
-          "type" : 6,
+          "type": 6,
         }),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
-
       if (response.statusCode == 200) {
         print("SuccessFully");
 
@@ -70,7 +68,8 @@ class _YemenMobileState extends State<YemenMobile> {
         //
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
-      } else {
+      }
+      else {
         EasyLoading.showError(response.body);
         await Future.delayed(Duration(milliseconds: 1000));
 
@@ -80,11 +79,8 @@ class _YemenMobileState extends State<YemenMobile> {
         // print(response.statusCode);
       }
       // print(response.body);
+
     }
-
-
-
-
 
     String PhonePattern =
         r'(^((7)[7]\d{7})$)';
@@ -181,27 +177,27 @@ class _YemenMobileState extends State<YemenMobile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Yemen Mobile',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
+        backgroundColor: const Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
         child: Form(
           key: _formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Please select the account'),
-              SizedBox(
+              const Text('Please select the account'),
+              const SizedBox(
                 height: 10,
               ),
               subAccounts,
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InputField(
@@ -219,9 +215,15 @@ class _YemenMobileState extends State<YemenMobile> {
                     return null;
                   }
                 },
-                suffixIcon: Icon(Icons.perm_contact_calendar_outlined),
+                suffixIcon: InkWell(
+                    onTap:() async {
+                      final PhoneContact contact =
+                      await FlutterContactPicker.pickPhoneContact();
+                      phoneController.text = contact.phoneNumber?.number.toString()??"";
+                    },
+                    child: const Icon(Icons.perm_contact_calendar_outlined)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InputField(
@@ -242,3 +244,4 @@ class _YemenMobileState extends State<YemenMobile> {
     );
   }
 }
+

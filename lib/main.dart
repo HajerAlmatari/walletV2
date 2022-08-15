@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:walletapp/screens/Internet_adsl.dart';
-import 'package:walletapp/screens/purchases_payment.dart';
-import 'package:walletapp/screens/transfer_to_name.dart';
-import 'package:walletapp/screens/transfer_to_other_account.dart';
-import 'package:walletapp/screens/yemen_mobile.dart';
+import 'package:walletapp/screens/fingerprint.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/services/google_sign_in.dart';
 import 'package:walletapp/screens/api.dart';
@@ -42,6 +38,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+
         home: ShowCaseWidget(
           builder: Builder(
             builder: (context) => AuthWrapper(),

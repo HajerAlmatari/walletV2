@@ -69,12 +69,6 @@ class LoginPageState extends State<LoginPage> {
 
         showSnackBar(context, "Successfully Logged in");
 
-        //////////////////////////////////////////
-        ///////////////             //////////////
-        ///////////////  check here //////////////
-        ///////////////             //////////////
-        ///////////////////////////////////////////
-
         context.read<FirebaseAuthMethods>().loginWithEmail(
             email: _email.text.trim(),
             password: _password.text.trim(),
@@ -84,12 +78,6 @@ class LoginPageState extends State<LoginPage> {
         //     NavScreen()), (Route<dynamic> route) => false);
 
         EasyLoading.dismiss();
-
-        //////////////////////////////////////////
-        //////////////////////////////////////////
-        //////////////////////////////////////////
-        //////////////////////////////////////////
-        //////////////////////////////////////////
 
       } else if (response.statusCode == 404) {
         // EasyLoading.dismiss();
@@ -199,10 +187,10 @@ class LoginPageState extends State<LoginPage> {
     );
 
     final forgetPassword = Container(
-      alignment: Alignment(1, 0),
+      alignment: const Alignment(1, 0),
       child: InkWell(
         onTap: () {
-          SignUpData obj = new SignUpData();
+          SignUpData obj = SignUpData();
           obj.setIsNew(false);
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => ResetPasswordPage()));

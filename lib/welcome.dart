@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walletapp/login.dart';
+import 'package:walletapp/screens/fingerprint.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/services/google_sign_in.dart';
 import 'signup.dart';
@@ -35,7 +36,7 @@ class WelcomePageState extends State<WelcomePage> {
         height: 70,
         width: 370,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -58,7 +59,7 @@ class WelcomePageState extends State<WelcomePage> {
               ),
             ),
             const SizedBox(width: 40),
-            Icon(Icons.arrow_forward_ios_outlined,color: Colors.white,),
+            const Icon(Icons.arrow_forward_ios_outlined,color: Colors.white,),
           ],
         ),
       ),
@@ -74,7 +75,7 @@ class WelcomePageState extends State<WelcomePage> {
         height: 70,
         width: 370,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -187,7 +188,7 @@ class WelcomePageState extends State<WelcomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               logo,
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               signinbutton,
               const SizedBox(height: 15),
               signupbutton,
@@ -195,6 +196,8 @@ class WelcomePageState extends State<WelcomePage> {
               divider(),
               const SizedBox(height: 20),
               signWithGoogle,
+               const SizedBox(height: 10),
+               FingerprintPage(),
             ],
           ),
         ),
