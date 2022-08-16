@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:crypt/crypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:provider/provider.dart';
-import 'package:walletapp/screens/otp_verfication.dart';
-import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:http/http.dart' as http;
-import 'package:walletapp/welcome.dart';
+import 'package:provider/provider.dart';
+import 'package:walletapp/Models/SignUpData.dart';
+import 'package:walletapp/screens/verifyOTPScreen.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
 
 class SignupPage extends StatefulWidget {
@@ -25,9 +26,14 @@ class SignupPageState extends State<SignupPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirmPssword = TextEditingController();
-  final _auth = FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   bool isChecked = false;
+  bool isLoading = false;
   bool status = false;
+
+  bool otpVisibility = false;
+  String verificationID = "";
 
   @override
   void initState() {
@@ -35,13 +41,14 @@ class SignupPageState extends State<SignupPage> {
   }
 
   postData() async {
+    String pass = Crypt.sha256(_password.text).toString();
     var response = await http.post(
       Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName.text,
         'lastName': _lastName.text,
         'email': _email.text,
-        'phoneNumber': "+967${_phoneNumber.text.trim()}",
+        'phoneNumber': _phoneNumber.text,
         'password': _password.text,
         'socialMediaType': 'normal'
       }),
@@ -57,9 +64,8 @@ class SignupPageState extends State<SignupPage> {
           email: _email.text.trim(),
           password: _password.text.trim(),
           context: context,
-          phone: "+967${_phoneNumber.text.trim()}",
-          statusCode:response.statusCode.toString()
-      );
+          phone: _phoneNumber.text.trim(),
+          statusCode: response.statusCode.toString());
 
       // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
       //
@@ -78,12 +84,11 @@ class SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Color.fromRGBO(39, 138, 189, 1);
+    Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
 
-    String PhonePattern = r'(^((7)[0137]\d{7})$)';
+    String PhonePattern =
+        r'(^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$)';
     RegExp regExp = RegExp(PhonePattern);
-
-    RegExp emailRegExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
     final firstNameField = TextFormField(
       controller: _firstName,
@@ -91,12 +96,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'First Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
@@ -115,12 +120,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Last Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
@@ -140,12 +145,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Phone Number',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
@@ -161,7 +166,31 @@ class SignupPageState extends State<SignupPage> {
         }
       },
     );
-
+    final idNumberField = TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _idNumber,
+      decoration: const InputDecoration(
+        // filled: true,
+        labelText: 'ID Number',
+        labelStyle: TextStyle(
+          color: Color.fromRGBO(120, 148, 150, 0.8),
+          fontWeight: FontWeight.bold,
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(120, 148, 150, 0.8),
+          ),
+        ),
+      ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please Enter User Name';
+        } else {
+          return null;
+        }
+      },
+    );
     final emailField = TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: _email,
@@ -169,17 +198,17 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Email',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) => _email != null && !emailRegExp.hasMatch(value!)
+      validator: (_email) => _email != null && !EmailValidator.validate(_email)
           ? 'Enter a valid Email'
           : null,
     );
@@ -190,12 +219,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
@@ -233,12 +262,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Confirm Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: Color.fromRGBO(120, 148, 150, 0.8),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
       ),
@@ -257,7 +286,6 @@ class SignupPageState extends State<SignupPage> {
 
     final signinbutton = GestureDetector(
       onTap: () async {
-
         // context.read<FirebaseAuthMethods>().signUpWithEmail(
         //     email: _email.text.trim(),
         //     password: _password.text.trim(),
@@ -265,38 +293,50 @@ class SignupPageState extends State<SignupPage> {
         //     phone: _phoneNumber.text.trim());
 
         //   print("tapped");
-          if (_formkey.currentState!.validate()) {
-            postData();
+        if (_formkey.currentState!.validate()) {
+          SignUpData obj = new SignUpData();
+          obj.setFirstName(_firstName.text);
+          obj.setLastName(_lastName.text);
+          obj.setEmail(_email.text);
+          obj.setPhone("+967${_phoneNumber.text}");
+          obj.setPassword(_password.text);
+          obj.setIsNew(true);
 
-        //     print("validated");
-        //
-        //     try {
-        //       try {
-        //         print("Try");
-        //         final newUser = await _auth.createUserWithEmailAndPassword(
-        //             email: _email.text, password: _password.text);
-        //
-        //         if (newUser != null) {
-        //           print("user not null");
-        //           Navigator.pushNamed(context, 'welcome_screen');
-        //         } else {
-        //           print("null");
-        //         }
-        //       } catch (e) {
-        //         print(e);
-        //       }
-        //     } catch (e) {
-        //       print(e);
-        //     }
-        //
-          } else
-            print("Error");
+          setState(() {
+            isLoading = true;
+            verifyPhone();
+          });
+
+          //  postData();
+          //     print("validated");
+          //
+          //     try {
+          //       try {
+          //         print("Try");
+          //         final newUser = await _auth.createUserWithEmailAndPassword(
+          //             email: _email.text, password: _password.text);
+          //
+          //         if (newUser != null) {
+          //           print("user not null");
+          //           Navigator.pushNamed(context, 'welcome_screen');
+          //         } else {
+          //           print("null");
+          //         }
+          //       } catch (e) {
+          //         print(e);
+          //       }
+          //     } catch (e) {
+          //       print(e);
+          //     }
+          //
+        } else
+          print("Error");
       },
       child: Container(
         height: 50,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(39, 138, 189, 1),
+          color: const Color.fromRGBO(120, 148, 150, 0.8),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -330,17 +370,17 @@ class SignupPageState extends State<SignupPage> {
     //     );
 
     return Scaffold(
-      // backgroundColor: primaryColor,
+      backgroundColor: primaryColor,
       appBar: AppBar(
         title: Text(
           "Create Account",
           style: TextStyle(
-            color: Color.fromRGBO(39, 138, 189, 1),
+            color: Color.fromRGBO(120, 148, 150, 0.8),
           ),
         ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(39, 138, 189, 1), // <-- SEE HERE
+          color: Color.fromRGBO(120, 148, 150, 0.8), // <-- SEE HERE
         ),
       ),
       body: Container(
@@ -364,6 +404,10 @@ class SignupPageState extends State<SignupPage> {
               const SizedBox(
                 height: 5,
               ),
+              idNumberField,
+              const SizedBox(
+                height: 5,
+              ),
               emailField,
               const SizedBox(
                 height: 5,
@@ -380,7 +424,9 @@ class SignupPageState extends State<SignupPage> {
               const SizedBox(
                 height: 30,
               ),
-              signinbutton,
+              isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : signinbutton,
             ],
           ),
         ),
@@ -388,37 +434,68 @@ class SignupPageState extends State<SignupPage> {
     );
   }
 
-  // Future signUpmethod() async {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (context) => Center(
-  //             child: CircularProgressIndicator(),
-  //           ));
-  //
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: _email.text.trim(), password: _password.text.trim());
-  //
-  //     // Navigator.of(context)
-  //     //     .push(MaterialPageRoute(builder: (context) => DashBoard()));
-  //
-  //     // Navigator.pushAndRemoveUntil(
-  //     //   context,
-  //     //   MaterialPageRoute(builder: (context) => DashBoard()),
-  //     //       (Route<dynamic> route) => false,
-  //     // );
-  //
-  //   } on FirebaseAuthException catch (e) {
-  //     print(e);
-  //   }
-  // }
-  //
-  // void signUpUser() async {
-  //   FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
-  //       email: _email.text.trim(),
-  //       password: _password.text.trim(),
-  //       context: context,
-  //       phone: _phoneNumber.text.trim());
-  // }
+  void verifyPhone() async {
+    String number = "+967${_phoneNumber.text}";
+    print(number);
+    await auth.verifyPhoneNumber(
+      timeout: const Duration(minutes: 2),
+      phoneNumber: "+967${_phoneNumber.text}",
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        /* await auth.signInWithCredential(credential).then((value) {
+          print("You are logged in successfully");
+        });
+      */
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.message);
+        showSnackBar(context, e.message.toString());
+        isLoading = false;
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => VerifyOTP(verificationId)));
+        otpVisibility = true;
+        verificationID = verificationId;
+        setState(() {
+          isLoading = false;
+        });
+        print(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+// Future signUpmethod() async {
+//   showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (context) => Center(
+//             child: CircularProgressIndicator(),
+//           ));
+//
+//   try {
+//     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+//         email: _email.text.trim(), password: _password.text.trim());
+//
+//     // Navigator.of(context)
+//     //     .push(MaterialPageRoute(builder: (context) => DashBoard()));
+//
+//     // Navigator.pushAndRemoveUntil(
+//     //   context,
+//     //   MaterialPageRoute(builder: (context) => DashBoard()),
+//     //       (Route<dynamic> route) => false,
+//     // );
+//
+//   } on FirebaseAuthException catch (e) {
+//     print(e);
+//   }
+// }
+//
+// void signUpUser() async {
+//   FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+//       email: _email.text.trim(),
+//       password: _password.text.trim(),
+//       context: context,
+//       phone: _phoneNumber.text.trim());
+// }
 }

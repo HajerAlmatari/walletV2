@@ -296,7 +296,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
     _phone = obj.getPhone();
     _password = obj.getPassword();
     var response = await http.post(
-      Uri.parse('https://walletv.azurewebsites.net/api/Register/new'),
+      Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
       body: jsonEncode({
         'firstName': _firstName,
         'lastName': _lastName,
