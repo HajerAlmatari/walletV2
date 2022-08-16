@@ -11,7 +11,7 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -25,14 +25,14 @@ class TransactionCard extends StatelessWidget {
               Container(
                 height: 100,
                 width: 60,
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   //color: transactionModel.color,
                 ),
                 child: Image.asset(transactionModel.avatar),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Column(
@@ -41,11 +41,11 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(
                     transactionModel.name,
-                    style: TextStyle(fontSize: 13, color: Colors.red),
+                    style: const TextStyle(fontSize: 13, color: Colors.red),
                   ),
                   Text(
                     transactionModel.date,
-                    style: TextStyle(fontSize: 10, color: Colors.green),
+                    style: const TextStyle(fontSize: 10, color: Colors.green),
                   ),
                 ],
               )
@@ -60,19 +60,19 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(
                     transactionModel.currentBalance,
-                    style: TextStyle(fontSize: 13, color: Colors.red),
+                    style: const TextStyle(fontSize: 13, color: Colors.red),
                   ),
                   Row(
                     children: [
                       transactionModel.changePrecentageIndicator == "up"?
-                          Icon(FontAwesomeIcons.levelUpAlt,
+                          const Icon(FontAwesomeIcons.levelUpAlt,
                           size: 10,
                           color: Colors.green,):
-                          Icon(FontAwesomeIcons.levelDownAlt,
+                          const Icon(FontAwesomeIcons.levelDownAlt,
                           size: 10,
                           color: Colors.red,),
-                      SizedBox(height: 5,),
-                      Text(transactionModel.changePrecentage, style: TextStyle(fontSize: 10),)
+                      const SizedBox(height: 5,),
+                      Text(transactionModel.changePrecentage, style: const TextStyle(fontSize: 10),)
                     ],
                   )
                 ],

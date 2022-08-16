@@ -16,9 +16,6 @@ class PurchasesPayment extends StatefulWidget {
 }
 
 class _PurchasesPaymentState extends State<PurchasesPayment> {
-  // ========================================================
-  // ======================     BarCode    ==================
-  // ========================================================
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
@@ -134,7 +131,7 @@ class _PurchasesPaymentState extends State<PurchasesPayment> {
       isExpanded: true,
       hint: Text(
         "$selectedValue",
-        style: TextStyle(fontSize: 14),
+        style:const TextStyle(fontSize: 14),
       ),
       icon: const Icon(
         Icons.arrow_drop_down,
@@ -172,27 +169,27 @@ class _PurchasesPaymentState extends State<PurchasesPayment> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Transfer to Name',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
+        backgroundColor: const Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
         child: Form(
           key: _formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Please select the account'),
-              SizedBox(
+              const Text('Please select the account'),
+              const SizedBox(
                 height: 10,
               ),
               subAccounts,
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               InputField(
@@ -205,8 +202,8 @@ class _PurchasesPaymentState extends State<PurchasesPayment> {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: Text("Scan the wallet QR"),
-                        content: Container(
+                        title: const Text("Scan the wallet QR"),
+                        content: SizedBox(
                           height: 200,
                           child: QRView(
                             key: qrKey,
@@ -224,16 +221,16 @@ class _PurchasesPaymentState extends State<PurchasesPayment> {
                       ),
                     );
                   },
-                  icon: Icon(Icons.qr_code_scanner),
+                  icon: const Icon(Icons.qr_code_scanner),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InputField(amountController, TextInputType.number,
                   'Enter the amount', false,
-                  suffixIcon: Icon(Icons.money)),
-              SizedBox(
+                  suffixIcon: const Icon(Icons.money)),
+              const SizedBox(
                 height: 20,
               ),
               transferButton,

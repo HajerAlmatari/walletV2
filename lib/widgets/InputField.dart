@@ -10,7 +10,7 @@ class InputField extends StatelessWidget{
   final Widget? suffixIcon;
 
 
-  InputField(
+   InputField(
       this.inputController, this.inputType, this.hintText, this.withValidator,{this.validator, this.suffixIcon});
   @override
   Widget build(BuildContext context) {

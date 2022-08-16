@@ -33,10 +33,11 @@ class _NavScreenState extends State<NavScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SaveAccount obj = new SaveAccount();
+    SaveAccount obj = SaveAccount();
     print("I'm in the Second" + obj.getId().toString());
 
     getSubAccounts(obj.getId());
+
   }
 
   getSubAccounts(int accountId) async {
@@ -56,7 +57,7 @@ class _NavScreenState extends State<NavScreen> {
   static TextStyle optionStyle =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
-    TabBarView(
+    const TabBarView(
       children: [
         CreditCardScreen(),
         //SavingsScreen(),
@@ -79,87 +80,101 @@ class _NavScreenState extends State<NavScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState((){
+      //
+      // WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //   ShowCaseWidget.of(context).startShowCase([_key1]);
+      // });
+
+      // ShowCaseWidget.of(context).startShowCase([_key1]);
+    });
+    void _onPress() {
+      print('I am pressed');
+    }
     final user = context.read<FirebaseAuthMethods>().user;
-    return DefaultTabController(
-      length: 1,
-      child: Scaffold(
-        drawer: Showcase(child: NavigationDrawer(), key: _key2, description: "Manage Your Account",),
-        appBar: AppBar(
-          actions: [
-            IconButton(onPressed: () {
-              setState((){
+    return FlatButton(
+      onPressed: _onPress,
+      child: DefaultTabController(
+        length: 1,
+        child: Scaffold(
+          drawer: Showcase(key: _key2, description: "Manage Your Account",child: NavigationDrawer(),),
+          appBar: AppBar(
+            actions: [
+              IconButton(onPressed: () {
+                setState((){
 
-                ShowCaseWidget.of(context).startShowCase([_key1,_key2]);
+                  ShowCaseWidget.of(context).startShowCase([_key1,_key2]);
 
 
-                //
-                  // WidgetsBinding.instance.addPostFrameCallback((_) async {
-                  //   ShowCaseWidget.of(context).startShowCase([_key1]);
-                  // });
+                  //
+                    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+                    //   ShowCaseWidget.of(context).startShowCase([_key1]);
+                    // });
 
-                // ShowCaseWidget.of(context).startShowCase([_key1]);
-              });
-            }, icon: Icon(Icons.help_outline_sharp,),),
-          ],
-          title: Text("User Name"),
-          centerTitle: true,
-          backgroundColor: CDarkerColor,
-          // bottom: const TabBar(
-          //   indicatorColor: Colors.white,
-          //   indicatorWeight: 5,
-          //   tabs: [
-          //     Tab(
-          //       text: "Account Activity",
-          //       icon: Icon(Icons.credit_card),
-          //     ),
-          //     //Tab(text: "Saving", icon: Icon(Icons.savings),),
-          //   ],
-          // ),
-          // elevation: 0,
-          // flexibleSpace: Container(
-          //   decoration: const BoxDecoration(
-          //       gradient: LinearGradient(
-          //     colors: [CDarkerColor, CLighterColor],
-          //     begin: Alignment.bottomRight,
-          //     end: Alignment.topLeft,
-          //   )),
-          // ),
-        ),
-        //drawer: const DrawerWidget(),
-        body: Container(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        /*
-        const TabBarView(
-          children: [f
-            CreditCardScreen(),
-            //SavingsScreen(),
-          ],
-        ),
+                  // ShowCaseWidget.of(context).startShowCase([_key1]);
+                });
+              }, icon: Icon(Icons.help_outline_sharp,),),
+            ],
+            title: Text("User Name"),
+            centerTitle: true,
+            backgroundColor: CDarkerColor,
+            // bottom: const TabBar(
+            //   indicatorColor: Colors.white,
+            //   indicatorWeight: 5,
+            //   tabs: [
+            //     Tab(
+            //       text: "Account Activity",
+            //       icon: Icon(Icons.credit_card),
+            //     ),
+            //     //Tab(text: "Saving", icon: Icon(Icons.savings),),
+            //   ],
+            // ),
+            // elevation: 0,
+            // flexibleSpace: Container(
+            //   decoration: const BoxDecoration(
+            //       gradient: LinearGradient(
+            //     colors: [CDarkerColor, CLighterColor],
+            //     begin: Alignment.bottomRight,
+            //     end: Alignment.topLeft,
+            //   )),
+            // ),
+          ),
+          //drawer: const DrawerWidget(),
+          body: Container(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          /*
+          const TabBarView(
+            children: [f
+              CreditCardScreen(),
+              //SavingsScreen(),
+            ],
+          ),
 
-         */
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Showcase(
-                overlayPadding: EdgeInsets.all(8),
-                contentPadding: EdgeInsets.all(20),
-                child: Icon(Icons.book_online_outlined),
-                key: _key1,
-                description: "Show all Your Transactions History",
-                showcaseBackgroundColor: CDarkerColor,
-                descTextStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+           */
+          bottomNavigationBar: BottomNavigationBar(
+            items: <BottomNavigationBarItem>[
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
-              label: 'Transactions History',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue[800],
-          onTap: _onItemTapped,
+              BottomNavigationBarItem(
+                icon: Showcase(
+                  overlayPadding: const EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(20),
+                  key: _key1,
+                  description: "Show all Your Transactions History",
+                  showcaseBackgroundColor: CDarkerColor,
+                  descTextStyle: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+                  child: const Icon(Icons.book_online_outlined),
+                ),
+                label: 'Transactions History',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue[800],
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

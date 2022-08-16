@@ -1,15 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walletapp/login.dart';
 import 'package:walletapp/screens/fingerprint.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
-import 'package:walletapp/services/google_sign_in.dart';
 import 'signup.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 class WelcomePage extends StatefulWidget {
   WelcomePageState createState() => WelcomePageState();
@@ -20,17 +14,15 @@ class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context);
-    final logo = Container(
-      child: Image.asset(
-        width: 200,
-        height: 200,
-        'images/bank_logo.png',
-      ),
+    final logo = Image.asset(
+      width: 200,
+      height: 200,
+      'images/bank_logo.png',
     );
     final signinbutton = GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+            .push(MaterialPageRoute(builder: (context) => const LoginPage()));
       },
       child: Container(
         height: 70,
@@ -121,7 +113,7 @@ class WelcomePageState extends State<WelcomePage> {
             )
           ],
         ),
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -130,8 +122,8 @@ class WelcomePageState extends State<WelcomePage> {
               width: 30,
               height: 30,
             ),
-            SizedBox(width: 20,),
-            Text("Sign In With Google")
+            const SizedBox(width: 20,),
+            const Text("Sign In With Google")
           ],
         ),
       ),
@@ -147,7 +139,7 @@ class WelcomePageState extends State<WelcomePage> {
 
     Widget divider() {
       return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: const <Widget>[
             SizedBox(

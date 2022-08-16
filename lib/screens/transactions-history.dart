@@ -18,7 +18,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   void initState() {
     super.initState();
 
-    SaveAccount obj = new SaveAccount();
+    SaveAccount obj = SaveAccount();
     print("I'm in the Second" + obj.getId().toString());
 
     getData(obj.getId());
@@ -43,7 +43,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
           child: CircularProgressIndicator(),
         ),
         child: transactionsList?.length == 0
-            ? Center(
+            ? const Center(
                 child: Text("you have'nt any trnsaction yet"),
               )
             : ListView.builder(
@@ -52,7 +52,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                   print("Items Count${transactionsList?.length}");
 
                   return Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -65,14 +65,14 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                               ),
                             ),
                           ),
-                          tileColor: Color.fromRGBO(39, 138, 189, 1),
+                          tileColor: const Color.fromRGBO(39, 138, 189, 1),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Amount : ',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -94,7 +94,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Description : ',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -114,7 +114,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Status : ',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),

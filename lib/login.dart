@@ -20,11 +20,14 @@ import 'forgetPassword.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
   LoginPageState createState() => LoginPageState();
 }
 
 class LoginPageState extends State<LoginPage> {
-  Color primaryColor = Color.fromRGBO(39, 138, 189, 1);
+  Color primaryColor = const Color.fromRGBO(39, 138, 189, 1);
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -58,7 +61,7 @@ class LoginPageState extends State<LoginPage> {
         var json = response.body;
         LoginResponse loginResponse = loginResponseFromJson(json);
 
-        SaveAccount obj = new SaveAccount();
+        SaveAccount obj = SaveAccount();
         print(loginResponse.accountId.elementAt(0));
         int account = loginResponse.accountId.elementAt(0);
         obj.setId(account);
@@ -164,7 +167,7 @@ class LoginPageState extends State<LoginPage> {
         height: 60,
         width: 370,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(39, 138, 189, 1),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -206,7 +209,7 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
     final signUp = Container(
-      alignment: Alignment(1, 0),
+      alignment: const Alignment(1, 0),
       child: InkWell(
         onTap: () {
           Navigator.of(context)
@@ -226,7 +229,7 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Login",
           style: TextStyle(
             color: Color.fromRGBO(39, 138, 189, 1),
@@ -238,7 +241,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             alignment: Alignment.topCenter,
             image: AssetImage("images/wallet-backgroud.png"),
@@ -251,8 +254,8 @@ class LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           height: 350,
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-          margin: EdgeInsets.fromLTRB(10, 100, 10, 20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+          margin: const EdgeInsets.fromLTRB(10, 100, 10, 20),
           child: Form(
             key: _formkey,
             child: ListView(
@@ -311,7 +314,7 @@ class LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(
+      builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
     );

@@ -1,20 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:walletapp/screens/nav_screen.dart';
-import '../Api/RemoteService.dart';
-import '../Models/SaveAccount.dart';
 import '../Models/SubAccount.dart';
 import '../Models/SubAccountNumbers.dart';
 import '../widgets/InputField.dart';
 import 'package:http/http.dart' as http;
-
-import '../widgets/showSnackBar.dart';
-
 
 class TBHA extends StatefulWidget {
   const TBHA({Key? key}) : super(key: key);
@@ -45,7 +38,7 @@ class _TBHAState extends State<TBHA> {
     final _formkey = GlobalKey<FormState>();
 
 
-    SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
+    SubAccountNumbers subAccountNumbers= SubAccountNumbers();
     final  List<SubAccount> subAccountsList = subAccountNumbers.getSubAccountList();
     print("Sub Account List Is  $subAccountsList");
     final List<String> fromAccount = [];
@@ -74,21 +67,21 @@ class _TBHAState extends State<TBHA> {
       if (response.statusCode == 200) {
         print("SuccessFully");
 
-        EasyLoading.showSuccess("Transfer Has Been Completed Successfully",duration: Duration(milliseconds: 1000));
+        EasyLoading.showSuccess("Transfer Has Been Completed Successfully",duration: const Duration(milliseconds: 1000));
 
 
-        await Future.delayed(Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 1000));
 
         EasyLoading.dismiss();
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-            NavScreen()), (Route<dynamic> route) => false);
+            const NavScreen()), (Route<dynamic> route) => false);
 
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
 
         EasyLoading.showError(response.body);
-        await Future.delayed(Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 1000));
 
         EasyLoading.dismiss();
 

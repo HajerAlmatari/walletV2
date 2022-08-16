@@ -5,11 +5,14 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
+  const ForgetPasswordPage({Key? key}) : super(key: key);
+
+  @override
   ForgetPasswordPageState createState() => ForgetPasswordPageState();
 }
 
 class ForgetPasswordPageState extends State<ForgetPasswordPage> {
-  TextEditingController _userEmail = TextEditingController();
+  final TextEditingController _userEmail = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -17,9 +20,9 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
     // TextEditingController _userEmail = TextEditingController();
     EasyLoading.init();
     return Scaffold(
-      backgroundColor: Color.fromRGBO(39, 138, 189, 1),
+      backgroundColor: const Color.fromRGBO(39, 138, 189, 1),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Forget Password",
           style: TextStyle(
             color: Color.fromRGBO(39, 138, 189, 1),
@@ -32,8 +35,8 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
       ),
       body: Container(
         height: 190,
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+        margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(30)),
         child: Form(
@@ -41,13 +44,13 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _userEmail,
                   cursorColor: Colors.black,
                   textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Email',
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -58,19 +61,19 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(50),
-                    primary: Color.fromRGBO(39, 138, 189, 1),
+                    minimumSize: const Size.fromHeight(50),
+                    primary: const Color.fromRGBO(39, 138, 189, 1),
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       resetPassword();
                     }
                   },
-                  icon: Icon(Icons.email_outlined),
-                  label: Text(
+                  icon: const Icon(Icons.email_outlined),
+                  label: const Text(
                     'Reset Password',
                     style: TextStyle(fontSize: 15),
                   ),
@@ -90,7 +93,8 @@ class ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _userEmail.text.trim());
-      EasyLoading.showSuccess('Check Your Email to Reset Password',duration: Duration(milliseconds: 2000));
+      EasyLoading.showSuccess('Check Your Email to Reset Password',duration:
+      const Duration(milliseconds: 2000));
       Navigator.of(context).popUntil((route) => route.isFirst);
       EasyLoading.dismiss();
     } on FirebaseAuthException catch (e) {

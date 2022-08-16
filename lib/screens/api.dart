@@ -39,7 +39,7 @@ class _APIScreenState extends State<APIScreen> {
     return Container(
       color: Colors.white,
       child: Center(
-         child:  Text(name,style: TextStyle(fontSize: 30),),
+         child:  Text(name,style: const TextStyle(fontSize: 30),),
       ),
     );
   }

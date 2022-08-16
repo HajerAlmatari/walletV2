@@ -13,8 +13,8 @@ class CustomListTile extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.blueGrey,),
-          SizedBox(width: 15.0,),
-          Text("$text", style: TextStyle(fontSize: 16.0),),
+          const SizedBox(width: 15.0,),
+          Text("$text", style: const TextStyle(fontSize: 16.0),),
         ],
       ),
     );

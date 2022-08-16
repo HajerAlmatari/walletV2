@@ -9,23 +9,23 @@ class TransactionsReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 12.0),
+      margin: const EdgeInsets.only(top: 12.0),
       child: Column(
     children: [
-      SizedBox(
+      const SizedBox(
         height: 30,
       ),
-      Text(
+      const Text(
         "Transactions History",
         style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             color: Colors.black45),
       ),
-      SizedBox(
+      const SizedBox(
         height: 15,
       ),
-      Container(
+       SizedBox(
         height: MediaQuery.of(context).size.height *.8,
         child: ListView.separated(
             itemBuilder: (context, index) {
@@ -33,7 +33,7 @@ class TransactionsReportsPage extends StatelessWidget {
                   transactionModel: myTransactions[index]);
             },
             separatorBuilder: (context, index) {
-              return SizedBox(height: 10);
+              return const SizedBox(height: 10);
             },
             itemCount: myTransactions.length),
       ),
