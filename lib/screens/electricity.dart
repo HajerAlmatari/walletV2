@@ -46,7 +46,7 @@ class _ElectricityState extends State<Electricity> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
-          "subAccountId": selectedValue.substring(0, 10).toString(),
+          "subAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
           "number": subscriberNumberController.text,
           "amount": amountController.text,
           "type" : 4,
@@ -57,7 +57,10 @@ class _ElectricityState extends State<Electricity> {
       );
 
       if (response.statusCode == 200) {
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
+
         print("SuccessFully");
+
 
         EasyLoading.showSuccess("Transaction Has Been Completed Successfully",duration: Duration(milliseconds: 1000));
 
@@ -75,6 +78,8 @@ class _ElectricityState extends State<Electricity> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
+
         EasyLoading.showError(response.body);
         await Future.delayed(Duration(milliseconds: 1000));
 

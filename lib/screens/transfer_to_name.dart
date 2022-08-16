@@ -43,7 +43,7 @@ class _TTNState extends State<TTN> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/BankServices/transferToPerson'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, 10),
+          "senderSubAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
           "receiverphoneNumber": phoneController.text,
           "receiverName" : nameController.text,
           "amonut": amountController.text,
@@ -55,6 +55,7 @@ class _TTNState extends State<TTN> {
 
       if (response.statusCode == 200) {
         print("SuccessFully");
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
         EasyLoading.showSuccess("Transfer Completed Successfully");
 
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
@@ -69,6 +70,7 @@ class _TTNState extends State<TTN> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
 
         EasyLoading.showError(response.body);
         await Future.delayed(Duration(milliseconds: 2000));

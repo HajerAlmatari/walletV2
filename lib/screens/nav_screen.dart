@@ -33,17 +33,24 @@ class _NavScreenState extends State<NavScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("Hello From Nav Screen");
     SaveAccount obj = new SaveAccount();
-    print("I'm in the Second" + obj.getId().toString());
+    print("I'm in the Second From Nav Screen" + obj.getId().toString());
 
     getSubAccounts(obj.getId());
+
+    print("100078729-YR".substring(0, "100078729-YR".indexOf('-')));
+
   }
 
   getSubAccounts(int accountId) async {
+    print("Get Sub Accounts From Nav Screen");
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
     SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
     subAccountNumbers.setSubAccountList(subAccountsList!);
+
+    print("Sub Account List From Nav Screen : "+subAccountNumbers.getSubAccountList());
 
     if (subAccountsList != null) {
       for (int i = 0; i < subAccountsList!.length; i++) {
