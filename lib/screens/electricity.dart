@@ -102,8 +102,29 @@ class _ElectricityState extends State<Electricity> {
           print(subscriberNumberController.text);
           print(amountController.text);
 
-          EasyLoading.show();
-          postData();
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Electricity Payment'),
+              content:  Text('Are you sure to send ${amountController.text} from account ${selectedValue.toString()} to the electricity subscriber of number ${subscriberNumberController.text}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
         }
       },
       child: Container(

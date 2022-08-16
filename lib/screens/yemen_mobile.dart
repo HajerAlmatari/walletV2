@@ -93,8 +93,30 @@ class _YemenMobileState extends State<YemenMobile> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show();
-          postData();
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Pay Yemen Mobile Number'),
+              content:  Text('Are you sure to send ${amountController.text} from account ${selectedValue.toString()} to the phone number ${phoneController.text}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);

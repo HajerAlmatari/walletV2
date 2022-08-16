@@ -95,13 +95,36 @@ class _InternetADSLState extends State<InternetADSL> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show();
 
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);
 
-          postData();
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Internet ADSL Payment'),
+              content:  Text('Are you sure to Pay ${amountController.text} from account ${selectedValue.toString()} to Internet ADSL of number ${phoneController.text}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
+
         }
       },
       child: Container(

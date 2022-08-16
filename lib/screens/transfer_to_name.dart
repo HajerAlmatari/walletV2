@@ -92,9 +92,33 @@ class _TTNState extends State<TTN> {
 
       if (_formkey.currentState!.validate()) {
 
-        EasyLoading.show();
-          postData();
-        }
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Send remittance'),
+            content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${nameController.text} , ${phoneController.text} !'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  EasyLoading.show();
+                  postData();
+
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+
+            ],
+          ),
+        );
+
+
+
+      }
       EasyLoading.dismiss();
 
       },
@@ -178,7 +202,7 @@ class _TTNState extends State<TTN> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Transfer to Name',
+          'Send Remittance',
           style: TextStyle(
             color: Colors.white,
           ),
