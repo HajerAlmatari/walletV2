@@ -42,7 +42,7 @@ class _TTNState extends State<TTN> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/BankServices/transferToPerson'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, 10),
+          "senderSubAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
           "receiverphoneNumber": phoneController.text,
           "receiverName" : nameController.text,
           "amonut": amountController.text,
@@ -54,6 +54,7 @@ class _TTNState extends State<TTN> {
 
       if (response.statusCode == 200) {
         print("SuccessFully");
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
         EasyLoading.showSuccess("Transfer Completed Successfully");
 
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
@@ -68,6 +69,7 @@ class _TTNState extends State<TTN> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
 
         EasyLoading.showError(response.body);
         await Future.delayed(const Duration(milliseconds: 2000));
@@ -89,9 +91,33 @@ class _TTNState extends State<TTN> {
 
       if (_formkey.currentState!.validate()) {
 
-        EasyLoading.show();
-          postData();
-        }
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Send remittance'),
+            content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${nameController.text} , ${phoneController.text} !'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  EasyLoading.show();
+                  postData();
+
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+
+            ],
+          ),
+        );
+
+
+
+      }
       EasyLoading.dismiss();
 
       },
@@ -174,8 +200,8 @@ class _TTNState extends State<TTN> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Transfer to Name',
+        title: Text(
+          'Send Remittance',
           style: TextStyle(
             color: Colors.white,
           ),

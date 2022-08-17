@@ -55,8 +55,8 @@ class _TBHAState extends State<TBHA> {
       var response = await http.post(
         Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToSameAccount'),
         body: jsonEncode({
-          "senderSubAccountId" : selectedValue.substring(0,10),
-          "receiverSubAccountId" : selectedValue2.substring(0,10),
+          "senderSubAccountId" : selectedValue.substring(0, selectedValue.indexOf('-')),
+          "receiverSubAccountId" : selectedValue2.substring(0, selectedValue2.indexOf('-')),
           "amonut" : amountController.text,
         }),
         headers: {
@@ -66,6 +66,8 @@ class _TBHAState extends State<TBHA> {
 
       if (response.statusCode == 200) {
         print("SuccessFully");
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
+        print(selectedValue2.substring(0, selectedValue2.indexOf('-')));
 
         EasyLoading.showSuccess("Transfer Has Been Completed Successfully",duration: const Duration(milliseconds: 1000));
 
@@ -79,6 +81,9 @@ class _TBHAState extends State<TBHA> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
+
+        print(selectedValue.substring(0, selectedValue.indexOf('-')));
+        print(selectedValue2.substring(0, selectedValue2.indexOf('-')));
 
         EasyLoading.showError(response.body);
         await Future.delayed(const Duration(milliseconds: 1000));
@@ -104,8 +109,30 @@ class _TBHAState extends State<TBHA> {
         if (_formkey.currentState!.validate()) {
           print(selectedValue.substring(0,10));
           print(selectedValue2.substring(0,10));
-          EasyLoading.show();
-         postData();
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Transfer Between Your Accounts'),
+              content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${selectedValue2.toString()} account !'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
         }
       },
       child: Container(

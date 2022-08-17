@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
 import 'package:walletapp/screens/transactions-history.dart';
-import 'package:walletapp/screens/transactions/bottom_navigation.dart';
-import 'package:walletapp/screens/transfer_between_holder_accounts.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../Api/RemoteService.dart';
@@ -38,13 +35,25 @@ class _NavScreenState extends State<NavScreen> {
 
     getSubAccounts(obj.getId());
 
+
+    print("Hello From Nav Screen");
+   print("I'm in the Second From Nav Screen" + obj.getId().toString());
+
+    getSubAccounts(obj.getId());
+
+    print("100078729-YR".substring(0, "100078729-YR".indexOf('-')));
+
+
   }
 
   getSubAccounts(int accountId) async {
+    print("Get Sub Accounts From Nav Screen");
     var response = await RemoteService().getAllSubAccount(accountId);
     subAccountsList = response;
     SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
     subAccountNumbers.setSubAccountList(subAccountsList!);
+
+    print("Sub Account List From Nav Screen : "+subAccountNumbers.getSubAccountList());
 
     if (subAccountsList != null) {
       for (int i = 0; i < subAccountsList!.length; i++) {

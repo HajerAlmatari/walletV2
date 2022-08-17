@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,6 +35,8 @@ class _YemenMobileState extends State<YemenMobile> {
     }
     String selectedValue = fromAccount[0];
 
+
+
     postData() async {
       var response = await http.post(
         Uri.parse(
@@ -44,12 +45,13 @@ class _YemenMobileState extends State<YemenMobile> {
           "subAccountId": selectedValue.substring(0, 10).toString(),
           "number": phoneController.text,
           "amount": amountController.text,
-          "type": 6,
+          "type" : 6,
         }),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
+
       if (response.statusCode == 200) {
         print("SuccessFully");
 
@@ -68,8 +70,7 @@ class _YemenMobileState extends State<YemenMobile> {
         //
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
-      }
-      else {
+      } else {
         EasyLoading.showError(response.body);
         await Future.delayed(Duration(milliseconds: 1000));
 
@@ -79,8 +80,11 @@ class _YemenMobileState extends State<YemenMobile> {
         // print(response.statusCode);
       }
       // print(response.body);
-
     }
+
+
+
+
 
     String PhonePattern =
         r'(^((7)[7]\d{7})$)';
@@ -89,8 +93,30 @@ class _YemenMobileState extends State<YemenMobile> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show();
-          postData();
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Pay Yemen Mobile Number'),
+              content:  Text('Are you sure to send ${amountController.text} from account ${selectedValue.toString()} to the phone number ${phoneController.text}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);
@@ -177,27 +203,27 @@ class _YemenMobileState extends State<YemenMobile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Yemen Mobile',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color.fromRGBO(39, 138, 189, 1),
+        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
-        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
         child: Form(
           key: _formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text('Please select the account'),
-              const SizedBox(
+              Text('Please select the account'),
+              SizedBox(
                 height: 10,
               ),
               subAccounts,
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               InputField(
@@ -215,15 +241,9 @@ class _YemenMobileState extends State<YemenMobile> {
                     return null;
                   }
                 },
-                suffixIcon: InkWell(
-                    onTap:() async {
-                      final PhoneContact contact =
-                      await FlutterContactPicker.pickPhoneContact();
-                      phoneController.text = contact.phoneNumber?.number.toString()??"";
-                    },
-                    child: const Icon(Icons.perm_contact_calendar_outlined)),
+                suffixIcon: Icon(Icons.perm_contact_calendar_outlined),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               InputField(
@@ -244,4 +264,3 @@ class _YemenMobileState extends State<YemenMobile> {
     );
   }
 }
-

@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/screens/nav_screen.dart';
 import '../widgets/InputField.dart';
 import 'package:http/http.dart' as http;
 
@@ -56,7 +57,7 @@ class _TTOAState extends State<TTOA> {
       var response = await http.post(
         Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/transferToAnotherAccount'),
         body: jsonEncode({
-          "senderSubAccountId" : selectedValue.substring(0,10),
+          "senderSubAccountId" : selectedValue.substring(0, selectedValue.indexOf('-')),
           "receiverSubAccountId" : toAccountController.text,
           "amonut" : amountController.text,
         }),
@@ -69,6 +70,7 @@ class _TTOAState extends State<TTOA> {
 
         EasyLoading.showSuccess(response.body);
         print("SuccessFully");
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
         EasyLoading.dismiss();
 
 
@@ -77,8 +79,8 @@ class _TTOAState extends State<TTOA> {
         //
         await Future.delayed(Duration(milliseconds: 1000));
 
-        Navigator.pop(context);
-        //
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            NavScreen()), (Route<dynamic> route) => false);        //
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
@@ -86,6 +88,8 @@ class _TTOAState extends State<TTOA> {
         EasyLoading.dismiss();
         // showSnackBar(context, response.body);
         print("Not SuccessFully");
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
+
         // print(response.body);
         // print(response.statusCode);
       }
@@ -99,9 +103,29 @@ class _TTOAState extends State<TTOA> {
       onTap: () {
         if (_formkey.currentState!.validate()) {
 
-          EasyLoading.show();
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Transfer to Other Account'),
+              content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${toAccountController.text} account !'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
 
-          postData();
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
         }
 
       },

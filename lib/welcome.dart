@@ -134,6 +134,11 @@ class WelcomePageState extends State<WelcomePage> {
 
         /////////New Login Option/////////////
         context.read<FirebaseAuthMethods>().googleLogin();
+
+
+        //new function :(
+
+        // context.read<FirebaseAuthMethods>().signInWithGoogle(context);
       },
     );
 

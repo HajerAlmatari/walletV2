@@ -103,6 +103,61 @@ class FirebaseAuthMethods {
     }
   }
 
+/*
+  Future<void> signInWithGoogle(BuildContext context) async{
+    try{
+
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+      if(googleAuth?.accessToken!=null && googleAuth?.idToken!=null){
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        print("Access Token : "+ credential.accessToken.toString());
+        print("ID Token : "+ credential.idToken.toString());
+
+        UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+
+
+        if(userCredential.user != null){
+
+          print("user Credintial : "+userCredential.user.toString());
+
+
+
+          if(userCredential.additionalUserInfo!.isNewUser){
+            //post sign up
+
+            print("New User");
+          }
+
+          else{
+            //post Log in
+            print("Old User");
+          }
+
+        }
+
+
+
+
+      }
+
+
+
+
+    }on FirebaseAuthException catch(e){
+      showSnackBar(context, e.message!);
+    }
+  }
+
+*/
+
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
 
@@ -144,7 +199,7 @@ class FirebaseAuthMethods {
         // var name = _user!.displayName?.substring(0, _user!.displayName?.indexOf(" "));
         // var lastName = _user!.displayName?.substring(_user!.displayName?.indexOf(" ")! + 1);
 
-
+/*
           var response = await http.post(
             Uri.parse('https://walletv1.azurewebsites.net/api/Register/new'),
             body: jsonEncode({
@@ -174,6 +229,9 @@ class FirebaseAuthMethods {
             print(response.statusCode);
           }
           print(response.body);
+
+
+ */
 
       }
 

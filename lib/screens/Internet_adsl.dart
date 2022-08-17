@@ -43,7 +43,7 @@ class _InternetADSLState extends State<InternetADSL> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
-          "subAccountId": selectedValue.substring(0, 10).toString(),
+          "subAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
           "number": phoneController.text,
           "amount": amountController.text,
           "type" : 5,
@@ -55,6 +55,7 @@ class _InternetADSLState extends State<InternetADSL> {
 
       if (response.statusCode == 200) {
         print("SuccessFully");
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
 
         EasyLoading.showSuccess("Transaction Has Been Completed Successfully",duration: Duration(milliseconds: 1000));
 
@@ -73,6 +74,7 @@ class _InternetADSLState extends State<InternetADSL> {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
+        print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
         EasyLoading.showError(response.body);
         await Future.delayed(Duration(milliseconds: 1000));
 
@@ -93,13 +95,36 @@ class _InternetADSLState extends State<InternetADSL> {
     final transferButton = GestureDetector(
       onTap: () {
         if (_formkey.currentState!.validate()) {
-          EasyLoading.show();
 
           print(amountController.text);
           print(phoneController.text);
           print(selectedValue);
 
-          postData();
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Internet ADSL Payment'),
+              content:  Text('Are you sure to Pay ${amountController.text} from account ${selectedValue.toString()} to Internet ADSL of number ${phoneController.text}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: (){
+                    EasyLoading.show();
+                    postData();
+
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+
+              ],
+            ),
+          );
+
+
         }
       },
       child: Container(
