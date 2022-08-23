@@ -253,9 +253,9 @@ class _YemenMobileState extends State<YemenMobile> {
                 TextInputType.number,
                 'Enter the ammount',
                 false,
-                suffixIcon: Icon(Icons.money),
+                suffixIcon: const Icon(Icons.money),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               transferButton,

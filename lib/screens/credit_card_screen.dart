@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:walletapp/screens/transaction_card.dart';
 import 'package:walletapp/screens/transactions/make_transaction.dart';
-import 'package:walletapp/screens/transactions/my_buttons.dart';
-import 'package:walletapp/screens/transactions_list.dart';
-
 import '../Api/RemoteService.dart';
 import '../Models/SaveAccount.dart';
 import '../Models/SubAccount.dart';
-import '../constants.dart';
-import '../data/card_data.dart';
-import '../data/transaction_data.dart';
 import '../widgets/carousel.dart';
 import '../widgets/my_card.dart';
 
@@ -29,7 +22,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SaveAccount obj = new SaveAccount();
+    SaveAccount obj = SaveAccount();
     print("I'm in the Second      " + obj.getId().toString());
 
     getSubAccounts(obj.getId());
@@ -54,11 +47,15 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
 
   int currentIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
+    setState((){
+
+    });
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             alignment: Alignment.topCenter,
             image: AssetImage("images/wallet-backgroud.png"),
@@ -93,20 +90,6 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                 (index) => MyCard(
                                     subAccount:
                                         subAccountsList.elementAt(index))),
-                            // ListView.separated(
-                            //   itemBuilder: (context, index) {
-                            //     return MyCard(card: myCards[index]);
-                            //   },
-                            //   separatorBuilder: (context, index) {
-                            //     return const SizedBox(
-                            //       width: 10,
-                            //     );
-                            //   },
-                            //   itemCount: myCards.length,
-                            //   shrinkWrap: true,
-                            //   primary: false,
-                            //   scrollDirection: Axis.horizontal,
-                            // ),
                           ),
                         ),
                         CarouselWidget(3, currentIndex),
@@ -114,17 +97,17 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                     ),
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     "Transactions",
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.black45),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   // Container(

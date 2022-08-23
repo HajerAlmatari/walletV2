@@ -41,7 +41,7 @@ class _OtpState extends State<Otp> {
     };
   }
 
-  TextEditingController _otpController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
   bool otpVisibility = false;
   String verificationID = "";
@@ -50,26 +50,26 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xfff7f6fb),
+      backgroundColor: const Color(0xfff7f6fb),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              Text(
+              const Text(
                 'Verification',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "Enter your OTP code number",
                 style: TextStyle(
                   fontSize: 14,
@@ -78,11 +78,11 @@ class _OtpState extends State<Otp> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 28,
               ),
               Container(
-                padding: EdgeInsets.all(25),
+                padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -102,7 +102,7 @@ class _OtpState extends State<Otp> {
                           }
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 22,
                       ),
                       SizedBox(
@@ -115,7 +115,7 @@ class _OtpState extends State<Otp> {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Color.fromRGBO(39, 138, 189, 1)),
+                                const Color.fromRGBO(39, 138, 189, 1)),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -123,7 +123,7 @@ class _OtpState extends State<Otp> {
                               ),
                             ),
                           ),
-                          child: Padding(
+                          child: const Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Verify',
@@ -136,7 +136,7 @@ class _OtpState extends State<Otp> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
 

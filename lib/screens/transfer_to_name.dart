@@ -8,7 +8,6 @@ import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/SubAccountNumbers.dart';
 import 'package:walletapp/constants.dart';
 import 'package:walletapp/screens/nav_screen.dart';
-import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +29,7 @@ class _TTNState extends State<TTN> {
   @override
   Widget build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
-    SubAccountNumbers subAccountNumbers = new SubAccountNumbers();
+    SubAccountNumbers subAccountNumbers = SubAccountNumbers();
     final List<SubAccount> subAccountsList =
         subAccountNumbers.getSubAccountList();
     final List<String> fromAccount = [];
@@ -65,7 +64,7 @@ class _TTNState extends State<TTN> {
         // EasyLoading.showSuccess("Account Created Successfully",duration: Duration(milliseconds: 500));
         //
         // await Future.delayed(Duration(milliseconds: 1000));
-        await Future.delayed(Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 1000));
         //
 
         EasyLoading.dismiss();
@@ -78,7 +77,7 @@ class _TTNState extends State<TTN> {
         print(selectedValue.substring(0, selectedValue.indexOf('-')));
 
         EasyLoading.showError(response.body);
-        await Future.delayed(Duration(milliseconds: 2000));
+        await Future.delayed(const Duration(milliseconds: 2000));
 
         EasyLoading.dismiss();
         Navigator.of(context).pop();
@@ -199,7 +198,7 @@ class _TTNState extends State<TTN> {
       isExpanded: true,
       hint: Text(
         "$selectedValue",
-        style: TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14),
       ),
       icon: const Icon(
         Icons.arrow_drop_down,
@@ -243,27 +242,27 @@ class _TTNState extends State<TTN> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color.fromRGBO(39, 138, 189, 1),
+        backgroundColor: const Color.fromRGBO(39, 138, 189, 1),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
         child: Form(
           key: _formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Please select the account'),
-              SizedBox(
+              const Text('Please select the account'),
+              const SizedBox(
                 height: 10,
               ),
               subAccounts,
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               InputField(
                   nameController, TextInputType.text, 'Enter the Name', false,
-                  suffixIcon: Icon(Icons.person)),
-              SizedBox(
+                  suffixIcon: const Icon(Icons.person)),
+              const SizedBox(
                 height: 10,
               ),
               InputField(
@@ -283,13 +282,13 @@ class _TTNState extends State<TTN> {
                 },
                 suffixIcon: null,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InputField(amountController, TextInputType.number,
                   'Enter the amount', false,
                   suffixIcon: Icon(Icons.money)),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               transferButton,

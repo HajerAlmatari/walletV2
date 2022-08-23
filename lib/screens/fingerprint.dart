@@ -14,7 +14,7 @@ class FingerprintPage extends StatelessWidget {
      try {
 
        bool authStatus = await auth.authenticate(
-            androidAuthStrings: AndroidAuthMessages(
+            androidAuthStrings: const AndroidAuthMessages(
               signInTitle: "auth-confirm", biometricHint: ""),
            localizedReason: 'scan-fingerprint',
            useErrorDialogs: true,
@@ -38,25 +38,64 @@ class FingerprintPage extends StatelessWidget {
    }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 100,
-      child: Scaffold(
-        body: ElevatedButton(
-          onPressed: () async{
-            print("555555555");
-         bool isNotAuthenticated=await   _authenticateWithBiometrics(context);
-         if(!isNotAuthenticated) {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NavScreen(),
-                  ));
-            }
-          },
-          child: Text("Fingerprint"),
+    return GestureDetector(
+      child: Container(
+        height: 70,
+        width: 290,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(5, 5),
+              blurRadius: 10,
+            )
+          ],
+        ),
+        padding: const EdgeInsets.all(5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/fingerprint.svg',
+              width: 30,
+              height: 30,
+            ),
+            const SizedBox(width: 20,),
+            const Text("Fingerprint")
+          ],
         ),
       ),
+      onTap: () async{
+        print("555555555");
+        bool isNotAuthenticated=await _authenticateWithBiometrics(context);
+        if(!isNotAuthenticated) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavScreen(),
+              ));
+        }
+      },
     );
+    //   Container(
+    //   height: 50,
+    //   width: 260,
+    //   child: ElevatedButton(
+    //       onPressed: () async{
+    //         print("555555555");
+    //      bool isNotAuthenticated=await   _authenticateWithBiometrics(context);
+    //      if(!isNotAuthenticated) {
+    //           Navigator.pushReplacement(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) => const NavScreen(),
+    //               ));
+    //         }
+    //       },
+    //       child: Text("Fingerprint"),
+    //     ),
+    // );
   }
 }

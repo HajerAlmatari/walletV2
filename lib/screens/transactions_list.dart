@@ -16,17 +16,17 @@ class TransactionsList extends StatelessWidget {
     centerTitle: true,
     backgroundColor: CDarkerColor,
     leading: IconButton(
-    icon: Icon(Icons.arrow_back),
+    icon: const Icon(Icons.arrow_back),
     onPressed: ()=>Navigator.of(context).pop(),
     )),
       body: Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         height: 400,
         child: ListView.separated(itemBuilder: (context, index) {
           return TransactionCard(
               transactionModel: myTransactions[index]);
         }, separatorBuilder: (context, index) {
-          return SizedBox(height: 10);
+          return const SizedBox(height: 10);
         }, itemCount: myTransactions.length),
       ),
     );

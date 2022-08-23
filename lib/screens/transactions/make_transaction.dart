@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:walletapp/screens/Internet_adsl.dart';
 import 'package:walletapp/screens/electricity.dart';
 import 'package:walletapp/screens/pending_transactions.dart';
@@ -29,8 +28,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
               iconImagePath: "images/ycbExpress.svg",
               buttonText: "YCB Express\n",
               onTap: () => showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
@@ -45,8 +43,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
               iconImagePath: "images/money-bills.svg",
               buttonText: "Payment\n",
               onTap: () => showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
@@ -105,12 +102,12 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
   }
 
   Widget buildSheet1() => Container(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20),
       ),
     ),
-    padding: EdgeInsets.fromLTRB(10, 25, 10, 10),
+    padding:const EdgeInsets.fromLTRB(10, 25, 10, 10),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -122,12 +119,12 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
   );
 
   Widget buildSheet2() => Container(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20),
       ),
     ),
-    padding: EdgeInsets.fromLTRB(10, 25, 10, 10),
+    padding: const EdgeInsets.fromLTRB(10, 25, 10, 10),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -143,7 +140,7 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: ListTile(
           leading: leadingImage,
           title: Text(title),

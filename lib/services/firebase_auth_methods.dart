@@ -4,17 +4,12 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:walletapp/login.dart';
 import 'package:walletapp/screens/nav_screen.dart';
-import 'package:walletapp/screens/otp_verfication.dart';
 import 'package:walletapp/widgets/showOtpDialog.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 import '../Models/LoginResponse.dart';
 import '../Models/SaveAccount.dart';
 
@@ -258,7 +253,7 @@ class FirebaseAuthMethods {
           var json = response.body;
           LoginResponse loginResponse = loginResponseFromJson(json);
 
-          SaveAccount obj = new SaveAccount();
+          SaveAccount obj =  SaveAccount();
           print(loginResponse.accountId.elementAt(0));
           int account = loginResponse.accountId.elementAt(0);
           obj.setId(account);

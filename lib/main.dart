@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
 
         home: ShowCaseWidget(
           builder: Builder(
-            builder: (context) => AuthWrapper(),
+            builder: (context) => const AuthWrapper(),
           ),
         ),
         builder: EasyLoading.init(),

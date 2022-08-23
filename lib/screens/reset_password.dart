@@ -20,7 +20,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    SignUpData obj = new SignUpData();
+    SignUpData obj = SignUpData();
     String name = obj.getPhone();
     String name2 = obj.getFirstName();
     print("object is" + name + "\n" + name2);
@@ -29,37 +29,37 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       backgroundColor: Color(0xfff7f6fb),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 15),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back,
                     size: 32,
                     color: Colors.black54,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              Text(
+              const Text(
                 'Reset Password',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "Enter your phone number. we'll send you a verification code so we know that's you",
                 style: TextStyle(
                   fontSize: 14,
@@ -68,11 +68,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 28,
               ),
               Container(
-                padding: EdgeInsets.all(28),
+                padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -82,18 +82,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     TextFormField(
                       controller: _userPhone,
                       keyboardType: TextInputType.number,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black12),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black12),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10)),
-                        prefix: Padding(
+                        prefix: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             '(+967)',
@@ -103,20 +103,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             ),
                           ),
                         ),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.phone,
                           color: Colors.green,
                           size: 32,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 22,
                     ),
                     SizedBox(
                       width: double.infinity,
                       child: isLoading
-                          ? Center(child: CircularProgressIndicator())
+                          ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -130,7 +130,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                         Colors.white),
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(39, 138, 189, 1)),
+                                        const Color.fromRGBO(39, 138, 189, 1)),
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -138,7 +138,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   ),
                                 ),
                               ),
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(14.0),
                                 child: Text(
                                   'Send',

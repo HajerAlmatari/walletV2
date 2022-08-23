@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:walletapp/screens/transaction_card.dart';
-import 'package:walletapp/screens/transactions/bank_services.dart';
-import 'package:walletapp/screens/transactions/make_transaction.dart';
-import 'package:walletapp/screens/transactions/my_buttons.dart';
-import 'package:walletapp/screens/transactions_list.dart';
-
 import '../../Api/RemoteService.dart';
 import '../../Models/SaveAccount.dart';
 import '../../Models/SubAccount.dart';
@@ -54,11 +47,11 @@ class _ChangePotionStateState extends State<ChangePotionState> {
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Container(
+                SizedBox(
                   height: 250,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 180,
                         width: 350,
                         child: CarouselSlider(
@@ -98,17 +91,17 @@ class _ChangePotionStateState extends State<ChangePotionState> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                Text(
+                const Text(
                   "Transactions History",
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.black45),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
               ])),

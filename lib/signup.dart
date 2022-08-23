@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:crypt/crypt.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:http/http.dart' as http;
+import 'package:crypt/crypt.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:walletapp/Models/SignUpData.dart';
 import 'package:walletapp/screens/verifyOTPScreen.dart';
-import 'package:walletapp/services/firebase_auth_methods.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
 
 class SignupPage extends StatefulWidget {
@@ -84,7 +83,10 @@ class SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
+    Color primaryColor = const Color.fromRGBO(39, 138, 189, 1);
+
+    //Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
+
 
     String PhonePattern =
         r'(^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$)';
@@ -348,7 +350,7 @@ class SignupPageState extends State<SignupPage> {
         ),
         child: Center(
           child: Text(
-            'Sgin Up',
+            'Sign Up',
             style: TextStyle(
                 color: Colors.grey[100],
                 fontSize: 15,
@@ -372,7 +374,7 @@ class SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Create Account",
           style: TextStyle(
             color: Color.fromRGBO(120, 148, 150, 0.8),
@@ -384,8 +386,8 @@ class SignupPageState extends State<SignupPage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+        margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(30)),
         child: Form(

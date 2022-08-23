@@ -24,7 +24,7 @@ class MyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 350,
       height: 170,
       child: Card(
@@ -42,7 +42,7 @@ class MyCard extends StatelessWidget {
             height: 250,
             width: 350,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -60,9 +60,8 @@ class MyCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     Column(children: [
-                      Text(
+                      const Text(
                         "Account Number",
                         style: TextStyle(
                             color: Color.fromRGBO(240, 240, 240, 1),
@@ -71,7 +70,7 @@ class MyCard extends StatelessWidget {
                       ),
                       Text(
                         subAccountId,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(240, 240, 240, 1),
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
@@ -80,7 +79,7 @@ class MyCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Balance",
                           style: TextStyle(
                               color: Color.fromRGBO(240, 240, 240, 1),
@@ -89,7 +88,7 @@ class MyCard extends StatelessWidget {
                         ),
                         Text(
                           (debit - credit).toString() + " " + subAccountType,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color.fromRGBO(240, 240, 240, 1),
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
@@ -102,7 +101,7 @@ class MyCard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Last Modified Date",
                               style: TextStyle(
                                   color: Color.fromRGBO(240, 240, 240, 1),
@@ -111,7 +110,7 @@ class MyCard extends StatelessWidget {
                             ),
                             Text(
                               lastModifiedDate!=null ? lastModifiedDate.toString().substring(0,10) : creationDate.toString().substring(0,10),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color.fromRGBO(240, 240, 240, 1),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12),

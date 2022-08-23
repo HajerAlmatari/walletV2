@@ -10,7 +10,6 @@ import 'package:walletapp/login.dart';
 
 import '../Models/SignUpData.dart';
 import '../services/firebase_auth_methods.dart';
-import '../welcome.dart';
 import '../widgets/showSnackBar.dart';
 
 class VerifyOTP extends StatefulWidget {
@@ -23,15 +22,16 @@ class VerifyOTP extends StatefulWidget {
 }
 
 class _VerifyOTPState extends State<VerifyOTP> {
-  TextEditingController _CodeController1 = TextEditingController();
-  TextEditingController _CodeController2 = TextEditingController();
-  TextEditingController _CodeController3 = TextEditingController();
-  TextEditingController _CodeController4 = TextEditingController();
-  TextEditingController _CodeController5 = TextEditingController();
-  TextEditingController _CodeController6 = TextEditingController();
+  final TextEditingController _CodeController1 = TextEditingController();
+  final TextEditingController _CodeController2 = TextEditingController();
+  final TextEditingController _CodeController3 = TextEditingController();
+  final TextEditingController _CodeController4 = TextEditingController();
+  final TextEditingController _CodeController5 = TextEditingController();
+  final TextEditingController _CodeController6 = TextEditingController();
+
   FirebaseAuth auth = FirebaseAuth.instance;
   bool isLoading = false;
-  SignUpData obj = new SignUpData();
+  SignUpData obj = SignUpData();
   String? _firstName;
   String? _lastName;
   String? _email;
@@ -52,21 +52,21 @@ class _VerifyOTPState extends State<VerifyOTP> {
       backgroundColor: Colors.white10,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 10),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back,
                     size: 32,
                     color: Colors.black54,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
               Container(
@@ -80,20 +80,20 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   'assets/images/fingerprint-scanner.png',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              Text(
+              const Text(
                 'Verification',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "Enter your OTP code number",
                 style: TextStyle(
                   fontSize: 14,
@@ -253,7 +253,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 borderSide: const BorderSide(width: 2, color: Colors.black12),
                 borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                     width: 2, color: Color.fromRGBO(39, 138, 189, 1)),
                 borderRadius: BorderRadius.circular(12)),
           ),
@@ -322,12 +322,12 @@ class _VerifyOTPState extends State<VerifyOTP> {
           statusCode: response.statusCode.toString());
 
       EasyLoading.showSuccess("Account Created Successfully",
-          duration: Duration(milliseconds: 500));
+          duration: const Duration(milliseconds: 500));
 
-      await Future.delayed(Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 1000));
 
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
     } else {
       showSnackBar(context, response.body);
       print("Not SuccessFully");

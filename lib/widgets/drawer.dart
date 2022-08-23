@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +6,6 @@ import 'package:walletapp/services/firebase_auth_methods.dart';
 
 import '../constants.dart';
 import '../main.dart';
-import '../services/google_sign_in.dart';
 import '../screens/nav_screen.dart';
 import '../screens/setting.dart';
 import '../screens/user_screen.dart';
@@ -38,7 +36,7 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Drawer(
-        child: Container(
+        child: SizedBox(
           width: 50,
           child: SingleChildScrollView(
             child: Column(
@@ -53,7 +51,7 @@ class NavigationDrawer extends StatelessWidget {
       );
 
   Widget buildHeader(BuildContext context) => Material(
-      color: Color.fromRGBO(39, 138, 189, 1),
+      color: const Color.fromRGBO(39, 138, 189, 1),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -95,56 +93,17 @@ class NavigationDrawer extends StatelessWidget {
         child: Wrap(
           runSpacing: 16,
           children: [
-            // ListTile(
-            //   leading: Icon(Icons.dashboard),
-            //   title: Text("DASHBOARD"),
-            //   onTap: (){
-            //     Navigator.pop(context);
-            //     Navigator.pushReplacement(
-            //       context,
-            //       MaterialPageRoute(builder: (context) =>
-            //       const DashboardScreen()
-            //       ));},
-            // ),
             ListTile(
-              leading: Icon(Icons.wallet_giftcard),
-              title: Text("Wallet"),
+              leading: const Icon(Icons.money),
+              title: const Text("Account Transaction"),
               onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const NavScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const TransactionHistory()));
               },
             ),
-            // ListTile(
-            //   leading: Icon(Icons.message),
-            //   title: Text("MESSAGES"),
-            //   onTap: () {},
-            // ),
-            // ListTile(
-            //   leading: Icon(Icons.monetization_on),
-            //   title: Text("UTILITY BILLS"),
-            //   onTap: () {},
-            // ),
-            ListTile(
-              leading: Icon(Icons.money),
-              title: Text("Account Transaction"),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>TransactionHistory()));
-              },
-            ),
-            // ListTile(
-            //   leading: Icon(Icons.house_siding),
-            //   title: Text("BRANCHES"),
-            //   onTap: () {},
-            // ),
 
-            // ListTile(
-            //   leading: Icon(Icons.design_services_rounded),
-            //   title: Text("SERVICES"),
-            //   onTap: () {},
-            // ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("PROFILE"),
+              leading: const Icon(Icons.person),
+              title: const Text("PROFILE"),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -157,22 +116,14 @@ class NavigationDrawer extends StatelessWidget {
             ),
             ListTile(
 
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
              onTap: (){
-               //
-               // final provider = Provider.of<GoogleSignInProvider>(context,listen: false);
-               // provider.googleLogOut();
-               // FirebaseAuth.instance.signOut();
-               // // user.delete();
-
-
                context.read<FirebaseAuthMethods>().signOut(context);
-
                print("logout");
                Navigator.pushReplacement(
                  context,
-                 MaterialPageRoute(builder: (context) => AuthWrapper()),
+                 MaterialPageRoute(builder: (context) => const AuthWrapper()),
                );
              },
             ),
