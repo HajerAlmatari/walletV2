@@ -75,6 +75,8 @@ class _YemenMobileState extends State<YemenMobile> {
         await Future.delayed(Duration(milliseconds: 1000));
 
         EasyLoading.dismiss();
+        Navigator.of(context).pop();
+
         print("Not SuccessFully");
         print(response.body);
         // print(response.statusCode);

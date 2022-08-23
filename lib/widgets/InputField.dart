@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 class InputField extends StatelessWidget{
 
@@ -8,10 +9,12 @@ class InputField extends StatelessWidget{
   final bool withValidator;
   final FormFieldValidator? validator;
   final Widget? suffixIcon;
+  final VoidCallback? onChange;
+
 
 
   InputField(
-      this.inputController, this.inputType, this.hintText, this.withValidator,{this.validator, this.suffixIcon});
+      this.inputController, this.inputType, this.hintText, this.withValidator,{this.validator, this.suffixIcon, this.onChange});
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -32,6 +35,9 @@ class InputField extends StatelessWidget{
         ),
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      onChanged: (value){
+        // sjsj
+      },
       validator:
           this.withValidator?
               validator:

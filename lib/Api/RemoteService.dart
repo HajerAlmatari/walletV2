@@ -1,3 +1,5 @@
+
+import 'package:walletapp/Models/ClientName.dart';
 import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/transactions.dart';
 
@@ -104,5 +106,67 @@ class RemoteService {
     }
   }
 
+/*
+  Future<ClientName> getName(String phone) async {
+    try {
+      var client = http.Client();
+
+
+      var uri = Uri.parse(
+          "${BASE_URL}BankServices/"+phone);
+      print(uri.toString());
+      var response = await client.get(uri);
+
+
+      print("Repos body from Remot Services ");
+      print(response.body);
+
+      print("Code from Remot Services ");
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        var json = response.body;
+
+        return ClientNameFromJson(json);
+      }
+      return ClientNameFromJson("Error");
+    } catch (e) {
+      print(e);
+      return ClientNameFromJson(e.toString());
+    }
+  }
+*/
+
+  //
+  // Future<ClientName> fetchName(String Account) async {
+  //
+  //   var client = http.Client();
+  //   var uri = Uri.parse("${BASE_URL}BankServices/"+Account);
+  //   print(uri.toString());
+  //
+  //
+  //   var response = await client.get(uri);
+  //   print("Response Code From Fetch Name "+response.statusCode.toString());
+  //   print("Response Body From Fetch Name "+response.body.toString());
+  //
+  //
+  //   try{
+  //     if (response.statusCode == 200) {
+  //       // If the server did return a 200 OK response,
+  //       // then parse the JSON.
+  //       var json = response.body;
+  //
+  //       return clientNameFromJson(json);
+  //     } else {
+  //       // If the server did not return a 200 OK response,
+  //       // then throw an exception.
+  //       return clientNameFromJson("Error");
+  //     }
+  //   }catch(e){
+  //     return clientNameFromJson(e.toString());
+  //   }
+  //
+  //
+  // }
 
 }

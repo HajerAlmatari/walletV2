@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:walletapp/Api/RemoteService.dart';
+import 'package:walletapp/Models/ClientName.dart';
 import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/constants.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import '../widgets/InputField.dart';
 import '../widgets/showSnackBar.dart';
@@ -23,6 +27,11 @@ class _TTOAState extends State<TTOA> {
   final amountController = TextEditingController();
   final toAccountController = TextEditingController();
   List<SubAccount> subAccountsList=[];
+  String client_name = "";
+
+
+
+
 
 
   // List of items in our dropdown menu
@@ -40,18 +49,26 @@ class _TTOAState extends State<TTOA> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
+
+
+
+
     final _formkey = GlobalKey<FormState>();
+
 
 
     SubAccountNumbers subAccountNumbers= new SubAccountNumbers();
     final  List<SubAccount> subAccountsList= subAccountNumbers.getSubAccountList();
     final List<String> fromAccount = [];
+
     for(var subaccount in subAccountsList){
       fromAccount.add(subaccount.id.toString()+"-"+subaccount.currencyType);
     }
     String selectedValue = fromAccount[0];
+
 
 
     postData() async {
@@ -87,6 +104,8 @@ class _TTOAState extends State<TTOA> {
       } else {
         EasyLoading.showError(response.body);
         EasyLoading.dismiss();
+        Navigator.of(context).pop();
+
         // showSnackBar(context, response.body);
         print("Not SuccessFully");
         print("Account ID : "+selectedValue.substring(0, selectedValue.indexOf('-')));
@@ -100,15 +119,60 @@ class _TTOAState extends State<TTOA> {
 
 
 
+
     final transferButton = GestureDetector(
       onTap: () {
+
+
         if (_formkey.currentState!.validate()) {
+          getClientNameRequest();
+
+          Future.delayed(const Duration(milliseconds: 1000));
+
+          // print("from dialog name is : "+name.toString());
+
+          final  commission = ( int.parse(amountController.text) * (2/1000));
+          final total = int.parse(amountController.text) + commission;
 
           showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              title: const Text('Transfer to Other Account'),
-              content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${toAccountController.text} account !'),
+              title: const Text('Confirm'),
+              content:  Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12,width: 1.0)
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('From Account  : ${selectedValue.toString()}'),
+                    Text('To Account       : ${toAccountController.text}'),
+                    Text('To Name          : ${client_name}'),
+                    Text('Ammount          : ${amountController.text}'),
+                    Text('Commission     : ${commission}'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(color: Colors.black12, width: 1.0,)
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text('Total                   : ${total}         ',
+                          style: TextStyle(color: CDarkerColor),),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${toAccountController.text} account. with commission ${commission} total '),
               actions: <Widget>[
                 TextButton(
                   onPressed: (){
@@ -116,7 +180,7 @@ class _TTOAState extends State<TTOA> {
                     postData();
 
                   },
-                  child: const Text('Yes'),
+                  child: const Text('Confirm'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -236,15 +300,31 @@ class _TTOAState extends State<TTOA> {
               SizedBox(
                 height: 10,
               ),
-              InputField(amountController, TextInputType.number,
-                  'Enter the ammount', false,
-                  suffixIcon: Icon(Icons.money)),
+              InputField(
+                amountController,
+                TextInputType.number,
+                  'Enter the ammount',
+                false,
+                  suffixIcon: Icon(Icons.money),
+              ),
               SizedBox(
                 height: 10,
               ),
               InputField(toAccountController, TextInputType.number,
-                  'To Account', false,
-                  suffixIcon: null),
+                  'To Account',
+                  true,
+                  validator: (value){
+                    if (value.toString().length != 10) {
+                      return 'Please Enter a Valid Account Number';
+                    }
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Account Number';
+                    } else {
+                      return null;
+                    }
+                  },
+                  suffixIcon: null,
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -255,4 +335,42 @@ class _TTOAState extends State<TTOA> {
       ),
     );
   }
+
+
+  Future<String> getClientNameRequest() async {
+    try {
+      var response = await http.get(Uri.parse('https://walletv1.azurewebsites.net/api/BankServices/'+toAccountController.text),);
+
+      print("Status Code ${response.statusCode}");
+      print("Response Body ${response.body}");
+
+      if (response.statusCode == 200) {
+        var json = response.body;
+        ClientName clientName = clientNameFromJson(json);
+
+        print(clientName.fullName);
+
+        setState((){
+          client_name = clientName.fullName;
+        });
+
+        print("SuccessFully");
+
+        // showSnackBar(context, "Successfully Logged in");
+
+        return clientName.fullName;
+
+      } else {
+       return "";
+      }
+    } catch (error) {
+      print(error.toString());
+      return(error.toString());
+    }
+  }
+
+
+
+
 }
+

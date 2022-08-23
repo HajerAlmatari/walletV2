@@ -33,6 +33,11 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
     print("I'm in the Second      " + obj.getId().toString());
 
     getSubAccounts(obj.getId());
+
+    setState((){
+
+      currentIndex = 1;
+    });
   }
 
   getSubAccounts(int accountId) async {
@@ -75,7 +80,6 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                           width: 400,
                           child: CarouselSlider(
                             options: CarouselOptions(
-                                autoPlay: false,
                                 aspectRatio: 2.0,
                                 enlargeCenterPage: true,
                                 enlargeStrategy: CenterPageEnlargeStrategy.height,

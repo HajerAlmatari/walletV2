@@ -81,6 +81,7 @@ class Transactions {
     required this.affectedId,
     required this.accountId,
     required this.servicePointId,
+    required this.comissions,
   });
 
   int id;
@@ -92,6 +93,7 @@ class Transactions {
   dynamic amount;
   int accountId;
   dynamic servicePointId;
+  dynamic comissions;
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
     id: json["id"],
@@ -103,6 +105,7 @@ class Transactions {
     affectedId: json["affectedId"],
     accountId: json["accountId"],
     servicePointId: json["servicePointId"],
+    comissions: json["comissions"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -115,6 +118,7 @@ class Transactions {
     "affectedId": affectedId,
     "accountId": accountId,
     "servicePointId": servicePointId,
+    "comissions": comissions,
   };
 }
 

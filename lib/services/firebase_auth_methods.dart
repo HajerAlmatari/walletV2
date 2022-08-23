@@ -373,6 +373,23 @@ class FirebaseAuthMethods {
   //     },
   //   );
   // }
+  //
+  // Future<void> signupWithPhoneNumber(BuildContext context, String phone,String email)async{
+  //
+  //   await FirebaseAuth.instance.verifyPhoneNumber(
+  //     phoneNumber: phone,
+  //     verificationCompleted: (PhoneAuthCredential credential) async{
+  //       await _auth.signInWithEmailLink(credential,);
+  //     },
+  //
+  //
+  //     verificationFailed: (FirebaseAuthException e) {},
+  //     codeSent: (String verificationId, int? resendToken) {},
+  //     codeAutoRetrievalTimeout: (String verificationId) {},
+  //   );
+  //
+  // }
+
 
   Future<void> sendEmailVerification(
       BuildContext context, String message) async {

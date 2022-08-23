@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:walletapp/constants.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import '../Api/RemoteService.dart';
 import '../Models/SaveAccount.dart';
@@ -96,6 +97,8 @@ class _TBHAState extends State<TBHA> {
         await Future.delayed(Duration(milliseconds: 1000));
 
         EasyLoading.dismiss();
+        Navigator.of(context).pop();
+
 
 
         print("Not SuccessFully");
@@ -117,11 +120,46 @@ class _TBHAState extends State<TBHA> {
           print(selectedValue.substring(0,10));
           print(selectedValue2.substring(0,10));
 
+          final commission = (int.parse(amountController.text) * (0 / 1000));
+          final total = int.parse(amountController.text) + commission;
+
           showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              title: const Text('Transfer Between Your Accounts'),
-              content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${selectedValue2.toString()} account !'),
+              title: const Text('Confirm'),
+              content:  Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black12,width: 1.0)
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('From Account  : ${selectedValue.toString()}'),
+                    Text('To Account       : ${selectedValue2.toString()}'),
+                    Text('Ammount          : ${amountController.text}'),
+                    Text('Commission     : ${commission}'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(color: Colors.black12, width: 1.0,)
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text('Total                   : ${total}         ',
+                          style: TextStyle(color: CDarkerColor),),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: (){
@@ -129,7 +167,7 @@ class _TBHAState extends State<TBHA> {
                     postData();
 
                   },
-                  child: const Text('Yes'),
+                  child: const Text('Confirm'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),

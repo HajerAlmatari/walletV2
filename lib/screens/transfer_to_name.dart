@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:walletapp/Models/SubAccount.dart';
 import 'package:walletapp/Models/SubAccountNumbers.dart';
+import 'package:walletapp/constants.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/widgets/showSnackBar.dart';
 import '../widgets/InputField.dart';
@@ -43,15 +44,18 @@ class _TTNState extends State<TTN> {
         Uri.parse(
             'https://walletv1.azurewebsites.net/api/BankServices/transferToPerson'),
         body: jsonEncode({
-          "senderSubAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
+          "senderSubAccountId":
+              selectedValue.substring(0, selectedValue.indexOf('-')),
           "receiverphoneNumber": phoneController.text,
-          "receiverName" : nameController.text,
+          "receiverName": nameController.text,
           "amonut": amountController.text,
         }),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
+
+      // 5/100
 
       if (response.statusCode == 200) {
         print("SuccessFully");
@@ -65,8 +69,9 @@ class _TTNState extends State<TTN> {
         //
 
         EasyLoading.dismiss();
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-            NavScreen()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => NavScreen()),
+            (Route<dynamic> route) => false);
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WelcomePage()));
 
       } else {
@@ -76,6 +81,8 @@ class _TTNState extends State<TTN> {
         await Future.delayed(Duration(milliseconds: 2000));
 
         EasyLoading.dismiss();
+        Navigator.of(context).pop();
+
         print("Not SuccessFully");
 
         // print(response.body);
@@ -88,39 +95,68 @@ class _TTNState extends State<TTN> {
     RegExp regExp = RegExp(PhonePattern);
 
     final transferButton = GestureDetector(
-      onTap: () {          EasyLoading.show(status: 'Loading ...');
+      onTap: () {
+        EasyLoading.show(status: 'Loading ...');
 
-      if (_formkey.currentState!.validate()) {
+        if (_formkey.currentState!.validate()) {
+          final commission = (int.parse(amountController.text) * (5 / 1000));
+          final total = int.parse(amountController.text) + commission;
 
-
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Send remittance'),
-            content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${nameController.text} , ${phoneController.text} !'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: (){
-                  EasyLoading.show();
-                  postData();
-
-                },
-                child: const Text('Yes'),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Center(child: const Text('Confirm')),
+              content: Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black12, width: 1.0)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('From Account  : ${selectedValue.toString()}'),
+                    Text('To                       : ${nameController.text}'),
+                    Text('phone                : ${phoneController.text}'),
+                    Text('Ammount          : ${amountController.text}'),
+                    Text('Commission     : ${commission}'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.black12, width: 1.0,)
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text('Total                   : ${total}         ',
+                        style: TextStyle(color: CDarkerColor),),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-
-            ],
-          ),
-        );
-
-
-
-      }
-      EasyLoading.dismiss();
-
+              // content:  Text('Are you sure to transfer ${amountController.text} from ${selectedValue.toString()} account to ${nameController.text} , ${phoneController.text} !'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    EasyLoading.show();
+                    postData();
+                  },
+                  child: const Text('Confirm'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
+          );
+        }
+        EasyLoading.dismiss();
       },
       child: Container(
         height: 50,

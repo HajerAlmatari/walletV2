@@ -301,7 +301,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
         'firstName': _firstName,
         'lastName': _lastName,
         'email': _email,
-        'phoneNumber': _phone,
+        'phoneNumber': _phone!,
         'password': _password,
         'socialMediaType': 'normal'
       }),
@@ -311,6 +311,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
     );
 
     if (response.statusCode == 200) {
+      print(_phone);
       print("SuccessFully");
 
       context.read<FirebaseAuthMethods>().signUpWithEmail(
@@ -330,7 +331,8 @@ class _VerifyOTPState extends State<VerifyOTP> {
     } else {
       showSnackBar(context, response.body);
       print("Not SuccessFully");
-      // print(response.body);
+      print(response.body);
+      print(_phone);
       // print(response.statusCode);
     }
     // print(response.body);
