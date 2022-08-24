@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart' as services;
@@ -40,30 +41,29 @@ class FingerprintPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        height: 70,
+        height: 80,
         width: 290,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(5, 5),
-              blurRadius: 10,
-            )
-          ],
-        ),
+        // decoration: const BoxDecoration(
+        //   color: Colors.white,
+        //   borderRadius: BorderRadius.all(Radius.circular(50)),
+        //   boxShadow: [
+        //     BoxShadow(
+        //       color: Colors.black12,
+        //       offset: Offset(5, 5),
+        //       blurRadius: 10,
+        //     )
+        //   ],
+        // ),
         padding: const EdgeInsets.all(5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
+            SvgPicture.asset(
               'images/fingerprint.svg',
-              width: 30,
-              height: 30,
+              width: 80,
+              height: 80,
             ),
             const SizedBox(width: 20,),
-            const Text("Fingerprint")
           ],
         ),
       ),

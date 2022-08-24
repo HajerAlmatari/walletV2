@@ -88,8 +88,8 @@ class SignupPageState extends State<SignupPage> {
     //Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
 
 
-    String PhonePattern =
-        r'(^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$)';
+
+    String PhonePattern = r'(^(((\+|00)9677|0?7)[0137]\d{7})$)';
     RegExp regExp = RegExp(PhonePattern);
 
     final firstNameField = TextFormField(
@@ -98,12 +98,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'First Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -122,12 +122,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Last Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -147,12 +147,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Phone Number',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -175,12 +175,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'ID Number',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -200,12 +200,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Email',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -221,12 +221,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -264,12 +264,12 @@ class SignupPageState extends State<SignupPage> {
         // filled: true,
         labelText: 'Confirm Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(120, 148, 150, 0.8),
+          color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
       ),
@@ -338,7 +338,7 @@ class SignupPageState extends State<SignupPage> {
         height: 50,
         width: 370,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(120, 148, 150, 0.8),
+          color: const Color.fromRGBO(39, 138, 189, 1),
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
@@ -372,17 +372,16 @@ class SignupPageState extends State<SignupPage> {
     //     );
 
     return Scaffold(
-      backgroundColor: primaryColor,
       appBar: AppBar(
         title: const Text(
           "Create Account",
           style: TextStyle(
-            color: Color.fromRGBO(120, 148, 150, 0.8),
+            color: Color.fromRGBO(39, 138, 189, 1),
           ),
         ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(
-          color: Color.fromRGBO(120, 148, 150, 0.8), // <-- SEE HERE
+          color: Color.fromRGBO(39, 138, 189, 1), // <-- SEE HERE
         ),
       ),
       body: Container(
@@ -461,7 +460,7 @@ class SignupPageState extends State<SignupPage> {
         setState(() {
           isLoading = false;
         });
-        print(verificationId);
+        print("Me Otp:"+verificationId);
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );

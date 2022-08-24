@@ -84,6 +84,26 @@ class FirebaseAuthMethods {
     }
   }
 
+  Future<void> loginWithPhone(
+      {required String phone,
+        required String password,
+        required BuildContext context}) async {
+    try {
+      EasyLoading.show();
+      await _auth.signInWithPhoneNumber(phone);
+
+
+      EasyLoading.dismiss();
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+          NavScreen()), (Route<dynamic> route) => false);
+
+    } on FirebaseAuthException catch (e) {
+      EasyLoading.dismiss();
+      showSnackBar(context, e.message!);
+    }
+  }
+
+
   Future<void> loginWithEmail(
       {required String email,
       required String password,

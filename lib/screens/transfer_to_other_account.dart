@@ -313,9 +313,7 @@ class _TTOAState extends State<TTOA> {
                   'To Account',
                   true,
                   validator: (value){
-                    if (value.toString().length != 10) {
-                      return 'Please Enter a Valid Account Number';
-                    }
+
                     if (value == null || value.isEmpty) {
                       return 'Please Enter Account Number';
                     } else {

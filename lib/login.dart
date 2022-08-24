@@ -72,62 +72,93 @@ class LoginPageState extends State<LoginPage> {
 
         showSnackBar(context, "Successfully Logged in");
 
+        if(EmailValidator.validate(_email.text)){
         context.read<FirebaseAuthMethods>().loginWithEmail(
             email: _email.text.trim(),
             password: _password.text.trim(),
             context: context);
+        }
+        else{
+          // log in with credintial
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+              NavScreen()), (Route<dynamic> route) => false);
+        }
 
         // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
         //     NavScreen()), (Route<dynamic> route) => false);
 
         EasyLoading.dismiss();
-
-      } else if (response.statusCode == 404) {
+      }
+      else if (response.statusCode == 404) {
         // EasyLoading.dismiss();
         showSnackBar(context, "Not found URL");
 
         // print(response.body);
         // print(response.statusCode);
 
-      } else if (response.statusCode == 7) {
+      }
+      else if (response.statusCode == 7) {
         EasyLoading.dismiss();
         showSnackBar(context, "No Internet connection");
-      } else {
+      }
+      else {
         EasyLoading.dismiss();
         print(response.statusCode);
         showSnackBar(context, "Phone or Password wrong");
       }
-    } catch (error) {
+    }
+    catch (error) {
       print(error.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    String PhonePattern = r'(^(((\+|00)9677|0?7)[0137]\d{7})$)';
+    RegExp regExp = RegExp(PhonePattern);
     final _formkey = GlobalKey<FormState>();
 
     final emailField = TextFormField(
-      controller: _email,
-      textInputAction: TextInputAction.done,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: const InputDecoration(
-        // filled: true,
-        labelText: 'Email/phone number',
-        labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
-          fontWeight: FontWeight.bold,
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
+        controller: _email,
+        textInputAction: TextInputAction.done,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: const InputDecoration(
+          // filled: true,
+          labelText: 'Email/phone number',
+          labelStyle: TextStyle(
             color: Color.fromRGBO(39, 138, 189, 1),
+            fontWeight: FontWeight.bold,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color.fromRGBO(39, 138, 189, 1),
+            ),
           ),
         ),
-      ),
-      validator: (_userEmail) =>
-          _userEmail != null && !EmailValidator.validate(_userEmail)
-              ? 'Enter a valid Email or phone number'
-              : null,
-    );
+        validator: (_userEmail) {
+
+          if (_userEmail!.isEmpty) {
+            return 'Please Enter Phone or email';
+          }
+
+          if (!regExp.hasMatch(_userEmail) && !EmailValidator.validate(_userEmail)) {
+            return 'Please enter valid mobile number';
+          }
+
+           else {
+            return null;
+          }
+
+          // if (!EmailValidator.validate(_userEmail!) ||
+          //     !regExp.hasMatch(_userEmail!))
+          //   return 'Enter a valid Email or phone number';
+          //
+          //
+          // if (_userEmail == null)
+          //   return 'this field can\'t be null ';
+          // else
+          //   return null;
+        });
 
     final passwordField = TextFormField(
       obscureText: true,
@@ -156,6 +187,12 @@ class LoginPageState extends State<LoginPage> {
 
     final signinbutton = GestureDetector(
       onTap: () {
+
+        if(regExp.hasMatch(_email.text)){
+            setState((){
+              _email.text = "+967"+_email.text;
+            });
+        }
         if (_formkey.currentState!.validate()) {
           EasyLoading.show(status: 'Loading ...');
           loginRequest();

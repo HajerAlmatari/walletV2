@@ -101,9 +101,7 @@ class _NavScreenState extends State<NavScreen> {
       print('I am pressed');
     }
     final user = context.read<FirebaseAuthMethods>().user;
-    return FlatButton(
-      onPressed: _onPress,
-      child: DefaultTabController(
+    return DefaultTabController(
         length: 1,
         child: Scaffold(
           drawer: Showcase(key: _key2, description: "Manage Your Account",child: NavigationDrawer(),),
@@ -185,7 +183,6 @@ class _NavScreenState extends State<NavScreen> {
             onTap: _onItemTapped,
           ),
         ),
-      ),
-    );
+      );
   }
 }
