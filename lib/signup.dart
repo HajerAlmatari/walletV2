@@ -30,6 +30,9 @@ class SignupPageState extends State<SignupPage> {
   bool isChecked = false;
   bool isLoading = false;
   bool status = false;
+  bool isObscure = true;
+  bool isObscure2 = true;
+
 
   bool otpVisibility = false;
   String verificationID = "";
@@ -84,6 +87,7 @@ class SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = const Color.fromRGBO(39, 138, 189, 1);
+
 
     //Color primaryColor = Color.fromRGBO(120, 148, 150, 0.8);
 
@@ -168,31 +172,33 @@ class SignupPageState extends State<SignupPage> {
         }
       },
     );
-    final idNumberField = TextFormField(
-      keyboardType: TextInputType.number,
-      controller: _idNumber,
-      decoration: const InputDecoration(
-        // filled: true,
-        labelText: 'ID Number',
-        labelStyle: TextStyle(
-          color: Color.fromRGBO(39, 138, 189, 1),
-          fontWeight: FontWeight.bold,
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Color.fromRGBO(39, 138, 189, 1),
-          ),
-        ),
-      ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please Enter User Name';
-        } else {
-          return null;
-        }
-      },
-    );
+    //
+    // final idNumberField = TextFormField(
+    //   keyboardType: TextInputType.number,
+    //   controller: _idNumber,
+    //   decoration: const InputDecoration(
+    //     // filled: true,
+    //     labelText: 'ID Number',
+    //     labelStyle: TextStyle(
+    //       color: Color.fromRGBO(39, 138, 189, 1),
+    //       fontWeight: FontWeight.bold,
+    //     ),
+    //     focusedBorder: UnderlineInputBorder(
+    //       borderSide: BorderSide(
+    //         color: Color.fromRGBO(39, 138, 189, 1),
+    //       ),
+    //     ),
+    //   ),
+    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+    //   validator: (value) {
+    //     if (value == null || value.isEmpty) {
+    //       return 'Please Enter User Name';
+    //     } else {
+    //       return null;
+    //     }
+    //   },
+    // );
+    //
     final emailField = TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: _email,
@@ -215,14 +221,24 @@ class SignupPageState extends State<SignupPage> {
           : null,
     );
     final passwordField = TextFormField(
-      obscureText: true,
+      obscureText: isObscure,
       controller: _password,
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
           color: Color.fromRGBO(39, 138, 189, 1),
           fontWeight: FontWeight.bold,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            isObscure ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              isObscure = !isObscure;
+            });
+          },
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
@@ -258,9 +274,19 @@ class SignupPageState extends State<SignupPage> {
       },
     );
     final confirmPasswordField = TextFormField(
-      obscureText: true,
+      obscureText: isObscure2,
       controller: _confirmPssword,
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(
+            isObscure2 ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              isObscure2 = !isObscure2;
+            });
+          },
+        ),
         // filled: true,
         labelText: 'Confirm Password',
         labelStyle: TextStyle(
@@ -405,10 +431,10 @@ class SignupPageState extends State<SignupPage> {
               const SizedBox(
                 height: 5,
               ),
-              idNumberField,
-              const SizedBox(
-                height: 5,
-              ),
+              // idNumberField,
+              // const SizedBox(
+              //   height: 5,
+              // ),
               emailField,
               const SizedBox(
                 height: 5,

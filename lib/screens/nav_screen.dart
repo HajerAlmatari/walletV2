@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:walletapp/Models/ClientDetails.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
+import 'package:walletapp/Models/SaveClientDetails.dart';
 import 'package:walletapp/screens/transactions-history.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
+import 'package:http/http.dart' as http;
+
 
 import '../Api/RemoteService.dart';
 import '../Models/SubAccount.dart';
@@ -26,20 +30,31 @@ class _NavScreenState extends State<NavScreen> {
 
   List<SubAccount>? subAccountsList;
 
+  SaveClientDetails clientDetailsObj = SaveClientDetails();
+  SaveAccount obj = SaveAccount();
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    SaveAccount obj = SaveAccount();
     print("I'm in the Second" + obj.getId().toString());
 
+    print(Uri.parse('https://walletv1.azurewebsites.net/api/SubAccount/getClientDetails?accountId='+obj.getId().toString()));
+
+
     getSubAccounts(obj.getId());
+    // getSubAccounts(obj.getId());
+
+
+    print("Client Last Name From Nav Screen " + clientDetailsObj.getLastName().toString());
+
 
 
     print("Hello From Nav Screen");
    print("I'm in the Second From Nav Screen" + obj.getId().toString());
 
-    getSubAccounts(obj.getId());
+
 
     print("100078729-YR".substring(0, "100078729-YR".indexOf('-')));
 
@@ -61,6 +76,50 @@ class _NavScreenState extends State<NavScreen> {
       }
     }
   }
+
+
+  getClientDetails(int accountId) async {
+    try {
+      var response = await http.get(Uri.parse('https://walletv1.azurewebsites.net/api/SubAccount/getClientDetails?accountId='+accountId.toString()),);
+
+      print("Status Code ${response.statusCode}");
+      print("Response Body ${response.body}");
+
+      if (response.statusCode == 200) {
+        var json = response.body;
+        ClientDetails clientDetails = clientDetailsFromJson(json);
+
+        print("SuccessFully");
+
+        clientDetailsObj.setEmail(clientDetails.email.toString());
+        clientDetailsObj.setFirstName(clientDetails.clientFirstName.toString());
+        clientDetailsObj.setLastName(clientDetails.clientLastName.toString());
+
+
+        print("clientDetailsObj.setLastName  "+clientDetailsObj.getLastName());
+        print("Client First Name From getClientDetails   "+clientDetailsObj.getFirstName());
+        print("Client Email From getClientDetails   "+clientDetailsObj.getEmail());
+
+
+
+
+
+
+
+        // showSnackBar(context, "Successfully Logged in");
+
+
+      } else {
+        return "";
+      }
+    } catch (error) {
+      print(error.toString());
+      return(error.toString());
+    }
+  }
+
+
+
 
   int _selectedIndex = 0;
   static TextStyle optionStyle =
@@ -89,6 +148,9 @@ class _NavScreenState extends State<NavScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    getClientDetails(obj.getId());
+
     setState((){
       //
       // WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -100,11 +162,11 @@ class _NavScreenState extends State<NavScreen> {
     void _onPress() {
       print('I am pressed');
     }
-    final user = context.read<FirebaseAuthMethods>().user;
+    // final user = context.read<FirebaseAuthMethods>().user;
     return DefaultTabController(
         length: 1,
         child: Scaffold(
-          drawer: Showcase(key: _key2, description: "Manage Your Account",child: NavigationDrawer(),),
+          drawer: NavigationDrawer(clientDetailsObj.getFirstName(), clientDetailsObj.getLastName(), clientDetailsObj.getEmail(), ),
           appBar: AppBar(
             actions: [
               IconButton(onPressed: () {
@@ -120,9 +182,9 @@ class _NavScreenState extends State<NavScreen> {
 
                   // ShowCaseWidget.of(context).startShowCase([_key1]);
                 });
-              }, icon: Icon(Icons.help_outline_sharp,),),
+              }, icon: IconButton(icon: Icon(Icons.help), onPressed: () { print("clientDetailsObj.getLastName() from app bar  "+clientDetailsObj.getLastName().toString()); },), ),
             ],
-            title: Text("User Name"),
+            title: Text("YCB Wallet"),
             centerTitle: true,
             backgroundColor: CDarkerColor,
             // bottom: const TabBar(

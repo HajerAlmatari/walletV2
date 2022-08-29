@@ -68,9 +68,9 @@ class _MakeTransactionPageState extends State<MakeTransactionPage> {
 
 
               MyButton(
-                iconImagePath: "images/ycbExpress.svg",
-                buttonText: "YCB Express\n",
-                onTap:(){}
+                iconImagePath: "images/qr-code.svg",
+                buttonText: "Purchases\n",
+                onTap:(){},
               ),
 
               MyButton(

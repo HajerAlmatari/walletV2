@@ -10,6 +10,7 @@ import '../screens/nav_screen.dart';
 import '../screens/setting.dart';
 import '../screens/user_screen.dart';
 
+/*
 class DrawerWidget extends StatelessWidget {
 
 
@@ -31,8 +32,17 @@ class DrawerWidget extends StatelessWidget {
     );
   }
 }
+*/
 
 class NavigationDrawer extends StatelessWidget {
+
+  String firstName;
+  String lastName;
+  String email;
+
+
+  NavigationDrawer(this.firstName, this.lastName, this.email);
+
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -65,7 +75,7 @@ class NavigationDrawer extends StatelessWidget {
               bottom: 24,
             ),
             child: Column(
-              children: const [
+              children:  [
                 // CircleAvatar(
                 //   radius: 52,
                 //   backgroundImage: AssetImage("assets/icons/avatar_1.png"),
@@ -76,12 +86,12 @@ class NavigationDrawer extends StatelessWidget {
                 ),
                 Text(
                     // user.displayName!.toString(),
-                  "User Name",
+                  firstName+" "+lastName,
                   style: TextStyle(fontSize: 28, color: Colors.white70),
                 ),
                 Text(
                     // user.email!.toString(),
-                  "User Email",
+                  email,
                   style: TextStyle(fontSize: 16, color: Colors.white70),
                 )
               ],
@@ -130,4 +140,5 @@ class NavigationDrawer extends StatelessWidget {
           ],
         ),
       );
+
 }

@@ -44,7 +44,7 @@ class _InternetADSLState extends State<InternetADSL> {
             'https://walletv1.azurewebsites.net/api/Payment/payments'),
         body: jsonEncode({
           "subAccountId": selectedValue.substring(0, selectedValue.indexOf('-')),
-          "number": phoneController.text,
+          "number": phoneController.text.substring(1,7),
           "amount": amountController.text,
           "type" : 5,
         }),
@@ -89,7 +89,7 @@ class _InternetADSLState extends State<InternetADSL> {
 
 
 
-    String PhonePattern = r'(^(((\+|00)967|0)[1-7]\d{6})$)';
+    String PhonePattern = r'(^((0)[1-7]\d{6})$)';
     RegExp regExp = RegExp(PhonePattern);
 
 
@@ -98,7 +98,7 @@ class _InternetADSLState extends State<InternetADSL> {
         if (_formkey.currentState!.validate()) {
 
           print(amountController.text);
-          print(phoneController.text);
+          print(phoneController.text.substring(1,7));
           print(selectedValue);
 
 

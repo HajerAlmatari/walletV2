@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:walletapp/Api/RemoteService.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
+import 'package:walletapp/Models/SaveClientDetails.dart';
 import 'package:walletapp/Models/transactions.dart';
 
 class TransactionHistory extends StatefulWidget {
@@ -22,6 +23,11 @@ class _TransactionHistoryState extends State<TransactionHistory> {
     print("I'm in the Second" + obj.getId().toString());
 
     getData(obj.getId());
+
+    SaveClientDetails ssobj = SaveClientDetails();
+
+    print("Client Last Name From History Screen " + ssobj.getLastName().toString());
+
   }
 
   getData(int accountId) async {

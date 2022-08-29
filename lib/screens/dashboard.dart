@@ -17,17 +17,17 @@ class DashboardScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>
-                    NavigationDrawer()
-                ));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) =>
+            //         // NavigationDrawer()
+            //     ));
           },
         ),
 
         elevation: 0,
       ),
-      drawer:  NavigationDrawer(),
+      // drawer:  NavigationDrawer(),
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget> [

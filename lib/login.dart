@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:walletapp/Models/ClientDetails.dart';
 import 'package:walletapp/Models/LoginResponse.dart';
 import 'package:walletapp/Models/SaveAccount.dart';
+import 'package:walletapp/Models/SaveClientDetails.dart';
 import 'package:walletapp/screens/nav_screen.dart';
 import 'package:walletapp/screens/reset_password.dart';
 import 'package:walletapp/services/firebase_auth_methods.dart';
@@ -31,6 +33,8 @@ class LoginPageState extends State<LoginPage> {
 
   final _email = TextEditingController();
   final _password = TextEditingController();
+  bool isObscure = true;
+
 
   @override
   void dispose() {
@@ -40,8 +44,14 @@ class LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    isObscure = true;
+  }
+
   loginRequest() async {
     print("request");
+    print(_email.text);
     EasyLoading.show();
     try {
       var response = await http.post(
@@ -70,7 +80,17 @@ class LoginPageState extends State<LoginPage> {
 
         print("SuccessFully");
 
+        // getClientDetails(obj.getId());
+
+
         showSnackBar(context, "Successfully Logged in");
+
+
+
+
+
+
+
 
         if(EmailValidator.validate(_email.text)){
         context.read<FirebaseAuthMethods>().loginWithEmail(
@@ -111,6 +131,8 @@ class LoginPageState extends State<LoginPage> {
       print(error.toString());
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,9 +183,23 @@ class LoginPageState extends State<LoginPage> {
         });
 
     final passwordField = TextFormField(
-      obscureText: true,
+      obscureText: isObscure,
       controller: _password,
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(
+            isObscure ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+
+            setState((){
+              isObscure = !isObscure;
+            });
+
+            print(isObscure);
+
+          },
+        ),
         // filled: true,
         labelText: 'Password',
         labelStyle: TextStyle(
@@ -372,4 +408,42 @@ class LoginPageState extends State<LoginPage> {
         password: _password.text.trim(),
         context: context);
   }
+
+  //
+  //  getClientDetails(int accountId) async {
+  //   try {
+  //     var response = await http.get(Uri.parse('https://walletv1.azurewebsites.net/api/SubAccount/getClientDetails?accountId='+accountId.toString()),);
+  //
+  //     SaveClientDetails saveClientDetails = SaveClientDetails();
+  //     print("Status Code ${response.statusCode}");
+  //     print("Response Body ${response.body}");
+  //
+  //     if (response.statusCode == 200) {
+  //       var json = response.body;
+  //       ClientDetails clientDetails = clientDetailsFromJson(json);
+  //
+  //       print("Client First Name From getClientDetails"+clientDetails.clientFirstName);
+  //
+  //
+  //
+  //
+  //       saveClientDetails.setEmail(clientDetails.email);
+  //       saveClientDetails.setFirstName(clientDetails.clientFirstName);
+  //       saveClientDetails.setLastName(clientDetails.clientLastName);
+  //
+  //       print("SuccessFully");
+  //
+  //       // showSnackBar(context, "Successfully Logged in");
+  //
+  //
+  //     } else {
+  //       return "";
+  //     }
+  //   } catch (error) {
+  //     print(error.toString());
+  //     return(error.toString());
+  //   }
+  // }
+  //
+
 }
